@@ -47,6 +47,7 @@ export default function CatalogPage() {
             key={i}
             name={item.name}
             summary={item.summary}
+            slug={item.slug}
             stages_count={100}
           />
         ))}

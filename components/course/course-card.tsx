@@ -1,18 +1,30 @@
 import React from "react";
+import { useRouter } from "next/navigation";
 
 interface CourseCardProps {
   name: string;
   summary: string;
   stages_count: number;
+  slug: string;
 }
 
 const CourseCard: React.FC<CourseCardProps> = ({
   name,
   summary,
   stages_count,
+  slug,
 }) => {
+  const router = useRouter();
+
+  const handleClick = () => {
+    router.push(`/courses/${slug}/overview`);
+  };
+
   return (
-    <div className="border rounded-lg p-6 hover:shadow-md transition-shadow">
+    <div
+      className="border rounded-lg p-6 hover:shadow-md transition-shadow cursor-pointer"
+      onClick={handleClick}
+    >
       <div className="flex justify-between">
         <h2 className="font-bold text-lg">{name}</h2>
       </div>
