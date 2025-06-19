@@ -5,6 +5,9 @@ import { useParams } from "next/navigation";
 import type { CourseDetail } from "@/types/course";
 import ReactMarkdown from "react-markdown";
 
+import { StageGroup } from "@/components/stage/stage-group";
+import { StageItem } from "@/components/stage/stage-item";
+
 export default function CourseOverviewPage() {
   const { slug } = useParams<{ slug: string }>();
   const [course, setCourse] = useState<CourseDetail | null>(null);
@@ -55,8 +58,22 @@ export default function CourseOverviewPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-6">
-          <div className="border rounded-lg p-6 prose max-w-none markdown">
-            <ReactMarkdown>{course.description}</ReactMarkdown>
+          <div className="border rounded-lg p-6 prose max-w-none">
+            <div className="markdown">
+              <ReactMarkdown>{course.description}</ReactMarkdown>
+            </div>
+
+            <StageGroup title="Stages">
+              <StageItem title="Empty file" difficulty="VERY EASY" />
+              <StageItem title="Parentheses" difficulty="MEDIUM" />
+              <StageItem title="Braces" difficulty="EASY" />
+            </StageGroup>
+
+            <StageGroup title="Parsing Expressions">
+              <StageItem title="Booleans & Nil" difficulty="HARD" />
+              <StageItem title="Number literals" difficulty="MEDIUM" />
+              <StageItem title="String literals" difficulty="MEDIUM" />
+            </StageGroup>
           </div>
         </div>
 
