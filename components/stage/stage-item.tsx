@@ -1,28 +1,27 @@
 import { Wifi, SquareTerminal, Bold } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-type Difficulty = "VERY EASY" | "EASY" | "MEDIUM" | "HARD";
+import { Difficulty } from "@/types/stage";
 
 interface StageItemProps {
-  title: string;
+  name: string;
   difficulty: Difficulty;
 }
 
-export function StageItem({ title, difficulty }: StageItemProps) {
+export function StageItem({ name, difficulty }: StageItemProps) {
   const difficultyConfig = {
-    "VERY EASY": {
+    very_easy: {
       color: "text-green-500",
       text: "VERY EASY",
     },
-    EASY: {
+    easy: {
       color: "text-teal-500",
       text: "EASY",
     },
-    MEDIUM: {
+    medium: {
       color: "text-blue-500",
       text: "MEDIUM",
     },
-    HARD: {
+    hard: {
       color: "text-amber-500",
       text: "HARD",
     },
@@ -35,7 +34,7 @@ export function StageItem({ title, difficulty }: StageItemProps) {
       <div className="flex items-center">
         <div className="w-2 h-2 rounded-full bg-gray-200 mr-2"></div>
         <SquareTerminal className="w-5 h-5 text-gray-600 mr-2" />
-        <span className="text-gray-800">{title}</span>
+        <span className="text-gray-800">{name}</span>
       </div>
 
       <div className={cn("flex items-center", config.color)}>

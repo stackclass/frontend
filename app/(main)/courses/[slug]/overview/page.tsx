@@ -2,27 +2,86 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import type { CourseDetail } from "@/types/course";
 import ReactMarkdown from "react-markdown";
+
+import type { CourseDetail } from "@/types/course";
+import type { Stage } from "@/types/stage";
+import type { Extension } from "@/types/extension";
 
 import { StageGroup } from "@/components/stage/stage-group";
 import { StageItem } from "@/components/stage/stage-item";
 
+interface StageGroupData {
+  title: string;
+  slug?: string;
+  stages: Stage[];
+}
+
 export default function CourseOverviewPage() {
   const { slug } = useParams<{ slug: string }>();
   const [course, setCourse] = useState<CourseDetail | null>(null);
+  const [stageGroups, setStageGroups] = useState<StageGroupData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchCourse = async () => {
+    const fetchData = async () => {
       try {
-        const response = await fetch(`/api/courses/${slug}`);
-        if (!response.ok) {
-          throw new Error(`Failed to fetch course: ${response.statusText}`);
+        // Fetch course details
+        const courseResponse = await fetch(`/api/courses/${slug}`);
+        if (!courseResponse.ok) {
+          throw new Error(
+            `Failed to fetch course: ${courseResponse.statusText}`,
+          );
         }
-        const data: CourseDetail = await response.json();
-        setCourse(data);
+        const courseData: CourseDetail = await courseResponse.json();
+        setCourse(courseData);
+
+        // Fetch all stages (base and extended)
+        const stagesResponse = await fetch(`/api/courses/${slug}/stages`);
+        if (!stagesResponse.ok) {
+          throw new Error(
+            `Failed to fetch stages: ${stagesResponse.statusText}`,
+          );
+        }
+        const stagesData: Stage[] = await stagesResponse.json();
+
+        // Fetch all extensions (for grouping extended stages)
+        const extsResponse = await fetch(`/api/courses/${slug}/extensions`);
+        if (!extsResponse.ok) {
+          throw new Error(
+            `Failed to fetch extensions: ${extsResponse.statusText}`,
+          );
+        }
+        const extensionsData: Extension[] = await extsResponse.json();
+
+        // Group stages
+        const groupedStages: StageGroupData[] = [];
+
+        // 1. Add base stages (extension_slug is null or undefined)
+        const baseStages = stagesData.filter((stage) => !stage.extension_slug);
+        if (baseStages.length > 0) {
+          groupedStages.push({
+            title: "Stages",
+            stages: baseStages,
+          });
+        }
+
+        // 2. Add extended stages (grouped by extension_slug)
+        extensionsData.forEach((extension) => {
+          const extensionStages = stagesData.filter(
+            (stage) => stage.extension_slug === extension.slug,
+          );
+          if (extensionStages.length > 0) {
+            groupedStages.push({
+              title: extension.name,
+              slug: extension.slug,
+              stages: extensionStages,
+            });
+          }
+        });
+
+        setStageGroups(groupedStages);
       } catch (err) {
         setError(
           err instanceof Error ? err.message : "An unknown error occurred",
@@ -32,20 +91,12 @@ export default function CourseOverviewPage() {
       }
     };
 
-    fetchCourse();
+    fetchData();
   }, [slug]);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
-
-  if (!course) {
-    return <div>Course not found.</div>;
-  }
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+  if (!course) return <div>Course not found.</div>;
 
   return (
     <div className="space-y-8">
@@ -63,17 +114,18 @@ export default function CourseOverviewPage() {
               <ReactMarkdown>{course.description}</ReactMarkdown>
             </div>
 
-            <StageGroup title="Stages">
-              <StageItem title="Empty file" difficulty="VERY EASY" />
-              <StageItem title="Parentheses" difficulty="MEDIUM" />
-              <StageItem title="Braces" difficulty="EASY" />
-            </StageGroup>
-
-            <StageGroup title="Parsing Expressions">
-              <StageItem title="Booleans & Nil" difficulty="HARD" />
-              <StageItem title="Number literals" difficulty="MEDIUM" />
-              <StageItem title="String literals" difficulty="MEDIUM" />
-            </StageGroup>
+            {/* Render all stage groups */}
+            {stageGroups.map((group) => (
+              <StageGroup key={group.slug || "base"} title={group.title}>
+                {group.stages.map((stage) => (
+                  <StageItem
+                    key={stage.slug}
+                    name={stage.name}
+                    difficulty={stage.difficulty}
+                  />
+                ))}
+              </StageGroup>
+            ))}
           </div>
         </div>
 
