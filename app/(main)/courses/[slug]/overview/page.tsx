@@ -130,7 +130,7 @@ export default function CourseOverviewPage() {
         </div>
 
         <div className="space-y-6">
-          <div className="bg-blue-50 p-4 rounded-lg">
+          <div className="bg-blue-50 p-4 rounded-lg sticky top-24">
             <h4 className="font-medium mb-2">Before starting</h4>
             <p className="text-sm">
               Make sure you've read the "Welcome" section of the book that
