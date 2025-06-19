@@ -115,17 +115,15 @@ export default function CourseOverviewPage() {
             </div>
 
             {/* Render all stage groups */}
-            {stageGroups.map((group) => (
-              <StageGroup key={group.slug || "base"} title={group.title}>
-                {group.stages.map((stage) => (
-                  <StageItem
-                    key={stage.slug}
-                    name={stage.name}
-                    difficulty={stage.difficulty}
-                  />
-                ))}
-              </StageGroup>
-            ))}
+            <div className="stages">
+              {stageGroups.map((group) => (
+                <StageGroup key={group.slug || "base"} title={group.title}>
+                  {group.stages.map((stage) => (
+                    <StageItem key={stage.slug} course={course} stage={stage} />
+                  ))}
+                </StageGroup>
+              ))}
+            </div>
           </div>
         </div>
 
