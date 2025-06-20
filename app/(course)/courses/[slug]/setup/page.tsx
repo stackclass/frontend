@@ -30,10 +30,10 @@ export default function CourseSetupPage() {
               </div>
               <Code title="command line">
                 <div>
-                  git clone https://git.codecrafters.io/5859dab1ca7ee5c7
-                  codecrafters-interpreter-rust
+                  git clone {process.env.BACKEND_URL}/git/5859dab1ca7ee5c7
+                  codecraft-interpreter
                 </div>
-                <div>cd codecrafters-interpreter-rust</div>
+                <div>cd codecraft-interpreter</div>
               </Code>
               <div className="flex items-center space-x-2">
                 <CircleCheck color="green" />
