@@ -1,14 +1,13 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
-
-import StageHeader from "@/components/stage/stage-header";
-import { StageStatus } from "@/types/stage-status";
-import { StatusBadge } from "@/components/stage/stage-status";
-import { ArrowRight, CircleCheck, Copy, LucideArrowRight } from "lucide-react";
 import { Code } from "@/components/ui/code";
 import { Button } from "@/components/ui/button";
+import { ArrowRight, CircleCheck } from "lucide-react";
+
+import StageHeader from "@/components/stage/stage-header";
 import { GenericCard } from "@/components/stage/generic-card";
+
+import { StageStatus } from "@/types/stage-status";
 
 export default function CourseSetupPage() {
   return (
