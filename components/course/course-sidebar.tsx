@@ -43,7 +43,7 @@ export function CourseSidebar({
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <CourseNavBootstrap />
+          <CourseNavBootstrap slug="interpreter" />
           <CourseNavStages />
         </SidebarGroup>
         <CourseNavExtensions />
