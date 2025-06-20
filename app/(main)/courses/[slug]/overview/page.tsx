@@ -2,7 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import Link from "next/link";
 import ReactMarkdown from "react-markdown";
+import { ArrowRight } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
 
 import { StageGroup } from "@/components/stage/stage-group";
 import { StageItem } from "@/components/stage/stage-item";
@@ -109,6 +113,12 @@ export default function CourseOverviewPage() {
           <p className="text-gray-600 mt-2">{course.summary}</p>
         </div>
       </div>
+
+      <Button size="lg" className="w-fit font-bold" asChild>
+        <Link href={`/courses/${slug}`}>
+          Start Building <ArrowRight />
+        </Link>
+      </Button>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-6">
