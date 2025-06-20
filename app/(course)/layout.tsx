@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 
 import CourseHeader from "@/components/course/course-header";
@@ -8,6 +8,16 @@ import { CourseSidebar } from "@/components/course/course-sidebar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 
 import type { CourseDetail } from "@/types/course";
+
+const CourseContext = createContext<CourseDetail | null>(null);
+
+export function useCourse() {
+  const context = useContext(CourseContext);
+  if (!context) {
+    throw new Error("useCourse must be used within a CourseLayout");
+  }
+  return context;
+}
 
 export default function CourseLayout({
   children,
@@ -22,15 +32,11 @@ export default function CourseLayout({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch course details
-        const courseResponse = await fetch(`/api/courses/${slug}`);
-        if (!courseResponse.ok) {
-          throw new Error(
-            `Failed to fetch course: ${courseResponse.statusText}`,
-          );
-        }
-        const courseData: CourseDetail = await courseResponse.json();
-        setCourse(courseData);
+        const response = await fetch(`/api/courses/${slug}`);
+        if (!response.ok)
+          throw new Error(`Failed to fetch course: ${response.statusText}`);
+        const data: CourseDetail = await response.json();
+        setCourse(data);
       } catch (err) {
         setError(
           err instanceof Error ? err.message : "An unknown error occurred",
@@ -43,17 +49,27 @@ export default function CourseLayout({
     fetchData();
   }, [slug]);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
-  if (!course) return <div>Course not found.</div>;
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  if (!course) {
+    return <div>Course not found.</div>;
+  }
 
   return (
-    <SidebarProvider>
-      <CourseSidebar course={course} />
-      <SidebarInset>
-        <CourseHeader />
-        {children}
-      </SidebarInset>
-    </SidebarProvider>
+    <CourseContext.Provider value={course}>
+      <SidebarProvider>
+        <CourseSidebar />
+        <SidebarInset>
+          <CourseHeader />
+          {children}
+        </SidebarInset>
+      </SidebarProvider>
+    </CourseContext.Provider>
   );
 }

@@ -30,13 +30,13 @@ import { CourseNavBootstrap } from "./course-nav-bootstrap";
 import { CourseNavExtensions } from "./course-nav-extensions";
 import { CourseNavStages } from "./course-nav-stages";
 import { CourseDetail } from "@/types/course";
+import { useCourse } from "@/app/(course)/layout";
 
-interface CourseSidebarProps extends React.ComponentProps<typeof Sidebar> {
-  course: CourseDetail;
-}
-
-export function CourseSidebar({ course, ...props }: CourseSidebarProps) {
+export function CourseSidebar({
+  ...props
+}: React.ComponentProps<typeof Sidebar>) {
   const { toggleSidebar } = useSidebar();
+  const course = useCourse();
 
   return (
     <Sidebar {...props}>
