@@ -8,6 +8,7 @@ import { StatusBadge } from "@/components/stage/stage-status";
 import { ArrowRight, CircleCheck, Copy, LucideArrowRight } from "lucide-react";
 import { Code } from "@/components/ui/code";
 import { Button } from "@/components/ui/button";
+import { GenericCard } from "@/components/stage/generic-card";
 
 export default function CourseSetupPage() {
   return (
@@ -20,16 +21,8 @@ export default function CourseSetupPage() {
         </TabsList>
         <Separator />
         <TabsContent value="instructions">
-          <Card className="rounded-sm">
-            <CardHeader>
-              <CardTitle className="border-b pb-2 text-2xl">
-                <div className="flex items-center">
-                  <h2 className="mr-4">Repository Setup</h2>
-                  <StatusBadge status={StageStatus.InProgress} />
-                </div>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="max-w-[90ch] flex flex-col space-y-4">
+          <GenericCard title="Repository Setup" status={StageStatus.InProgress}>
+            <div className="max-w-5xl flex flex-col space-y-4">
               <p>We've prepared a starter repository with some code for you.</p>
               <div className="flex items-center space-x-2">
                 <CircleCheck color="green" />
@@ -60,8 +53,8 @@ export default function CourseSetupPage() {
               <Button size="lg" className="w-fit font-bold">
                 Continue <ArrowRight />
               </Button>
-            </CardContent>
-          </Card>
+            </div>
+          </GenericCard>
         </TabsContent>
       </Tabs>
     </>

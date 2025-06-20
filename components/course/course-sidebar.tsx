@@ -29,22 +29,25 @@ import { Separator } from "@/components/ui/separator";
 import { CourseNavBootstrap } from "./course-nav-bootstrap";
 import { CourseNavExtensions } from "./course-nav-extensions";
 import { CourseNavStages } from "./course-nav-stages";
+import { CourseDetail } from "@/types/course";
 
-export function CourseSidebar({
-  ...props
-}: React.ComponentProps<typeof Sidebar>) {
+interface CourseSidebarProps extends React.ComponentProps<typeof Sidebar> {
+  course: CourseDetail;
+}
+
+export function CourseSidebar({ course, ...props }: CourseSidebarProps) {
   const { toggleSidebar } = useSidebar();
 
   return (
     <Sidebar {...props}>
       <SidebarHeader>
-        <CourseSwitcher />
+        <CourseSwitcher course={course} />
         <Separator />
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <CourseNavBootstrap slug="interpreter" />
-          <CourseNavStages />
+          <CourseNavBootstrap slug={course.slug} />
+          <CourseNavStages slug={course.slug} />
         </SidebarGroup>
         <CourseNavExtensions />
       </SidebarContent>

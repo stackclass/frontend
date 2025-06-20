@@ -6,8 +6,13 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { CourseDetail } from "@/types/course";
 
-export function CourseSwitcher() {
+interface CourseSwitcherProps {
+  course: CourseDetail;
+}
+
+export function CourseSwitcher({ course }: CourseSwitcherProps) {
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -19,7 +24,7 @@ export function CourseSwitcher() {
             <Command className="size-4" />
           </div>
           <div className="grid flex-1 text-left font-bold text-lg leading-tight">
-            Build your own Interpreter
+            {course.name}
           </div>
         </SidebarMenuButton>
       </SidebarMenuItem>
