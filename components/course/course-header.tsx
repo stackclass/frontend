@@ -2,6 +2,7 @@ import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import Link from "next/link";
 
 export default function CourseHeader() {
   return (
@@ -31,8 +32,10 @@ export default function CourseHeader() {
       </div>
       <div className="ml-auto px-3">
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm">
-            <X />
+          <Button variant="outline" size="sm" asChild>
+            <Link href="/catalog">
+              <X />
+            </Link>
           </Button>
         </div>
       </div>
