@@ -8,6 +8,9 @@ import { CourseSidebar } from "@/components/course/course-sidebar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 
 import type { CourseDetail } from "@/types/course";
+import { Loading } from "@/components/common/loading";
+import { NotFound } from "@/components/common/not-found";
+import { ErrorMessage } from "@/components/common/error-message";
 
 const CourseContext = createContext<CourseDetail | null>(null);
 
@@ -49,17 +52,9 @@ export default function CourseLayout({
     fetchData();
   }, [slug]);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
-
-  if (!course) {
-    return <div>Course not found.</div>;
-  }
+  if (loading) return <Loading message="Loading course details..." />;
+  if (error) return <ErrorMessage message={error} />;
+  if (!course) return <NotFound message="Course not found." />;
 
   return (
     <CourseContext.Provider value={course}>

@@ -4,12 +4,15 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 
+import { StageGroup } from "@/components/stage/stage-group";
+import { StageItem } from "@/components/stage/stage-item";
+import { Loading } from "@/components/common/loading";
+import { ErrorMessage } from "@/components/common/error-message";
+import { NotFound } from "@/components/common/not-found";
+
 import type { CourseDetail } from "@/types/course";
 import type { Stage } from "@/types/stage";
 import type { Extension } from "@/types/extension";
-
-import { StageGroup } from "@/components/stage/stage-group";
-import { StageItem } from "@/components/stage/stage-item";
 
 interface StageGroupData {
   title: string;
@@ -94,9 +97,9 @@ export default function CourseOverviewPage() {
     fetchData();
   }, [slug]);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
-  if (!course) return <div>Course not found.</div>;
+  if (loading) return <Loading message="Loading course detail..." />;
+  if (error) return <ErrorMessage message={error} />;
+  if (!course) return <NotFound message="Course not found." />;
 
   return (
     <div className="space-y-8">

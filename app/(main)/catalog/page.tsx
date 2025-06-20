@@ -1,7 +1,12 @@
 "use client";
 
-import CourseCard from "@/components/course/course-card";
 import { useEffect, useState } from "react";
+
+import CourseCard from "@/components/course/course-card";
+import { Loading } from "@/components/common/loading";
+import { ErrorMessage } from "@/components/common/error-message";
+import { NotFound } from "@/components/common/not-found";
+
 import type { Course } from "@/types/course";
 
 export default function CatalogPage() {
@@ -30,13 +35,9 @@ export default function CatalogPage() {
     fetchCourses();
   }, []);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
+  if (loading) return <Loading message="Loading courses..." />;
+  if (error) return <ErrorMessage message={error} />;
+  if (!courses) return <NotFound message="Courses not found." />;
 
   return (
     <>

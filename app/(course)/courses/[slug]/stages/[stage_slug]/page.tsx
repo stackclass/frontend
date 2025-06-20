@@ -1,26 +1,18 @@
 "use client";
 
-import {
-  Card,
-  CardAction,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 
 import StageHeader from "@/components/stage/stage-header";
-import { StageStatus } from "@/types/stage-status";
-import { StatusBadge } from "@/components/stage/stage-status";
-import { ArrowRight, CircleCheck, Copy, LucideArrowRight } from "lucide-react";
-import { Code } from "@/components/ui/code";
-import { Button } from "@/components/ui/button";
-import { DifficultyIndicator } from "@/components/stage/difficulty";
 import { InstructionCard } from "@/components/stage/instruction-card";
-import ReactMarkdown from "react-markdown";
-import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Loading } from "@/components/common/loading";
+import { ErrorMessage } from "@/components/common/error-message";
+import { NotFound } from "@/components/common/not-found";
+
+import { StageStatus } from "@/types/stage-status";
 import { StageDetail } from "@/types/stage";
 
 export default function StagePage() {
@@ -58,9 +50,9 @@ export default function StagePage() {
     fetchData();
   }, [slug, stage_slug]);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
-  if (!stage) return <div>Stage not found.</div>;
+  if (loading) return <Loading message="Loading stage details..." />;
+  if (error) return <ErrorMessage message={error} />;
+  if (!stage) return <NotFound message="Stage not found." />;
 
   return (
     <>

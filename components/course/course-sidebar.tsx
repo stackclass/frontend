@@ -1,16 +1,7 @@
 "use client";
 
 import * as React from "react";
-import {
-  BookOpen,
-  Bot,
-  Frame,
-  Map,
-  PieChart,
-  Settings2,
-  SquareChevronLeft,
-  SquareTerminal,
-} from "lucide-react";
+import { SquareChevronLeft } from "lucide-react";
 
 import { CourseSwitcher } from "@/components/course/course-switcher";
 import {
@@ -22,14 +13,12 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarRail,
   useSidebar,
 } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
 import { CourseNavBootstrap } from "./course-nav-bootstrap";
 import { CourseNavExtensions } from "./course-nav-extensions";
 import { CourseNavStages } from "./course-nav-stages";
-import { CourseDetail } from "@/types/course";
 import { useCourse } from "@/app/(course)/layout";
 
 export function CourseSidebar({
