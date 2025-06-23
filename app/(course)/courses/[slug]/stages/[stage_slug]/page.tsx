@@ -7,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 
 import StageHeader from "@/components/stage/stage-header";
+import { StageTabs } from "@/components/stage/stage-tabs";
 import { InstructionCard } from "@/components/stage/instruction-card";
 import { Loading } from "@/components/common/loading";
 import { ErrorMessage } from "@/components/common/error-message";
@@ -62,22 +63,16 @@ export default function StagePage() {
         status={StageStatus.Pending}
       />
 
-      <Tabs defaultValue="instructions" className="p-4">
-        <TabsList>
-          <TabsTrigger value="instructions">Instructions</TabsTrigger>
-          <TabsTrigger value="code-example">Code Examples</TabsTrigger>
-          <TabsTrigger value="forum">Forum</TabsTrigger>
-        </TabsList>
-        <Separator />
-        <TabsContent value="instructions">
-          <InstructionCard
-            title="Your Task"
-            status={StageStatus.Pending}
-            difficulty={stage.difficulty}
-            instruction={stage.instruction}
-          />
-        </TabsContent>
-      </Tabs>
+      <StageTabs tabs={[{ value: "instructions", label: "Instructions" }]} />
+
+      <main className="p-4">
+        <InstructionCard
+          title="Your Task"
+          status={StageStatus.Pending}
+          difficulty={stage.difficulty}
+          instruction={stage.instruction}
+        />
+      </main>
     </>
   );
 }
