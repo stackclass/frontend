@@ -1,51 +1,40 @@
 "use client";
 
-import { CircleCheck, SquareCode } from "lucide-react";
+import Link from "next/link";
+
+import { SquareCode } from "lucide-react";
 
 import {
   SidebarGroup,
-  SidebarGroupAction,
   SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 
-export function CourseNavExtensions() {
+interface Props {
+  slug: string;
+  title: string;
+  stages: Array<{ slug: string; name: string }>;
+}
+
+export function CourseNavExtensions({ slug, title, stages }: Props) {
   return (
     <SidebarGroup>
       <SidebarGroupLabel className="border-b mb-2 uppercase">
-        Parsing Expressions
+        {title}
       </SidebarGroupLabel>
-      <SidebarGroupAction title="Click here to configure extensions">
-        <CircleCheck />
-      </SidebarGroupAction>
-
       <SidebarMenu>
-        <SidebarMenuItem>
-          <SidebarMenuButton>
-            <SquareCode />
-            <span>Booleans & Nil</span>
-          </SidebarMenuButton>
-        </SidebarMenuItem>
-        <SidebarMenuItem>
-          <SidebarMenuButton>
-            <SquareCode />
-            <span>Number literals</span>
-          </SidebarMenuButton>
-        </SidebarMenuItem>
-        <SidebarMenuItem>
-          <SidebarMenuButton>
-            <SquareCode />
-            <span>String literals</span>
-          </SidebarMenuButton>
-        </SidebarMenuItem>
-        <SidebarMenuItem>
-          <SidebarMenuButton>
-            <SquareCode />
-            <span>Parentheses</span>
-          </SidebarMenuButton>
-        </SidebarMenuItem>
+        {stages.map((stage) => (
+          <SidebarMenuItem key={stage.slug}>
+            <SidebarMenuButton asChild>
+              <Link href={`/courses/${slug}/stages/${stage.slug}`}>
+                <SquareCode />
+                <span>{stage.name}</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        ))}
       </SidebarMenu>
     </SidebarGroup>
   );

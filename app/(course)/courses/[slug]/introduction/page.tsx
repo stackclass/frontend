@@ -11,7 +11,7 @@ import { StageStatus } from "@/types/stage-status";
 import { useCourse } from "@/app/(course)/layout";
 
 export default function CourseIntroductionPage() {
-  const course = useCourse();
+  const { course } = useCourse();
 
   return (
     <>
