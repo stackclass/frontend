@@ -49,7 +49,7 @@ export default function CatalogPage() {
             name={item.name}
             summary={item.summary}
             slug={item.slug}
-            stages_count={100}
+            stages_count={item.stage_count}
           />
         ))}
       </div>

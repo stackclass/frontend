@@ -8,6 +8,9 @@ export interface Extension {
   /// Extension description
   description: string;
 
+  /// Number of stages in the extension
+  stage_count: number;
+
   /// Creation timestamp
   createdAt: string;
 

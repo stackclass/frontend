@@ -14,6 +14,12 @@ export interface Course {
   /// Brief summary
   summary: string;
 
+  /// URL or path to the course logo
+  logo: string;
+
+  /// Number of stages in the course
+  stage_count: number;
+
   /// Creation timestamp
   created_at: string;
 
