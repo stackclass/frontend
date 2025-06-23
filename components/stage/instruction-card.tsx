@@ -28,19 +28,21 @@ export const InstructionCard = ({
 }: InstructionCardProps) => {
   return (
     <Card className="rounded-sm">
-      <CardHeader className="border-b">
-        <CardTitle>
-          <div className="flex items-center space-x-4">
-            <h2 className="text-2xl">{title}</h2>
-            {status && <StatusBadge status={status} />}
-          </div>
-        </CardTitle>
+      <CardHeader>
+        <div className="border-b flex justify-between pb-4">
+          <CardTitle>
+            <div className="flex items-center space-x-4">
+              <h2 className="text-2xl">{title}</h2>
+              {status && <StatusBadge status={status} />}
+            </div>
+          </CardTitle>
 
-        {difficulty && (
-          <CardAction>
-            <DifficultyIndicator difficulty={difficulty} />
-          </CardAction>
-        )}
+          {difficulty && (
+            <CardAction>
+              <DifficultyIndicator difficulty={difficulty} />
+            </CardAction>
+          )}
+        </div>
       </CardHeader>
       <CardContent className="flex flex-col space-y-4">
         <div className="max-w-5xl">
