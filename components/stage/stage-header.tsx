@@ -9,7 +9,7 @@ interface StageHeaderProps {
 
 export default function StageHeader({ title, slug, status }: StageHeaderProps) {
   return (
-    <div className="p-4">
+    <div className="p-4 bg-gray-100">
       <div className="flex items-center space-x-4">
         <h1 className="text-2xl font-bold">{title}</h1>
         {slug && (

@@ -27,7 +27,7 @@ export function StageTabs({ tabs, active }: StageTabsProps) {
   const resolvedActive = active || tabs[0]?.value;
 
   return (
-    <div className="p-4">
+    <div className="px-4 pt-4 bg-gray-100 sticky top-0 z-10 border-b">
       <div className="flex space-x-8">
         {tabs.map((tab) => {
           const IconComponent = tab.icon || defaultIcons[tab.value];
