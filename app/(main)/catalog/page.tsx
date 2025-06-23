@@ -43,14 +43,8 @@ export default function CatalogPage() {
     <>
       <h1 className="text-3xl font-bold mb-8">Challenges</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 mb-12">
-        {courses.map((item, i) => (
-          <CourseCard
-            key={i}
-            name={item.name}
-            summary={item.summary}
-            slug={item.slug}
-            stages_count={item.stage_count}
-          />
+        {courses.map((course, i) => (
+          <CourseCard key={i} course={course} />
         ))}
       </div>
     </>
