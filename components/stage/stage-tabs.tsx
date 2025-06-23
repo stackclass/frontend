@@ -27,39 +27,35 @@ export function StageTabs({ tabs, active }: StageTabsProps) {
   const resolvedActive = active || tabs[0]?.value;
 
   return (
-    <div className="px-4 pt-4 bg-gray-100 sticky top-0 z-10 border-b">
+    <div className="px-4 pt-2 bg-gray-100 sticky top-0 z-10 border-b">
       <div className="flex space-x-8">
         {tabs.map((tab) => {
           const IconComponent = tab.icon || defaultIcons[tab.value];
-          return tab.isLink ? (
-            <Link
-              key={tab.value}
-              href={tab.href || "#"}
-              className={`px-1 py-3 font-medium transition-colors border-b-2 ${
-                resolvedActive === tab.value
-                  ? "border-blue-500 text-blue-600"
-                  : "border-transparent text-gray-600 hover:border-gray-300"
-              }`}
-            >
-              <div className="flex items-center">
-                {IconComponent && <IconComponent className="w-4 h-4 mr-2" />}
-                {tab.label}
-              </div>
-            </Link>
-          ) : (
-            <button
-              key={tab.value}
-              className={`px-1 py-3 font-medium transition-colors border-b-2 ${
-                resolvedActive === tab.value
-                  ? "border-blue-500 text-blue-600"
-                  : "border-transparent text-gray-600 hover:border-gray-300"
-              }`}
-            >
-              <div className="flex items-center">
-                {IconComponent && <IconComponent className="w-4 h-4 mr-2" />}
-                {tab.label}
-              </div>
-            </button>
+          const isActive = resolvedActive === tab.value;
+          const className = `p-2 transition-colors border-b-2 ${
+            isActive
+              ? "border-blue-500"
+              : "border-transparent text-gray-600 hover:border-gray-300"
+          }`;
+
+          return (
+            <div key={tab.value} className={className}>
+              {tab.isLink ? (
+                <Link href={tab.href || "#"}>
+                  <div className="flex items-center">
+                    {IconComponent && (
+                      <IconComponent className="w-4 h-4 mr-2" />
+                    )}
+                    {tab.label}
+                  </div>
+                </Link>
+              ) : (
+                <div className="flex items-center">
+                  {IconComponent && <IconComponent className="w-4 h-4 mr-2" />}
+                  {tab.label}
+                </div>
+              )}
+            </div>
           );
         })}
       </div>
