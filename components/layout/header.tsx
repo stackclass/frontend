@@ -1,12 +1,19 @@
-import Link from "next/link";
+"use client";
+
 import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
+import { useSession } from "@/lib/auth-client";
+import Link from "next/link";
+import { SignInButton } from "../auth/sign-in-btn";
+import { UserNavigation } from "../auth/user-nav";
 
 export default function Header() {
+  const { data: session } = useSession();
+
   return (
     <header className="fixed top-0 w-full bg-white border-b z-50">
       <div className="container lg:max-w-screen-lg mx-auto flex items-center md:flex-row md:px-6 h-16 justify-between px-4">
@@ -24,9 +31,7 @@ export default function Header() {
           </NavigationMenu>
         </div>
 
-        <Link href="/" className="text-sm text-gray-600">
-          Sign in with GitHub
-        </Link>
+        {session ? <UserNavigation user={session.user} /> : <SignInButton />}
       </div>
     </header>
   );
