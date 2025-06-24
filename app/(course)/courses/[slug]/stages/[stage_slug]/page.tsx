@@ -15,6 +15,8 @@ import { NotFound } from "@/components/common/not-found";
 
 import { StageStatus } from "@/types/stage-status";
 import { StageDetail } from "@/types/stage";
+import { GenericCard } from "@/components/stage/generic-card";
+import ReactMarkdown from "react-markdown";
 
 export default function StagePage() {
   const { slug, stage_slug } = useParams<{
@@ -65,7 +67,16 @@ export default function StagePage() {
 
       <StageTabs tabs={[{ value: "instructions", label: "Instructions" }]} />
 
-      <main className="p-4">
+      <main className="p-4 flex flex-col gap-y-4">
+        {stage.solution && (
+          <GenericCard title="How to pass this stage">
+            <div className="max-w-5xl">
+              <div className="markdown">
+                <ReactMarkdown>{stage.solution.explanation}</ReactMarkdown>
+              </div>
+            </div>
+          </GenericCard>
+        )}
         <InstructionCard
           title="Your Task"
           status={StageStatus.Pending}
