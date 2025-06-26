@@ -1,4 +1,5 @@
 import { betterAuth } from "better-auth";
+import { jwt } from "better-auth/plugins";
 import { Pool } from "pg";
 
 export const auth = betterAuth({
@@ -12,6 +13,35 @@ export const auth = betterAuth({
       clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
     },
   },
+
+  plugins: [
+    jwt({
+      jwt: {
+        issuer: "codecraft",
+        audience: "codecraft",
+        expirationTime: "1h",
+        definePayload: ({ user }) => {
+          return {
+            id: user.id,
+          };
+        },
+      },
+      jwks: {
+        keyPairConfig: {
+          alg: "RS256",
+        },
+      },
+      schema: {
+        jwks: {
+          fields: {
+            publicKey: "public_key",
+            privateKey: "private_key",
+            createdAt: "created_at",
+          },
+        },
+      },
+    }),
+  ],
 
   // Custom table names and column names
   user: {
