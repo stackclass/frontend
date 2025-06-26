@@ -3,11 +3,17 @@ import { StageStatus } from "@/types/stage-status";
 
 interface StageHeaderProps {
   title: string;
-  slug?: String;
-  status: StageStatus;
+  slug?: string;
+  status?: StageStatus;
+  description?: string;
 }
 
-export function StageHeader({ title, slug, status }: StageHeaderProps) {
+export function StageHeader({
+  title,
+  slug,
+  status,
+  description,
+}: StageHeaderProps) {
   return (
     <div className="p-4 bg-gray-100">
       <div className="flex items-center space-x-4">
@@ -15,14 +21,10 @@ export function StageHeader({ title, slug, status }: StageHeaderProps) {
         {slug && (
           <span className="text-2xl font-bold text-gray-500">#{slug}</span>
         )}
-        <StatusBadge status={status} />
+        {status && <StatusBadge status={status} />}
       </div>
 
-      {status === StageStatus.Pending && (
-        <p className="text-sm text-gray-500">
-          Complete previous stages to gain access to this stage.
-        </p>
-      )}
+      {description && <p className="text-sm text-gray-500">{description}</p>}
     </div>
   );
 }

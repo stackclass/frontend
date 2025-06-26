@@ -12,10 +12,18 @@ import { CourseAssessment } from "@/components/course/course-assessment";
 
 export default function CourseIntroductionPage() {
   const { course } = useCourse();
+  const status = StageStatus.Pending;
 
   return (
     <>
-      <StageHeader title="Introduction" status={StageStatus.Completed} />
+      {status != StageStatus.Pending ? (
+        <StageHeader title="Introduction" status={status} />
+      ) : (
+        <StageHeader
+          title="Introduction"
+          description="Complete the pre-challenge assessment to begin this course."
+        />
+      )}
 
       <StageTabs tabs={[{ value: "instructions", label: "Instructions" }]} />
 
@@ -28,7 +36,7 @@ export default function CourseIntroductionPage() {
           </div>
         </GenericCard>
 
-        <CourseAssessment status={StageStatus.InProgress} />
+        <CourseAssessment status={status} />
       </main>
     </>
   );
