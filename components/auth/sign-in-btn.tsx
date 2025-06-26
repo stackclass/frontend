@@ -12,10 +12,18 @@ export function SignInButton() {
     // Save current page path for redirection after login
     const returnUrl = pathname || "/";
 
-    await signIn.social({
-      provider: "github",
-      callbackURL: returnUrl,
-    });
+    await signIn.social(
+      {
+        provider: "github",
+        callbackURL: returnUrl,
+      },
+      {
+        onSuccess: (ctx) => {
+          const jwt = ctx.response.headers.get("set-auth-jwt");
+          localStorage.setItem("jwt", jwt ? jwt : "");
+        },
+      },
+    );
   };
 
   return (

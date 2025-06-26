@@ -7,7 +7,7 @@ import CourseHeader from "@/components/course/course-header";
 import { CourseSidebar } from "@/components/course/course-sidebar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 
-import type { CourseDetail } from "@/types/course";
+import type { CourseDetail, UserCourse } from "@/types/course";
 import type { Stage } from "@/types/stage";
 import { Loading } from "@/components/common/loading";
 import { NotFound } from "@/components/common/not-found";
@@ -15,6 +15,7 @@ import { ErrorMessage } from "@/components/common/error-message";
 
 interface CourseContextValue {
   course: CourseDetail;
+  userCourse: UserCourse | null;
   stages: Stage[];
 }
 
@@ -35,6 +36,7 @@ export default function CourseLayout({
 }) {
   const { slug } = useParams<{ slug: string }>();
   const [course, setCourse] = useState<CourseDetail | null>(null);
+  const [userCourse, setUserCourse] = useState<UserCourse | null>(null);
   const [stages, setStages] = useState<Stage[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -59,6 +61,16 @@ export default function CourseLayout({
           );
         const stagesData: Stage[] = await stagesResponse.json();
         setStages(stagesData);
+
+        // 3. Fetch user course details
+        const userCourseResponse = await fetch(`/api/user/courses/${slug}`);
+        if (!userCourseResponse.ok) {
+          if (userCourseResponse.status == 404) {
+            setUserCourse(null);
+          }
+        }
+        const userCourseData: UserCourse = await userCourseResponse.json();
+        setUserCourse(userCourseData);
       } catch (err) {
         setError(
           err instanceof Error ? err.message : "An unknown error occurred",
@@ -76,7 +88,7 @@ export default function CourseLayout({
   if (!course) return <NotFound message="Course not found." />;
 
   return (
-    <CourseContext.Provider value={{ course, stages }}>
+    <CourseContext.Provider value={{ course, userCourse, stages }}>
       <SidebarProvider>
         <CourseSidebar />
         <SidebarInset>
