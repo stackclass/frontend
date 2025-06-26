@@ -3,9 +3,6 @@
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Separator } from "@/components/ui/separator";
-
 import StageHeader from "@/components/stage/stage-header";
 import { StageTabs } from "@/components/stage/stage-tabs";
 import { InstructionCard } from "@/components/stage/instruction-card";

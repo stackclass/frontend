@@ -1,9 +1,10 @@
-import { redirect } from "next/navigation";
+"use client";
 
-export default function CourseEntryPage({
-  params,
-}: {
-  params: { slug: string };
-}) {
-  redirect(`/courses/${params.slug}/introduction`);
+import { redirect, useParams } from "next/navigation";
+
+export default function CourseEntryPage() {
+  const { slug } = useParams<{
+    slug: string;
+  }>();
+  redirect(`/courses/${slug}/introduction`);
 }
