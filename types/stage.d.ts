@@ -40,3 +40,20 @@ export interface Solution {
   /// Stored as tuples of (file_path, patch_content)
   patches: [string, string][];
 }
+
+export interface UserStage {
+  /// Slug of the enrolled course
+  course_slug: string;
+
+  /// Slug of the stage
+  stage_slug: string;
+
+  /// Current progress status (in_progress, completed)
+  status: string;
+
+  /// Timestamp when the stage was started
+  started_at: string;
+
+  /// Timestamp when the stage was completed
+  completed_at?: string;
+}

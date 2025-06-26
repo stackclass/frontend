@@ -31,3 +31,29 @@ export interface CourseDetail extends Course {
   /// Detailed description
   description: string;
 }
+
+export interface UserCourse {
+  /// Slug of the enrolled course
+  course_slug: string;
+
+  /// Timestamp when the enrollment started
+  started_at: string;
+
+  /// Slug of the current stage the user is on
+  current_stage_slug?: string;
+
+  /// Number of stages completed by the user
+  completed_stage_count: number;
+
+  /// Language proficiency level of the user
+  proficiency: string;
+
+  /// Practice cadence of the user
+  cadence: string;
+
+  /// Whether the user wants accountability emails
+  accountability: boolean;
+
+  /// Whether the first Git push was received
+  activated: boolean;
+}
