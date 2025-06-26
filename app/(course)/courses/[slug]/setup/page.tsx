@@ -1,12 +1,10 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Separator } from "@/components/ui/separator";
-import { Code } from "@/components/ui/code";
 import { Button } from "@/components/ui/button";
+import { Code } from "@/components/ui/code";
 import { ArrowRight, CircleCheck } from "lucide-react";
 
-import StageHeader from "@/components/stage/stage-header";
-import { StageTabs } from "@/components/stage/stage-tabs";
 import { GenericCard } from "@/components/stage/generic-card";
+import { StageHeader } from "@/components/stage/stage-header";
+import { StageTabs } from "@/components/stage/stage-tabs";
 
 import { StageStatus } from "@/types/stage-status";
 
@@ -17,7 +15,7 @@ export default function CourseSetupPage() {
 
       <StageTabs tabs={[{ value: "instructions", label: "Instructions" }]} />
 
-      <main className="p-4">
+      <main className="p-4 flex flex-col gap-y-4">
         <GenericCard title="Repository Setup" status={StageStatus.InProgress}>
           <div className="max-w-5xl flex flex-col space-y-4">
             <p>We've prepared a starter repository with some code for you.</p>

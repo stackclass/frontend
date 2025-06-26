@@ -7,7 +7,7 @@ interface StageHeaderProps {
   status: StageStatus;
 }
 
-export default function StageHeader({ title, slug, status }: StageHeaderProps) {
+export function StageHeader({ title, slug, status }: StageHeaderProps) {
   return (
     <div className="p-4 bg-gray-100">
       <div className="flex items-center space-x-4">

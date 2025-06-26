@@ -3,16 +3,16 @@
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import StageHeader from "@/components/stage/stage-header";
-import { StageTabs } from "@/components/stage/stage-tabs";
-import { InstructionCard } from "@/components/stage/instruction-card";
-import { Loading } from "@/components/common/loading";
 import { ErrorMessage } from "@/components/common/error-message";
+import { Loading } from "@/components/common/loading";
 import { NotFound } from "@/components/common/not-found";
+import { InstructionCard } from "@/components/stage/instruction-card";
+import { StageHeader } from "@/components/stage/stage-header";
+import { StageTabs } from "@/components/stage/stage-tabs";
 
-import { StageStatus } from "@/types/stage-status";
-import { StageDetail } from "@/types/stage";
 import { GenericCard } from "@/components/stage/generic-card";
+import { StageDetail } from "@/types/stage";
+import { StageStatus } from "@/types/stage-status";
 import ReactMarkdown from "react-markdown";
 
 export default function StagePage() {
