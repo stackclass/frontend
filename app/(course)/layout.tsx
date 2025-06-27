@@ -1,17 +1,18 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import { createContext, useContext, useEffect, useState } from "react";
 
 import CourseHeader from "@/components/course/course-header";
 import { CourseSidebar } from "@/components/course/course-sidebar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 
-import type { CourseDetail, UserCourse } from "@/types/course";
-import type { Stage } from "@/types/stage";
+import { ErrorMessage } from "@/components/common/error-message";
 import { Loading } from "@/components/common/loading";
 import { NotFound } from "@/components/common/not-found";
-import { ErrorMessage } from "@/components/common/error-message";
+import authClient from "@/lib/auth-client";
+import type { CourseDetail, UserCourse } from "@/types/course";
+import type { Stage } from "@/types/stage";
 
 interface CourseContextValue {
   course: CourseDetail;
@@ -45,7 +46,7 @@ export default function CourseLayout({
     const fetchData = async () => {
       try {
         // 1. Fetch course details
-        const courseResponse = await fetch(`/api/courses/${slug}`);
+        const courseResponse = await fetch(`/api/v1/courses/${slug}`);
         if (!courseResponse.ok)
           throw new Error(
             `Failed to fetch course: ${courseResponse.statusText}`,
@@ -54,7 +55,7 @@ export default function CourseLayout({
         setCourse(courseData);
 
         // 2. Fetch all stages (base + extensions)
-        const stagesResponse = await fetch(`/api/courses/${slug}/stages`);
+        const stagesResponse = await fetch(`/api/v1/courses/${slug}/stages`);
         if (!stagesResponse.ok)
           throw new Error(
             `Failed to fetch stages: ${stagesResponse.statusText}`,
@@ -62,8 +63,23 @@ export default function CourseLayout({
         const stagesData: Stage[] = await stagesResponse.json();
         setStages(stagesData);
 
+        await authClient.getSession({
+          fetchOptions: {
+            onSuccess: (ctx) => {
+              const jwt = ctx.response.headers.get("set-auth-jwt") || "";
+              localStorage.setItem("jwt", jwt);
+            },
+          },
+        });
+
         // 3. Fetch user course details
-        const userCourseResponse = await fetch(`/api/user/courses/${slug}`);
+        const token = localStorage.getItem("jwt") || "";
+        const userCourseResponse = await fetch(`/api/v1/user/courses/${slug}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
         if (!userCourseResponse.ok) {
           if (userCourseResponse.status == 404) {
             setUserCourse(null);

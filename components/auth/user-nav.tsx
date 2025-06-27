@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { signOut } from "@/lib/auth-client";
+import authClient from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 
 interface UserNavigationProps {
@@ -13,9 +13,10 @@ export function UserNavigation({ user }: UserNavigationProps) {
   const router = useRouter();
 
   const handleSignOut = async () => {
-    await signOut({
+    await authClient.signOut({
       fetchOptions: {
         onSuccess: () => {
+          localStorage.removeItem("jwt");
           router.push("/catalog");
         },
       },

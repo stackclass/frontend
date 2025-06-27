@@ -35,7 +35,7 @@ export default function CourseOverviewPage() {
     const fetchData = async () => {
       try {
         // Fetch course details
-        const courseResponse = await fetch(`/api/courses/${slug}`);
+        const courseResponse = await fetch(`/api/v1/courses/${slug}`);
         if (!courseResponse.ok) {
           throw new Error(
             `Failed to fetch course: ${courseResponse.statusText}`,
@@ -45,7 +45,7 @@ export default function CourseOverviewPage() {
         setCourse(courseData);
 
         // Fetch all stages (base and extended)
-        const stagesResponse = await fetch(`/api/courses/${slug}/stages`);
+        const stagesResponse = await fetch(`/api/v1/courses/${slug}/stages`);
         if (!stagesResponse.ok) {
           throw new Error(
             `Failed to fetch stages: ${stagesResponse.statusText}`,
@@ -54,7 +54,7 @@ export default function CourseOverviewPage() {
         const stagesData: Stage[] = await stagesResponse.json();
 
         // Fetch all extensions (for grouping extended stages)
-        const extsResponse = await fetch(`/api/courses/${slug}/extensions`);
+        const extsResponse = await fetch(`/api/v1/courses/${slug}/extensions`);
         if (!extsResponse.ok) {
           throw new Error(
             `Failed to fetch extensions: ${extsResponse.statusText}`,

@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from "react";
 
-import CourseCard from "@/components/course/course-card";
-import { Loading } from "@/components/common/loading";
 import { ErrorMessage } from "@/components/common/error-message";
+import { Loading } from "@/components/common/loading";
 import { NotFound } from "@/components/common/not-found";
+import CourseCard from "@/components/course/course-card";
 
 import type { Course } from "@/types/course";
 
@@ -17,7 +17,7 @@ export default function CatalogPage() {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await fetch("/api/courses");
+        const response = await fetch("/api/v1/courses");
         if (!response.ok) {
           throw new Error(`Failed to fetch courses: ${response.statusText}`);
         }

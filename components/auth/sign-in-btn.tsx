@@ -1,8 +1,8 @@
 "use client";
 
-import { signIn } from "@/lib/auth-client";
-import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import authClient from "@/lib/auth-client";
+import { usePathname } from "next/navigation";
 
 export function SignInButton() {
   const pathname = usePathname();
@@ -12,18 +12,10 @@ export function SignInButton() {
     // Save current page path for redirection after login
     const returnUrl = pathname || "/";
 
-    await signIn.social(
-      {
-        provider: "github",
-        callbackURL: returnUrl,
-      },
-      {
-        onSuccess: (ctx) => {
-          const jwt = ctx.response.headers.get("set-auth-jwt");
-          localStorage.setItem("jwt", jwt ? jwt : "");
-        },
-      },
-    );
+    await authClient.signIn.social({
+      provider: "github",
+      callbackURL: returnUrl,
+    });
   };
 
   return (

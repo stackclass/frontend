@@ -50,7 +50,7 @@ export function CourseSidebar({
     const fetchExtensions = async () => {
       try {
         // 1. Fetch all extensions
-        const response = await fetch(`/api/courses/${slug}/extensions`);
+        const response = await fetch(`/api/v1/courses/${slug}/extensions`);
         if (!response.ok) throw new Error("Failed to fetch extensions");
         const extensions: Extension[] = await response.json();
 

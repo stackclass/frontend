@@ -6,13 +6,14 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
-import { useSession } from "@/lib/auth-client";
+
 import Link from "next/link";
 import { SignInButton } from "../auth/sign-in-btn";
 import { UserNavigation } from "../auth/user-nav";
+import authClient from "@/lib/auth-client";
 
 export default function Header() {
-  const { data: session } = useSession();
+  const { data: session } = authClient.useSession();
 
   return (
     <header className="fixed top-0 w-full bg-white border-b z-50">
