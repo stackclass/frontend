@@ -5,7 +5,7 @@ import { AxiosResponse } from "axios";
 /**
  * Service for managing stages and their solutions.
  */
-export class StageService {
+export default class StageService {
   /**
    * Find all stages for a course (including extensions)
    * @param slug - The slug of the course.

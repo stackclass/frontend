@@ -3,7 +3,7 @@ import { CreateUserCourseRequest, UserCourse } from "@/types/course";
 import { UserStage } from "@/types/stage";
 import { AxiosResponse } from "axios";
 
-export class UserCourseService {
+export default class UserCourseService {
   /**
    * Find all stages for the current user.
    */
