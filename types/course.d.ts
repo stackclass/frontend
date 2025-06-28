@@ -57,3 +57,22 @@ export interface UserCourse {
   /// Whether the first Git push was received
   activated: boolean;
 }
+
+export interface CreateCourseRequest {
+  /// The git repository URL of the course
+  repository: string;
+}
+
+export interface CreateUserCourseRequest {
+  /// The slug of the course to enroll in
+  course_slug: string;
+
+  /// Language proficiency level of the user
+  proficiency: string;
+
+  /// Practice cadence of the user
+  cadence: string;
+
+  /// Whether the user wants accountability emails
+  accountability: boolean;
+}
