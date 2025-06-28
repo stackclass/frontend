@@ -6,17 +6,14 @@ import {
   useQuery,
   UseQueryOptions,
 } from "@tanstack/react-query";
-import { AxiosResponse } from "axios";
 
 /**
  * Fetch all user courses.
  */
-export const useUserCourses = (
-  options?: UseQueryOptions<AxiosResponse<UserCourse[]>>,
-) => {
-  return useQuery<AxiosResponse<UserCourse[]>>({
+export const useUserCourses = (options?: UseQueryOptions<UserCourse[]>) => {
+  return useQuery<UserCourse[]>({
     queryKey: ["userCourses"],
-    queryFn: () => UserCourseService.findUserCourses(),
+    queryFn: () => UserCourseService.findUserCourses().then((res) => res.data),
     ...options,
   });
 };
@@ -25,18 +22,13 @@ export const useUserCourses = (
  * Enroll the current user in a course.
  */
 export const useCreateUserCourse = (
-  options?: UseMutationOptions<
-    AxiosResponse<UserCourse>,
-    Error,
-    CreateUserCourseRequest
-  >,
+  options?: UseMutationOptions<UserCourse, Error, CreateUserCourseRequest>,
 ) => {
-  return useMutation<AxiosResponse<UserCourse>, Error, CreateUserCourseRequest>(
-    {
-      mutationFn: (data) => UserCourseService.createUserCourse(data),
-      ...options,
-    },
-  );
+  return useMutation<UserCourse, Error, CreateUserCourseRequest>({
+    mutationFn: (data) =>
+      UserCourseService.createUserCourse(data).then((res) => res.data),
+    ...options,
+  });
 };
 
 /**
@@ -45,11 +37,12 @@ export const useCreateUserCourse = (
  */
 export const useUserCourse = (
   slug: string,
-  options?: UseQueryOptions<AxiosResponse<UserCourse>>,
+  options?: UseQueryOptions<UserCourse>,
 ) => {
-  return useQuery<AxiosResponse<UserCourse>>({
+  return useQuery<UserCourse>({
     queryKey: ["userCourse", slug],
-    queryFn: () => UserCourseService.getUserCourse(slug),
+    queryFn: () =>
+      UserCourseService.getUserCourse(slug).then((res) => res.data),
     ...options,
   });
 };

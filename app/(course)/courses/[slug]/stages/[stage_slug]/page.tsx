@@ -1,7 +1,6 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
 
 import { ErrorMessage } from "@/components/common/error-message";
 import { Loading } from "@/components/common/loading";
@@ -11,7 +10,7 @@ import { StageHeader } from "@/components/stage/stage-header";
 import { StageTabs } from "@/components/stage/stage-tabs";
 
 import { GenericCard } from "@/components/stage/generic-card";
-import { StageDetail } from "@/types/stage";
+import { useStage } from "@/hooks/use-stage";
 import { StageStatus } from "@/types/stage-status";
 import ReactMarkdown from "react-markdown";
 
@@ -20,38 +19,10 @@ export default function StagePage() {
     slug: string;
     stage_slug: string;
   }>();
-  const [stage, setStage] = useState<StageDetail | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const { data: stage, isLoading, error } = useStage(slug, stage_slug);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // Fetch stage details
-        const courseResponse = await fetch(
-          `/api/courses/${slug}/stages/${stage_slug}`,
-        );
-        if (!courseResponse.ok) {
-          throw new Error(
-            `Failed to fetch stage: ${courseResponse.statusText}`,
-          );
-        }
-        const StageData: StageDetail = await courseResponse.json();
-        setStage(StageData);
-      } catch (err) {
-        setError(
-          err instanceof Error ? err.message : "An unknown error occurred",
-        );
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [slug, stage_slug]);
-
-  if (loading) return <Loading message="Loading stage details..." />;
-  if (error) return <ErrorMessage message={error} />;
+  if (isLoading) return <Loading message="Loading stage details..." />;
+  if (error) return <ErrorMessage message={error.message} />;
   if (!stage) return <NotFound message="Stage not found." />;
 
   return (

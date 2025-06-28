@@ -7,13 +7,13 @@ import {
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
 
+import { SignInButton } from "@/components/auth/sign-in-btn";
+import { UserNavigation } from "@/components/auth/user-nav";
+import { useSession } from "@/components/provider/auth-provider";
 import Link from "next/link";
-import { SignInButton } from "../auth/sign-in-btn";
-import { UserNavigation } from "../auth/user-nav";
-import authClient from "@/lib/auth-client";
 
 export default function Header() {
-  const { data: session } = authClient.useSession();
+  const session = useSession();
 
   return (
     <header className="fixed top-0 w-full bg-white border-b z-50">

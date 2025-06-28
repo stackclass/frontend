@@ -1,7 +1,7 @@
 "use client";
 
-import { useParams } from "next/navigation";
-import { createContext, useContext, useEffect, useState } from "react";
+import { redirect, useParams } from "next/navigation";
+import { createContext, useContext } from "react";
 
 import CourseHeader from "@/components/course/course-header";
 import { CourseSidebar } from "@/components/course/course-sidebar";
@@ -10,7 +10,10 @@ import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { ErrorMessage } from "@/components/common/error-message";
 import { Loading } from "@/components/common/loading";
 import { NotFound } from "@/components/common/not-found";
-import authClient from "@/lib/auth-client";
+import { useSession } from "@/components/provider/auth-provider";
+import { useGetCourse } from "@/hooks/use-course";
+import { useStages } from "@/hooks/use-stage";
+import { useUserCourse } from "@/hooks/use-user-course";
 import type { CourseDetail, UserCourse } from "@/types/course";
 import type { Stage } from "@/types/stage";
 
@@ -36,75 +39,55 @@ export default function CourseLayout({
   children: React.ReactNode;
 }) {
   const { slug } = useParams<{ slug: string }>();
-  const [course, setCourse] = useState<CourseDetail | null>(null);
-  const [userCourse, setUserCourse] = useState<UserCourse | null>(null);
-  const [stages, setStages] = useState<Stage[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // 1. Fetch course details
-        const courseResponse = await fetch(`/api/v1/courses/${slug}`);
-        if (!courseResponse.ok)
-          throw new Error(
-            `Failed to fetch course: ${courseResponse.statusText}`,
-          );
-        const courseData: CourseDetail = await courseResponse.json();
-        setCourse(courseData);
+  // Checking if the session is valid. If it's not,
+  // we are redirecting the user to the home page.
+  const session = useSession();
+  if (!session) {
+    redirect("/");
+  }
 
-        // 2. Fetch all stages (base + extensions)
-        const stagesResponse = await fetch(`/api/v1/courses/${slug}/stages`);
-        if (!stagesResponse.ok)
-          throw new Error(
-            `Failed to fetch stages: ${stagesResponse.statusText}`,
-          );
-        const stagesData: Stage[] = await stagesResponse.json();
-        setStages(stagesData);
+  // Fetch course details
+  const {
+    data: course,
+    isLoading: courseLoading,
+    error: courseError,
+  } = useGetCourse(slug);
 
-        await authClient.getSession({
-          fetchOptions: {
-            onSuccess: (ctx) => {
-              const jwt = ctx.response.headers.get("set-auth-jwt") || "";
-              localStorage.setItem("jwt", jwt);
-            },
-          },
-        });
+  // Fetch all stages
+  const {
+    data: stages,
+    isLoading: stagesLoading,
+    error: stagesError,
+  } = useStages(slug);
 
-        // 3. Fetch user course details
-        const token = localStorage.getItem("jwt") || "";
-        const userCourseResponse = await fetch(`/api/v1/user/courses/${slug}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+  // Fetch user course details
+  const {
+    data: userCourse,
+    isLoading: userCourseLoading,
+    error: userCourseError,
+  } = useUserCourse(slug);
 
-        if (!userCourseResponse.ok) {
-          if (userCourseResponse.status == 404) {
-            setUserCourse(null);
-          }
-        }
-        const userCourseData: UserCourse = await userCourseResponse.json();
-        setUserCourse(userCourseData);
-      } catch (err) {
-        setError(
-          err instanceof Error ? err.message : "An unknown error occurred",
-        );
-      } finally {
-        setLoading(false);
-      }
-    };
+  const isLoading = courseLoading || stagesLoading || userCourseLoading;
 
-    fetchData();
-  }, [slug]);
+  if (isLoading) return <Loading message="Loading course details..." />;
 
-  if (loading) return <Loading message="Loading course details..." />;
-  if (error) return <ErrorMessage message={error} />;
+  if (courseError)
+    return <ErrorMessage message="Failed to load course details." />;
+  if (stagesError) return <ErrorMessage message="Failed to load stages." />;
+  if (userCourseError)
+    return <ErrorMessage message="Failed to load user progress." />;
+
   if (!course) return <NotFound message="Course not found." />;
 
   return (
-    <CourseContext.Provider value={{ course, userCourse, stages }}>
+    <CourseContext.Provider
+      value={{
+        course: course,
+        userCourse: userCourse || null,
+        stages: stages || [],
+      }}
+    >
       <SidebarProvider>
         <CourseSidebar />
         <SidebarInset>

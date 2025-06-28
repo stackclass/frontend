@@ -1,22 +1,23 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
-import Link from "next/link";
-import ReactMarkdown from "react-markdown";
 import { ArrowRight } from "lucide-react";
+import Link from "next/link";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import ReactMarkdown from "react-markdown";
 
 import { Button } from "@/components/ui/button";
 
+import { ErrorMessage } from "@/components/common/error-message";
+import { Loading } from "@/components/common/loading";
+import { NotFound } from "@/components/common/not-found";
 import { StageGroup } from "@/components/stage/stage-group";
 import { StageItem } from "@/components/stage/stage-item";
-import { Loading } from "@/components/common/loading";
-import { ErrorMessage } from "@/components/common/error-message";
-import { NotFound } from "@/components/common/not-found";
 
-import type { CourseDetail } from "@/types/course";
+import { useGetCourse } from "@/hooks/use-course";
+import { useExtensions } from "@/hooks/use-extension";
+import { useStages } from "@/hooks/use-stage";
 import type { Stage } from "@/types/stage";
-import type { Extension } from "@/types/extension";
 
 interface StageGroupData {
   title: string;
@@ -26,47 +27,24 @@ interface StageGroupData {
 
 export default function CourseOverviewPage() {
   const { slug } = useParams<{ slug: string }>();
-  const [course, setCourse] = useState<CourseDetail | null>(null);
-  const [stageGroups, setStageGroups] = useState<StageGroupData[]>([]);
+
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [stageGroups, setStageGroups] = useState<StageGroupData[]>([]);
+
+  const { data: course, isLoading: courseLoading } = useGetCourse(slug);
+  const { data: stages = [], isLoading: stagesLoading } = useStages(slug);
+  const { data: extensions = [], isLoading: extensionsLoading } =
+    useExtensions(slug);
 
   useEffect(() => {
-    const fetchData = async () => {
+    if (!courseLoading && !stagesLoading && !extensionsLoading) {
       try {
-        // Fetch course details
-        const courseResponse = await fetch(`/api/v1/courses/${slug}`);
-        if (!courseResponse.ok) {
-          throw new Error(
-            `Failed to fetch course: ${courseResponse.statusText}`,
-          );
-        }
-        const courseData: CourseDetail = await courseResponse.json();
-        setCourse(courseData);
-
-        // Fetch all stages (base and extended)
-        const stagesResponse = await fetch(`/api/v1/courses/${slug}/stages`);
-        if (!stagesResponse.ok) {
-          throw new Error(
-            `Failed to fetch stages: ${stagesResponse.statusText}`,
-          );
-        }
-        const stagesData: Stage[] = await stagesResponse.json();
-
-        // Fetch all extensions (for grouping extended stages)
-        const extsResponse = await fetch(`/api/v1/courses/${slug}/extensions`);
-        if (!extsResponse.ok) {
-          throw new Error(
-            `Failed to fetch extensions: ${extsResponse.statusText}`,
-          );
-        }
-        const extensionsData: Extension[] = await extsResponse.json();
-
         // Group stages
         const groupedStages: StageGroupData[] = [];
 
-        // 1. Add base stages (extension_slug is null or undefined)
-        const baseStages = stagesData.filter((stage) => !stage.extension_slug);
+        // 1. Add base stages
+        const baseStages = stages.filter((stage) => !stage.extension_slug);
         if (baseStages.length > 0) {
           groupedStages.push({
             title: "Stages",
@@ -74,9 +52,9 @@ export default function CourseOverviewPage() {
           });
         }
 
-        // 2. Add extended stages (grouped by extension_slug)
-        extensionsData.forEach((extension) => {
-          const extensionStages = stagesData.filter(
+        // 2. Add extended stages
+        extensions.forEach((extension) => {
+          const extensionStages = stages.filter(
             (stage) => stage.extension_slug === extension.slug,
           );
           if (extensionStages.length > 0) {
@@ -89,17 +67,15 @@ export default function CourseOverviewPage() {
         });
 
         setStageGroups(groupedStages);
+        setLoading(false);
       } catch (err) {
         setError(
           err instanceof Error ? err.message : "An unknown error occurred",
         );
-      } finally {
         setLoading(false);
       }
-    };
-
-    fetchData();
-  }, [slug]);
+    }
+  }, [courseLoading, stagesLoading, extensionsLoading]);
 
   if (loading) return <Loading message="Loading course detail..." />;
   if (error) return <ErrorMessage message={error} />;

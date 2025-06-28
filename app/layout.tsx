@@ -1,3 +1,5 @@
+import AuthProvider from "@/components/provider/auth-provider";
+import QueryClientProvider from "@/components/provider/query-client-provider";
 import type { Metadata } from "next";
 import "./globals.css";
 
@@ -8,12 +10,16 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
-      <body className="antialiased">{children}</body>
+      <body>
+        <QueryClientProvider>
+          <AuthProvider>{children}</AuthProvider>
+        </QueryClientProvider>
+      </body>
     </html>
   );
 }

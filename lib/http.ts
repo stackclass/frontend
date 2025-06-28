@@ -7,7 +7,7 @@ import axios, {
 
 const TOKEN_KEY = "jwt";
 
-const baseURL = process.env.BACKEND_URL;
+const baseURL = process.env.NEXT_PUBLIC_BACKEND_URL;
 if (!baseURL) {
   if (process.env.NODE_ENV === "production") {
     throw new Error("BACKEND_URL is required in production environment.");
@@ -49,7 +49,7 @@ interface ErrorResponse {
 
 // Response interceptor: Standardize success/error responses
 http.interceptors.response.use(
-  (response: AxiosResponse) => response.data,
+  (response: AxiosResponse) => response,
   (error: AxiosError<ErrorResponse>) => {
     if (error.response) {
       const { status, data } = error.response;

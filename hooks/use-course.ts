@@ -6,17 +6,14 @@ import {
   useQuery,
   UseQueryOptions,
 } from "@tanstack/react-query";
-import { AxiosResponse } from "axios";
 
 /**
  * Hook for fetching all courses.
  */
-export const useFindCourses = (
-  options?: UseQueryOptions<AxiosResponse<Course[]>>,
-) => {
-  return useQuery<AxiosResponse<Course[]>>({
+export const useFindCourses = (options?: UseQueryOptions<Course[]>) => {
+  return useQuery<Course[]>({
     queryKey: ["courses"],
-    queryFn: () => CourseService.find(),
+    queryFn: () => CourseService.find().then((res) => res.data),
     ...options,
   });
 };
@@ -25,14 +22,10 @@ export const useFindCourses = (
  * Hook for creating a new course.
  */
 export const useCreateCourse = (
-  options?: UseMutationOptions<
-    AxiosResponse<Course>,
-    unknown,
-    CreateCourseRequest
-  >,
+  options?: UseMutationOptions<Course, unknown, CreateCourseRequest>,
 ) => {
-  return useMutation<AxiosResponse<Course>, unknown, CreateCourseRequest>({
-    mutationFn: (data) => CourseService.create(data),
+  return useMutation<Course, unknown, CreateCourseRequest>({
+    mutationFn: (data) => CourseService.create(data).then((res) => res.data),
     ...options,
   });
 };
@@ -42,11 +35,11 @@ export const useCreateCourse = (
  */
 export const useGetCourse = (
   slug: string,
-  options?: UseQueryOptions<AxiosResponse<CourseDetail>>,
+  options?: UseQueryOptions<CourseDetail>,
 ) => {
-  return useQuery<AxiosResponse<CourseDetail>>({
+  return useQuery<CourseDetail>({
     queryKey: ["course", slug],
-    queryFn: () => CourseService.get(slug),
+    queryFn: () => CourseService.get(slug).then((res) => res.data),
     ...options,
   });
 };
@@ -55,10 +48,10 @@ export const useGetCourse = (
  * Hook for deleting a course by slug.
  */
 export const useDeleteCourse = (
-  options?: UseMutationOptions<AxiosResponse<void>, unknown, string>,
+  options?: UseMutationOptions<void, unknown, string>,
 ) => {
-  return useMutation<AxiosResponse<void>, unknown, string>({
-    mutationFn: (slug) => CourseService.delete(slug),
+  return useMutation<void, unknown, string>({
+    mutationFn: (slug) => CourseService.delete(slug).then((res) => res.data),
     ...options,
   });
 };
@@ -67,10 +60,10 @@ export const useDeleteCourse = (
  * Hook for updating a course from git repository.
  */
 export const useUpdateCourse = (
-  options?: UseMutationOptions<AxiosResponse<Course>, unknown, string>,
+  options?: UseMutationOptions<Course, unknown, string>,
 ) => {
-  return useMutation<AxiosResponse<Course>, unknown, string>({
-    mutationFn: (slug) => CourseService.update(slug),
+  return useMutation<Course, unknown, string>({
+    mutationFn: (slug) => CourseService.update(slug).then((res) => res.data),
     ...options,
   });
 };

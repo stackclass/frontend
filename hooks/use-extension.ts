@@ -1,7 +1,6 @@
 import ExtensionService from "@/services/extension";
 import { Extension } from "@/types/extension";
 import { useQuery, UseQueryOptions } from "@tanstack/react-query";
-import { AxiosResponse } from "axios";
 
 /**
  * Hook for fetching all extensions for a course.
@@ -10,11 +9,12 @@ import { AxiosResponse } from "axios";
  */
 export const useExtensions = (
   slug: string,
-  options?: UseQueryOptions<AxiosResponse<Extension[]>>,
+  options?: UseQueryOptions<Extension[]>,
 ) => {
-  return useQuery<AxiosResponse<Extension[]>>({
+  return useQuery<Extension[]>({
     queryKey: ["extensions", slug],
-    queryFn: () => ExtensionService.findAllExtensions(slug),
+    queryFn: () =>
+      ExtensionService.findAllExtensions(slug).then((res) => res.data),
     ...options,
   });
 };

@@ -1,42 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
 import { ErrorMessage } from "@/components/common/error-message";
 import { Loading } from "@/components/common/loading";
 import { NotFound } from "@/components/common/not-found";
 import CourseCard from "@/components/course/course-card";
 
-import type { Course } from "@/types/course";
+import { useFindCourses } from "@/hooks/use-course";
 
 export default function CatalogPage() {
-  const [courses, setCourses] = useState<Course[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const { data: courses = [], isLoading, error } = useFindCourses();
 
-  useEffect(() => {
-    const fetchCourses = async () => {
-      try {
-        const response = await fetch("/api/v1/courses");
-        if (!response.ok) {
-          throw new Error(`Failed to fetch courses: ${response.statusText}`);
-        }
-        const data: Course[] = await response.json();
-        setCourses(data);
-      } catch (err) {
-        setError(
-          err instanceof Error ? err.message : "An unknown error occurred",
-        );
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchCourses();
-  }, []);
-
-  if (loading) return <Loading message="Loading courses..." />;
-  if (error) return <ErrorMessage message={error} />;
+  if (isLoading) return <Loading message="Loading courses..." />;
+  if (error) return <ErrorMessage message={error.message} />;
   if (!courses) return <NotFound message="Courses not found." />;
 
   return (

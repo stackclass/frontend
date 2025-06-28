@@ -1,16 +1,16 @@
 import UserStageService from "@/services/user-stage";
 import { UserStage } from "@/types/stage";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { AxiosResponse } from "axios";
 
 /**
  * Hook for fetching all user stages for a course.
  * @param courseSlug - The slug of the course.
  */
 export const useUserStages = (courseSlug: string) => {
-  return useQuery<AxiosResponse<UserStage[]>>({
+  return useQuery<UserStage[]>({
     queryKey: ["userStages", courseSlug],
-    queryFn: () => UserStageService.findUserStages(courseSlug),
+    queryFn: () =>
+      UserStageService.findUserStages(courseSlug).then((res) => res.data),
   });
 };
 
@@ -20,9 +20,12 @@ export const useUserStages = (courseSlug: string) => {
  * @param stageSlug - The slug of the stage.
  */
 export const useUserStage = (courseSlug: string, stageSlug: string) => {
-  return useQuery<AxiosResponse<UserStage>>({
+  return useQuery<UserStage>({
     queryKey: ["userStage", courseSlug, stageSlug],
-    queryFn: () => UserStageService.getUserStage(courseSlug, stageSlug),
+    queryFn: () =>
+      UserStageService.getUserStage(courseSlug, stageSlug).then(
+        (res) => res.data,
+      ),
   });
 };
 
@@ -31,11 +34,13 @@ export const useUserStage = (courseSlug: string, stageSlug: string) => {
  */
 export const useCompleteStage = () => {
   return useMutation<
-    AxiosResponse<UserStage>,
+    UserStage,
     Error,
     { courseSlug: string; stageSlug: string }
   >({
     mutationFn: ({ courseSlug, stageSlug }) =>
-      UserStageService.completeStage(courseSlug, stageSlug),
+      UserStageService.completeStage(courseSlug, stageSlug).then(
+        (res) => res.data,
+      ),
   });
 };

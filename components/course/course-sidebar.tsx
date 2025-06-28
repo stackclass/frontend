@@ -1,10 +1,11 @@
 "use client";
 
-import * as React from "react";
 import { useParams } from "next/navigation";
+import * as React from "react";
 
 import { SquareChevronLeft } from "lucide-react";
 
+import { Separator } from "@/components/ui/separator";
 import {
   Sidebar,
   SidebarContent,
@@ -16,18 +17,17 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { Separator } from "@/components/ui/separator";
 
-import { CourseSwitcher } from "@/components/course/course-switcher";
+import { Loading } from "@/components/common/loading";
 import { CourseNavBootstrap } from "@/components/course/course-nav-bootstrap";
 import { CourseNavExtensions } from "@/components/course/course-nav-extensions";
 import { CourseNavStages } from "@/components/course/course-nav-stages";
-import { Loading } from "@/components/common/loading";
+import { CourseSwitcher } from "@/components/course/course-switcher";
 
 import type { Stage } from "@/types/stage";
-import type { Extension } from "@/types/extension";
 
 import { useCourse } from "@/app/(course)/layout";
+import { useExtensions } from "@/hooks/use-extension";
 
 interface ExtensionGroup {
   title: string;
@@ -41,20 +41,18 @@ export function CourseSidebar({
   const { toggleSidebar } = useSidebar();
   const { course, stages } = useCourse();
   const { slug } = useParams<{ slug: string }>();
+
   const [extensionGroups, setExtensionGroups] = React.useState<
     ExtensionGroup[]
   >([]);
   const [loading, setLoading] = React.useState<boolean>(true);
 
-  React.useEffect(() => {
-    const fetchExtensions = async () => {
-      try {
-        // 1. Fetch all extensions
-        const response = await fetch(`/api/v1/courses/${slug}/extensions`);
-        if (!response.ok) throw new Error("Failed to fetch extensions");
-        const extensions: Extension[] = await response.json();
+  const { data: extensions = [], isLoading: extensionsLoading } =
+    useExtensions(slug);
 
-        // 2.Group stages
+  React.useEffect(() => {
+    if (!extensionsLoading) {
+      try {
         const grouped = stages.reduce<ExtensionGroup[]>((groups, stage) => {
           if (stage.extension_slug) {
             const extension = extensions.find(
@@ -68,7 +66,7 @@ export function CourseSidebar({
               existingGroup.stages.push(stage);
             } else {
               groups.push({
-                title: extension?.name || "Extension", // 使用 extension.name
+                title: extension?.name || "Extension",
                 slug: stage.extension_slug,
                 stages: [stage],
               });
@@ -78,15 +76,13 @@ export function CourseSidebar({
         }, []);
 
         setExtensionGroups(grouped);
+        setLoading(false);
       } catch (err) {
         console.error(err);
-      } finally {
         setLoading(false);
       }
-    };
-
-    fetchExtensions();
-  }, [slug, stages]);
+    }
+  }, [extensionsLoading, stages]);
 
   const baseStages = stages.filter((stage) => !stage.extension_slug);
 

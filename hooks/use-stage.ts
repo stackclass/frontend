@@ -1,7 +1,6 @@
 import StageService from "@/services/stage";
 import { Stage, StageDetail } from "@/types/stage";
 import { useQuery, UseQueryOptions } from "@tanstack/react-query";
-import { AxiosResponse } from "axios";
 
 /**
  * Hook for fetching all stages for a course (including extensions).
@@ -10,11 +9,11 @@ import { AxiosResponse } from "axios";
  */
 export const useStages = (
   slug: string,
-  options?: UseQueryOptions<AxiosResponse<Stage[]>, Error>,
+  options?: UseQueryOptions<Stage[], Error>,
 ) => {
-  return useQuery<AxiosResponse<Stage[]>, Error>({
+  return useQuery<Stage[], Error>({
     queryKey: ["stages", slug],
-    queryFn: () => StageService.findAllStages(slug),
+    queryFn: () => StageService.findAllStages(slug).then((res) => res.data),
     ...options,
   });
 };
@@ -26,11 +25,11 @@ export const useStages = (
  */
 export const useBaseStages = (
   slug: string,
-  options?: UseQueryOptions<AxiosResponse<Stage[]>, Error>,
+  options?: UseQueryOptions<Stage[], Error>,
 ) => {
-  return useQuery<AxiosResponse<Stage[]>, Error>({
+  return useQuery<Stage[], Error>({
     queryKey: ["baseStages", slug],
-    queryFn: () => StageService.findBaseStages(slug),
+    queryFn: () => StageService.findBaseStages(slug).then((res) => res.data),
     ...options,
   });
 };
@@ -42,11 +41,12 @@ export const useBaseStages = (
  */
 export const useExtendedStages = (
   slug: string,
-  options?: UseQueryOptions<AxiosResponse<Stage[]>, Error>,
+  options?: UseQueryOptions<Stage[], Error>,
 ) => {
-  return useQuery<AxiosResponse<Stage[]>, Error>({
+  return useQuery<Stage[], Error>({
     queryKey: ["extendedStages", slug],
-    queryFn: () => StageService.findExtendedStages(slug),
+    queryFn: () =>
+      StageService.findExtendedStages(slug).then((res) => res.data),
     ...options,
   });
 };
@@ -60,11 +60,12 @@ export const useExtendedStages = (
 export const useStage = (
   courseSlug: string,
   stageSlug: string,
-  options?: UseQueryOptions<AxiosResponse<StageDetail>, Error>,
+  options?: UseQueryOptions<StageDetail, Error>,
 ) => {
-  return useQuery<AxiosResponse<StageDetail>, Error>({
+  return useQuery<StageDetail, Error>({
     queryKey: ["stage", courseSlug, stageSlug],
-    queryFn: () => StageService.get(courseSlug, stageSlug),
+    queryFn: () =>
+      StageService.get(courseSlug, stageSlug).then((res) => res.data),
     ...options,
   });
 };
