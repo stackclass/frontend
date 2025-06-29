@@ -1,7 +1,7 @@
 "use client";
 
 import { redirect, useParams } from "next/navigation";
-import { createContext, useContext } from "react";
+import { createContext, useContext, useMemo } from "react";
 
 import CourseHeader from "@/components/course/course-header";
 import { CourseSidebar } from "@/components/course/course-sidebar";
@@ -19,8 +19,9 @@ import type { Stage } from "@/types/stage";
 
 interface CourseContextValue {
   course: CourseDetail;
-  userCourse: UserCourse | null;
+  userCourse: UserCourse;
   stages: Stage[];
+  isNew: boolean;
 }
 
 const CourseContext = createContext<CourseContextValue | null>(null);
@@ -43,9 +44,7 @@ export default function CourseLayout({
   // Checking if the session is valid. If it's not,
   // we are redirecting the user to the home page.
   const session = useSession();
-  if (!session) {
-    redirect("/");
-  }
+  if (!session) redirect("/");
 
   // Fetch course details
   const {
@@ -63,10 +62,27 @@ export default function CourseLayout({
 
   // Fetch user course details
   const {
-    data: userCourse,
+    data: rawUserCourse,
     isLoading: userCourseLoading,
     error: _userCourseError,
   } = useUserCourse(slug, { retry: false });
+
+  const { userCourse, isNew } = useMemo(() => {
+    if (rawUserCourse) return { userCourse: rawUserCourse, isNew: false };
+
+    return {
+      userCourse: {
+        course_slug: slug,
+        proficiency: null,
+        cadence: null,
+        accountability: null,
+        started_at: new Date().toISOString(),
+        completed_stage_count: 0,
+        activated: false,
+      },
+      isNew: true,
+    };
+  }, [rawUserCourse, slug]);
 
   const isLoading = courseLoading || stagesLoading || userCourseLoading;
 
@@ -77,15 +93,10 @@ export default function CourseLayout({
   if (stagesError) return <ErrorMessage message="Failed to load stages." />;
 
   if (!course) return <NotFound message="Course not found." />;
+  if (!stages) return <NotFound message="Stages not found." />;
 
   return (
-    <CourseContext.Provider
-      value={{
-        course: course,
-        userCourse: userCourse || null,
-        stages: stages || [],
-      }}
-    >
+    <CourseContext.Provider value={{ course, userCourse, stages, isNew }}>
       <SidebarProvider>
         <CourseSidebar />
         <SidebarInset>

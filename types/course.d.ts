@@ -46,13 +46,13 @@ export interface UserCourse {
   completed_stage_count: number;
 
   /// Language proficiency level of the user
-  proficiency: string;
+  proficiency: string | null;
 
   /// Practice cadence of the user
-  cadence: string;
+  cadence: string | null;
 
   /// Whether the user wants accountability emails
-  accountability: boolean;
+  accountability: boolean | null;
 
   /// Whether the first Git push was received
   activated: boolean;

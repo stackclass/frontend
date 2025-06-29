@@ -6,18 +6,21 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import { UserCourse } from "@/types/course";
 import { StageStatus } from "@/types/stage-status";
 import { ArrowDown, Check, ChevronDown } from "lucide-react";
-import { Dispatch, SetStateAction, useState } from "react";
+import { useState } from "react";
+
+export interface Callbacks {
+  onProficiencyChange: (proficiency: string | null) => void;
+  onCadenceChange: (cadence: string | null) => void;
+  onAccountabilityChange: (accountability: boolean | null) => void;
+}
 
 interface CourseAssessmentProps {
   status: StageStatus;
-  proficiency: string | null;
-  cadence: string | null;
-  accountability: boolean | null;
-  onProficiencyChange: Dispatch<SetStateAction<string | null>>;
-  onCadenceChange: Dispatch<SetStateAction<string | null>>;
-  onAccountabilityChange: Dispatch<SetStateAction<boolean | null>>;
+  userCourse: UserCourse;
+  callbacks: Callbacks;
 }
 
 interface Option<T = string | boolean> {
@@ -158,18 +161,14 @@ const accountabilities: Option<boolean>[] = [
 
 export function CourseAssessment({
   status,
-  proficiency,
-  cadence,
-  accountability,
-  onProficiencyChange,
-  onCadenceChange,
-  onAccountabilityChange,
+  userCourse,
+  callbacks,
 }: CourseAssessmentProps) {
   const [activeSection, setActiveSection] = useState<string>(
     status === StageStatus.Completed ? "" : "proficiency",
   );
 
-  const [initialProficiency] = useState(proficiency);
+  const [initialProficiency] = useState(userCourse.proficiency);
 
   return (
     <div className="rounded border">
@@ -180,14 +179,14 @@ export function CourseAssessment({
 
       <AssessmentItem
         title="Language Proficiency"
-        value={proficiency}
+        value={userCourse.proficiency}
         options={proficiencies}
-        onChange={onProficiencyChange}
+        onChange={callbacks.onProficiencyChange}
         description="How would you describe your experience level with this language? We can tailor your experience accordingly."
         isActive={activeSection === "proficiency"}
         onToggle={(open) => setActiveSection(open ? "proficiency" : "")}
         additionalContent={
-          proficiency !== initialProficiency && (
+          userCourse.proficiency !== initialProficiency && (
             <div className="mt-6 flex justify-start">
               <Button onClick={() => setActiveSection("cadence")}>
                 <ArrowDown /> Next question
@@ -199,30 +198,30 @@ export function CourseAssessment({
 
       <AssessmentItem
         title="Practice Cadence"
-        value={cadence}
+        value={userCourse.cadence}
         options={cadences}
         onChange={(value) => {
-          onCadenceChange(value);
+          callbacks.onCadenceChange(value);
           setActiveSection("accountability");
         }}
         description="How often do you intend to practice? Learners that maintain a consistent cadence are most likely to meet their learning objectives."
         isActive={activeSection === "cadence"}
         onToggle={(open) => setActiveSection(open ? "cadence" : "")}
-        disabled={!proficiency}
+        disabled={!userCourse.proficiency}
       />
 
       <AssessmentItem
         title="Accountability"
-        value={accountability}
+        value={userCourse.accountability}
         options={accountabilities}
         onChange={(value) => {
-          onAccountabilityChange(value);
+          callbacks.onAccountabilityChange(value);
           setActiveSection("");
         }}
         description="Would you like us to email you occasional friendly nudges to help you stay accountable, as well as tips on maximising your learning experience?"
         isActive={activeSection === "accountability"}
         onToggle={(open) => setActiveSection(open ? "accountability" : "")}
-        disabled={!cadence}
+        disabled={!userCourse.cadence}
       />
     </div>
   );
