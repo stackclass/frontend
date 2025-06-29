@@ -65,8 +65,8 @@ export default function CourseLayout({
   const {
     data: userCourse,
     isLoading: userCourseLoading,
-    error: userCourseError,
-  } = useUserCourse(slug);
+    error: _userCourseError,
+  } = useUserCourse(slug, { retry: false });
 
   const isLoading = courseLoading || stagesLoading || userCourseLoading;
 
@@ -75,8 +75,6 @@ export default function CourseLayout({
   if (courseError)
     return <ErrorMessage message="Failed to load course details." />;
   if (stagesError) return <ErrorMessage message="Failed to load stages." />;
-  if (userCourseError)
-    return <ErrorMessage message="Failed to load user progress." />;
 
   if (!course) return <NotFound message="Course not found." />;
 

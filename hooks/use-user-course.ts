@@ -37,7 +37,7 @@ export const useCreateUserCourse = (
  */
 export const useUserCourse = (
   slug: string,
-  options?: UseQueryOptions<UserCourse>,
+  options?: Omit<UseQueryOptions<UserCourse>, "queryKey">,
 ) => {
   return useQuery<UserCourse>({
     queryKey: ["userCourse", slug],

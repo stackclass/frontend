@@ -1,5 +1,3 @@
-"use client";
-
 import { StatusBadge } from "@/components/stage/stage-status";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -10,10 +8,16 @@ import {
 } from "@/components/ui/collapsible";
 import { StageStatus } from "@/types/stage-status";
 import { ArrowDown, Check, ChevronDown } from "lucide-react";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 
 interface CourseAssessmentProps {
   status: StageStatus;
+  proficiency: string | null;
+  cadence: string | null;
+  accountability: boolean | null;
+  onProficiencyChange: Dispatch<SetStateAction<string | null>>;
+  onCadenceChange: Dispatch<SetStateAction<string | null>>;
+  onAccountabilityChange: Dispatch<SetStateAction<boolean | null>>;
 }
 
 interface Option<T = string | boolean> {
@@ -152,33 +156,20 @@ const accountabilities: Option<boolean>[] = [
   { key: "no", value: false, label: "I'll pass" },
 ];
 
-export function CourseAssessment({ status }: CourseAssessmentProps) {
-  const [proficiency, setProficiency] = useState<string | null>(null);
-  const [cadence, setCadence] = useState<string | null>(null);
-  const [accountability, setAccountability] = useState<boolean | null>(null);
-  const [activeSection, setActiveSection] = useState<string>("proficiency");
+export function CourseAssessment({
+  status,
+  proficiency,
+  cadence,
+  accountability,
+  onProficiencyChange,
+  onCadenceChange,
+  onAccountabilityChange,
+}: CourseAssessmentProps) {
+  const [activeSection, setActiveSection] = useState<string>(
+    status === StageStatus.Completed ? "" : "proficiency",
+  );
 
-  const handleComplete = () => {
-    // Handle completion logic here
-    console.log("Assessment completed", {
-      languageProficiency: proficiency,
-      practiceCadence: cadence,
-      accountability,
-    });
-  };
-
-  const handleProficiencyChange = (val: string) => {
-    setProficiency(val);
-  };
-
-  const handleCadenceChange = (val: string) => {
-    setCadence(val);
-    setActiveSection("accountability");
-  };
-
-  const handleAccountabilityChange = (val: boolean) => {
-    setAccountability(val);
-  };
+  const [initialProficiency] = useState(proficiency);
 
   return (
     <div className="rounded border">
@@ -191,12 +182,12 @@ export function CourseAssessment({ status }: CourseAssessmentProps) {
         title="Language Proficiency"
         value={proficiency}
         options={proficiencies}
-        onChange={handleProficiencyChange}
+        onChange={onProficiencyChange}
         description="How would you describe your experience level with this language? We can tailor your experience accordingly."
         isActive={activeSection === "proficiency"}
         onToggle={(open) => setActiveSection(open ? "proficiency" : "")}
         additionalContent={
-          proficiency && (
+          proficiency !== initialProficiency && (
             <div className="mt-6 flex justify-start">
               <Button onClick={() => setActiveSection("cadence")}>
                 <ArrowDown /> Next question
@@ -210,7 +201,10 @@ export function CourseAssessment({ status }: CourseAssessmentProps) {
         title="Practice Cadence"
         value={cadence}
         options={cadences}
-        onChange={handleCadenceChange}
+        onChange={(value) => {
+          onCadenceChange(value);
+          setActiveSection("accountability");
+        }}
         description="How often do you intend to practice? Learners that maintain a consistent cadence are most likely to meet their learning objectives."
         isActive={activeSection === "cadence"}
         onToggle={(open) => setActiveSection(open ? "cadence" : "")}
@@ -221,23 +215,14 @@ export function CourseAssessment({ status }: CourseAssessmentProps) {
         title="Accountability"
         value={accountability}
         options={accountabilities}
-        onChange={handleAccountabilityChange}
+        onChange={(value) => {
+          onAccountabilityChange(value);
+          setActiveSection("");
+        }}
         description="Would you like us to email you occasional friendly nudges to help you stay accountable, as well as tips on maximising your learning experience?"
         isActive={activeSection === "accountability"}
         onToggle={(open) => setActiveSection(open ? "accountability" : "")}
         disabled={!cadence}
-        additionalContent={
-          status === StageStatus.Completed && (
-            <div className="mt-6 flex justify-start">
-              <Button
-                onClick={handleComplete}
-                disabled={accountability === null}
-              >
-                Continue
-              </Button>
-            </div>
-          )
-        }
       />
     </div>
   );
