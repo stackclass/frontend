@@ -22,7 +22,7 @@ export function CourseNavStages({ slug, stages }: Props) {
         <SidebarMenuItem key={stage.slug}>
           <SidebarMenuButton asChild>
             <Link href={`/courses/${slug}/stages/${stage.slug}`}>
-              <StatusIcon status={StageStatus.Pending} />
+              <StatusIcon status={StageStatus.InProgress} />
               <span>{stage.name}</span>
             </Link>
           </SidebarMenuButton>

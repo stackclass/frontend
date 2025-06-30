@@ -25,3 +25,14 @@ export function getIntroductionStatus(
     return StageStatus.InProgress;
   }
 }
+
+export function getSetupStatus(userCourse: UserCourse | null): StageStatus {
+  const introStatus = getIntroductionStatus(userCourse);
+  const status =
+    introStatus !== StageStatus.Completed
+      ? StageStatus.Pending
+      : userCourse?.activated
+        ? StageStatus.Completed
+        : StageStatus.InProgress;
+  return status;
+}

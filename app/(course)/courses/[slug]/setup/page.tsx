@@ -9,20 +9,13 @@ import { StageHeader } from "@/components/stage/stage-header";
 import { StageTabs } from "@/components/stage/stage-tabs";
 
 import { useCourse } from "@/app/(course)/layout";
-import { getIntroductionStatus, StageStatus } from "@/types/stage-status";
+import { getSetupStatus, StageStatus } from "@/types/stage-status";
 import Link from "next/link";
 
 export default function CourseSetupPage() {
-  const { course, userCourse, isNew } = useCourse();
+  const { course, userCourse } = useCourse();
 
-  const introStatus = getIntroductionStatus(userCourse);
-  const status =
-    isNew || introStatus !== StageStatus.Completed
-      ? StageStatus.Pending
-      : userCourse?.activated
-        ? StageStatus.Completed
-        : StageStatus.InProgress;
-
+  const status = getSetupStatus(userCourse);
   const repository = `${process.env.NEXT_PUBLIC_BACKEND_URL}/git/5859dab1ca7ee5c7`;
   const projectName = `codecraft-${course.slug}`;
 

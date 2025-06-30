@@ -45,7 +45,7 @@ interface StatusIconProps extends StatusProps {
 export function StatusIcon({ status, icon, className }: StatusIconProps) {
   const statusMap = {
     [StageStatus.Pending]: {
-      className: className ?? "rounded-[3px] border-gray-300 text-gray-400",
+      className: className ?? "rounded-[3px] border-gray-300 text-gray-500",
       icon: icon || <Hash size={16} />,
     },
     [StageStatus.InProgress]: {
@@ -53,7 +53,7 @@ export function StatusIcon({ status, icon, className }: StatusIconProps) {
       icon: <Ellipsis size={16} />,
     },
     [StageStatus.Completed]: {
-      className: "rounded-full border-green-700 text-green-700",
+      className: "rounded-full text-white bg-green-700",
       icon: <Check size={16} />,
     },
   };
