@@ -1,16 +1,20 @@
 import UserStageService from "@/services/user-stage";
 import { UserStage } from "@/types/stage";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, UseQueryOptions } from "@tanstack/react-query";
 
 /**
  * Hook for fetching all user stages for a course.
  * @param courseSlug - The slug of the course.
  */
-export const useUserStages = (courseSlug: string) => {
+export const useUserStages = (
+  courseSlug: string,
+  options?: Omit<UseQueryOptions<UserStage[]>, "queryKey">,
+) => {
   return useQuery<UserStage[]>({
     queryKey: ["userStages", courseSlug],
     queryFn: () =>
       UserStageService.findUserStages(courseSlug).then((res) => res.data),
+    ...options,
   });
 };
 
@@ -19,13 +23,18 @@ export const useUserStages = (courseSlug: string) => {
  * @param courseSlug - The slug of the course.
  * @param stageSlug - The slug of the stage.
  */
-export const useUserStage = (courseSlug: string, stageSlug: string) => {
+export const useUserStage = (
+  courseSlug: string,
+  stageSlug: string,
+  options?: Omit<UseQueryOptions<UserStage>, "queryKey">,
+) => {
   return useQuery<UserStage>({
     queryKey: ["userStage", courseSlug, stageSlug],
     queryFn: () =>
       UserStageService.getUserStage(courseSlug, stageSlug).then(
         (res) => res.data,
       ),
+    ...options,
   });
 };
 

@@ -11,7 +11,8 @@ import { StageTabs } from "@/components/stage/stage-tabs";
 
 import { GenericCard } from "@/components/stage/generic-card";
 import { useStage } from "@/hooks/use-stage";
-import { StageStatus } from "@/types/stage-status";
+import { useUserStage } from "@/hooks/use-user-stage";
+import { getStageStatus } from "@/types/stage-status";
 import ReactMarkdown from "react-markdown";
 
 export default function StagePage() {
@@ -19,19 +20,28 @@ export default function StagePage() {
     slug: string;
     stage_slug: string;
   }>();
-  const { data: stage, isLoading, error } = useStage(slug, stage_slug);
+  const {
+    data: stage,
+    isLoading: stageLoading,
+    error: stageError,
+  } = useStage(slug, stage_slug);
 
+  const { data: userStage, isLoading: userStageLoading } = useUserStage(
+    slug,
+    stage_slug,
+    { retry: false },
+  );
+
+  const isLoading = stageLoading || userStageLoading;
   if (isLoading) return <Loading message="Loading stage details..." />;
-  if (error) return <ErrorMessage message={error.message} />;
+  if (stageError) return <ErrorMessage message={stageError.message} />;
   if (!stage) return <NotFound message="Stage not found." />;
+
+  const status = getStageStatus({ stage, userStage: userStage ?? null });
 
   return (
     <>
-      <StageHeader
-        title={stage.name}
-        slug={stage.slug}
-        status={StageStatus.Pending}
-      />
+      <StageHeader title={stage.name} slug={stage.slug} status={status} />
 
       <StageTabs tabs={[{ value: "instructions", label: "Instructions" }]} />
 
@@ -47,7 +57,7 @@ export default function StagePage() {
         )}
         <InstructionCard
           title="Your Task"
-          status={StageStatus.Pending}
+          status={status}
           difficulty={stage.difficulty}
           instruction={stage.instruction}
         />

@@ -69,7 +69,7 @@ export default function CourseLayout({
   } = useStages(slug);
 
   // Fetching all user stages for a course
-  const { data: userStages } = useUserStages(slug);
+  const { data: userStages } = useUserStages(slug, { retry: false });
 
   const { userCourse, isNew } = useMemo(() => {
     if (rawUserCourse) return { userCourse: rawUserCourse, isNew: false };
