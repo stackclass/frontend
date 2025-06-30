@@ -9,7 +9,7 @@ import { useNavigation } from "@/hooks/use-navigation";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 
 export default function CourseHeader() {
-  const { prevItem, nextItem, getNavigationPath } = useNavigation();
+  const { prevItem, nextItem, path } = useNavigation();
 
   return (
     <header className="flex h-14 shrink-0 items-center gap-2 bg-gray-100">
@@ -29,7 +29,7 @@ export default function CourseHeader() {
             asChild={!!prevItem}
           >
             {prevItem ? (
-              <Link href={getNavigationPath(prevItem)}>
+              <Link href={path(prevItem)}>
                 <ChevronLeft /> Back
               </Link>
             ) : (
@@ -48,7 +48,7 @@ export default function CourseHeader() {
             asChild={!!nextItem}
           >
             {nextItem ? (
-              <Link href={getNavigationPath(nextItem)}>
+              <Link href={path(nextItem)}>
                 Next <ChevronRight />
               </Link>
             ) : (

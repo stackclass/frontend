@@ -1,10 +1,15 @@
 "use client";
 
 import { useCourse } from "@/app/(course)/layout";
+import {
+  getIntroductionStatus,
+  getSetupStatus,
+  StageStatus,
+} from "@/types/stage-status";
 import { useParams, usePathname } from "next/navigation";
 
 export function useNavigation() {
-  const { stages } = useCourse();
+  const { stages, userCourse } = useCourse();
   const { slug } = useParams<{ slug: string }>();
   const pathname = usePathname();
 
@@ -29,18 +34,38 @@ export function useNavigation() {
       ? fullNavigationItems[currentIndex + 1]
       : null;
 
-  const getNavigationPath = (item: (typeof fullNavigationItems)[number]) => {
+  const backIndex = (() => {
+    let targetSlug: string | null = null;
+
+    if (userCourse?.current_stage_slug) {
+      targetSlug = userCourse.current_stage_slug;
+    } else if (getSetupStatus(userCourse) === StageStatus.InProgress) {
+      targetSlug = "setup";
+    } else if (getIntroductionStatus(userCourse) === StageStatus.InProgress) {
+      targetSlug = "introduction";
+    }
+
+    return fullNavigationItems.findIndex((item) => item.slug === targetSlug);
+  })();
+
+  const backItem = fullNavigationItems[backIndex];
+  const backDirection = currentIndex < backIndex ? "forward" : "backward";
+  const backDistance = backIndex >= 0 ? Math.abs(currentIndex - backIndex) : 0;
+
+  const path = (item: (typeof fullNavigationItems)[number]) => {
     return item.type === "bootstrap"
       ? `/courses/${slug}/${item.slug}`
       : `/courses/${slug}/stages/${item.slug}`;
   };
 
   return {
-    fullNavigationItems,
     currentSlug,
     currentIndex,
     prevItem,
     nextItem,
-    getNavigationPath,
+    path,
+    backItem,
+    backDirection,
+    backDistance,
   };
 }
