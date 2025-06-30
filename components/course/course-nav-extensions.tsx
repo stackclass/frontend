@@ -10,12 +10,13 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { StageStatus } from "@/types/stage-status";
+import { StageWithState } from "@/types/stage";
+import { getStageStatus } from "@/types/stage-status";
 
 interface Props {
   slug: string;
   title: string;
-  stages: Array<{ slug: string; name: string }>;
+  stages: Array<StageWithState>;
 }
 
 export function CourseNavExtensions({ slug, title, stages }: Props) {
@@ -26,11 +27,11 @@ export function CourseNavExtensions({ slug, title, stages }: Props) {
       </SidebarGroupLabel>
       <SidebarMenu>
         {stages.map((stage) => (
-          <SidebarMenuItem key={stage.slug}>
+          <SidebarMenuItem key={stage.stage.slug}>
             <SidebarMenuButton asChild>
-              <Link href={`/courses/${slug}/stages/${stage.slug}`}>
-                <StatusIcon status={StageStatus.Pending} />
-                <span>{stage.name}</span>
+              <Link href={`/courses/${slug}/stages/${stage.stage.slug}`}>
+                <StatusIcon status={getStageStatus(stage)} />
+                <span>{stage.stage.name}</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>

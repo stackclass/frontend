@@ -57,3 +57,8 @@ export interface UserStage {
   /// Timestamp when the stage was completed
   completed_at?: string;
 }
+
+export interface StageWithState {
+  stage: Stage;
+  userStage: UserStage | null;
+}

@@ -1,22 +1,18 @@
 "use client";
 
+import { useCourse } from "@/app/(course)/layout";
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import {
-  getIntroductionStatus,
-  getSetupStatus,
-  StageStatus,
-} from "@/types/stage-status";
+import { getIntroductionStatus, getSetupStatus } from "@/types/stage-status";
 import { ArrowRight, Settings2 } from "lucide-react";
 import Link from "next/link";
 import { StatusIcon } from "../stage/stage-status";
-import { useCourse } from "@/app/(course)/layout";
 
 export function CourseNavBootstrap({ slug }: { slug: string }) {
-  const { course, userCourse } = useCourse();
+  const { userCourse } = useCourse();
 
   const introStatus = getIntroductionStatus(userCourse);
   const setupStatus = getSetupStatus(userCourse);

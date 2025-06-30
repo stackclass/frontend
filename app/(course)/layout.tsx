@@ -14,13 +14,14 @@ import { useSession } from "@/components/provider/auth-provider";
 import { useGetCourse } from "@/hooks/use-course";
 import { useStages } from "@/hooks/use-stage";
 import { useUserCourse } from "@/hooks/use-user-course";
+import { useUserStages } from "@/hooks/use-user-stage";
 import type { CourseDetail, UserCourse } from "@/types/course";
-import type { Stage } from "@/types/stage";
+import type { StageWithState } from "@/types/stage";
 
 interface CourseContextValue {
   course: CourseDetail;
   userCourse: UserCourse;
-  stages: Stage[];
+  stages: StageWithState[];
   isNew: boolean;
 }
 
@@ -53,6 +54,13 @@ export default function CourseLayout({
     error: courseError,
   } = useGetCourse(slug);
 
+  // Fetch user course details
+  const {
+    data: rawUserCourse,
+    isLoading: userCourseLoading,
+    error: _userCourseError,
+  } = useUserCourse(slug, { retry: false });
+
   // Fetch all stages
   const {
     data: stages,
@@ -60,12 +68,8 @@ export default function CourseLayout({
     error: stagesError,
   } = useStages(slug);
 
-  // Fetch user course details
-  const {
-    data: rawUserCourse,
-    isLoading: userCourseLoading,
-    error: _userCourseError,
-  } = useUserCourse(slug, { retry: false });
+  // Fetching all user stages for a course
+  const { data: userStages } = useUserStages(slug);
 
   const { userCourse, isNew } = useMemo(() => {
     if (rawUserCourse) return { userCourse: rawUserCourse, isNew: false };
@@ -84,6 +88,16 @@ export default function CourseLayout({
     };
   }, [rawUserCourse, slug]);
 
+  const stagesWithState = useMemo(() => {
+    if (!stages) return [];
+
+    return stages.map((stage) => {
+      const userStage =
+        userStages?.find((us) => us.stage_slug === stage.slug) || null;
+      return { stage, userStage };
+    });
+  }, [stages, userStages]);
+
   const isLoading = courseLoading || stagesLoading || userCourseLoading;
 
   if (isLoading) return <Loading message="Loading course details..." />;
@@ -95,8 +109,15 @@ export default function CourseLayout({
   if (!course) return <NotFound message="Course not found." />;
   if (!stages) return <NotFound message="Stages not found." />;
 
+  const contextValue: CourseContextValue = {
+    course,
+    userCourse,
+    stages: stagesWithState,
+    isNew,
+  };
+
   return (
-    <CourseContext.Provider value={{ course, userCourse, stages, isNew }}>
+    <CourseContext.Provider value={contextValue}>
       <SidebarProvider>
         <CourseSidebar />
         <SidebarInset>

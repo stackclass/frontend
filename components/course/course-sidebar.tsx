@@ -24,7 +24,7 @@ import { CourseNavExtensions } from "@/components/course/course-nav-extensions";
 import { CourseNavStages } from "@/components/course/course-nav-stages";
 import { CourseSwitcher } from "@/components/course/course-switcher";
 
-import type { Stage } from "@/types/stage";
+import type { StageWithState } from "@/types/stage";
 
 import { useCourse } from "@/app/(course)/layout";
 import { useExtensions } from "@/hooks/use-extension";
@@ -32,7 +32,7 @@ import { useExtensions } from "@/hooks/use-extension";
 interface ExtensionGroup {
   title: string;
   slug: string;
-  stages: Stage[];
+  stages: StageWithState[];
 }
 
 export function CourseSidebar({
@@ -54,12 +54,12 @@ export function CourseSidebar({
     if (!extensionsLoading) {
       try {
         const grouped = stages.reduce<ExtensionGroup[]>((groups, stage) => {
-          if (stage.extension_slug) {
+          if (stage.stage.extension_slug) {
             const extension = extensions.find(
-              (ext) => ext.slug === stage.extension_slug,
+              (ext) => ext.slug === stage.stage.extension_slug,
             );
             const existingGroup = groups.find(
-              (g) => g.slug === stage.extension_slug,
+              (g) => g.slug === stage.stage.extension_slug,
             );
 
             if (existingGroup) {
@@ -67,7 +67,7 @@ export function CourseSidebar({
             } else {
               groups.push({
                 title: extension?.name || "Extension",
-                slug: stage.extension_slug,
+                slug: stage.stage.extension_slug,
                 stages: [stage],
               });
             }
@@ -84,7 +84,7 @@ export function CourseSidebar({
     }
   }, [extensionsLoading, stages]);
 
-  const baseStages = stages.filter((stage) => !stage.extension_slug);
+  const baseStages = stages.filter((stage) => !stage.stage.extension_slug);
 
   if (loading) return <Loading message="Loading extensions..." />;
 

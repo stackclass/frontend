@@ -1,4 +1,5 @@
 import { UserCourse } from "@/types/course";
+import { StageWithState } from "@/types/stage";
 
 export enum StageStatus {
   Pending = "Pending",
@@ -35,4 +36,18 @@ export function getSetupStatus(userCourse: UserCourse | null): StageStatus {
         ? StageStatus.Completed
         : StageStatus.InProgress;
   return status;
+}
+
+export function getStageStatus(stageWithState: StageWithState): StageStatus {
+  if (!stageWithState.userStage) {
+    return StageStatus.Pending;
+  }
+  switch (stageWithState.userStage.status) {
+    case "in_progress":
+      return StageStatus.InProgress;
+    case "completed":
+      return StageStatus.Completed;
+    default:
+      return StageStatus.Pending;
+  }
 }
