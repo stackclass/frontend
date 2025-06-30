@@ -3,9 +3,9 @@
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
 
+import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 
 import { useCourse } from "@/app/(course)/layout";
@@ -18,7 +18,7 @@ export default function CourseHeader() {
   const fullNavigationItems = [
     { slug: "introduction", name: "Introduction", type: "bootstrap" as const },
     { slug: "setup", name: "Repository Setup", type: "bootstrap" as const },
-    ...stages.map((stage) => ({ ...stage, type: "stage" as const })),
+    ...stages.map((stage) => ({ ...stage.stage, type: "stage" as const })),
   ];
 
   const currentSlug = pathname.startsWith(`/courses/${slug}/stages/`)
