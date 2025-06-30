@@ -10,6 +10,7 @@ import { StageHeader } from "@/components/stage/stage-header";
 import { StageTabs } from "@/components/stage/stage-tabs";
 
 import { GenericCard } from "@/components/stage/generic-card";
+import Overlay from "@/components/stage/overlay";
 import { StageCompleted } from "@/components/stage/stage-completed";
 import { useStage } from "@/hooks/use-stage";
 import { useUserStage } from "@/hooks/use-user-stage";
@@ -46,25 +47,27 @@ export default function StagePage() {
 
       <StageTabs tabs={[{ value: "instructions", label: "Instructions" }]} />
 
-      {status === StageStatus.Completed && <StageCompleted />}
+      <Overlay>
+        {status === StageStatus.Completed && <StageCompleted />}
 
-      <main className="p-4 flex flex-col gap-y-4">
-        {stage.solution && (
-          <GenericCard title="How to pass this stage">
-            <div className="max-w-5xl">
-              <div className="markdown">
-                <ReactMarkdown>{stage.solution.explanation}</ReactMarkdown>
+        <main className="p-4 flex flex-col gap-y-4">
+          {stage.solution && (
+            <GenericCard title="How to pass this stage">
+              <div className="max-w-5xl">
+                <div className="markdown">
+                  <ReactMarkdown>{stage.solution.explanation}</ReactMarkdown>
+                </div>
               </div>
-            </div>
-          </GenericCard>
-        )}
-        <InstructionCard
-          title="Your Task"
-          status={status}
-          difficulty={stage.difficulty}
-          instruction={stage.instruction}
-        />
-      </main>
+            </GenericCard>
+          )}
+          <InstructionCard
+            title="Your Task"
+            status={status}
+            difficulty={stage.difficulty}
+            instruction={stage.instruction}
+          />
+        </main>
+      </Overlay>
     </>
   );
 }

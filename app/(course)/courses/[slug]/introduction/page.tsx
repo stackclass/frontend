@@ -12,6 +12,7 @@ import {
   Callbacks,
   CourseAssessment,
 } from "@/components/course/course-assessment";
+import Overlay from "@/components/stage/overlay";
 import { StageCompleted } from "@/components/stage/stage-completed";
 import { Button } from "@/components/ui/button";
 import { useCreateUserCourse } from "@/hooks/use-user-course";
@@ -91,29 +92,31 @@ export default function CourseIntroductionPage() {
 
       <StageTabs tabs={[{ value: "instructions", label: "Instructions" }]} />
 
-      {status === StageStatus.Completed && <StageCompleted />}
+      <Overlay>
+        {status === StageStatus.Completed && <StageCompleted />}
 
-      <main className="p-4 flex flex-col gap-y-4">
-        <GenericCard title="Introduction">
-          <div className="max-w-5xl">
-            <div className="markdown">
-              <ReactMarkdown>{course.description}</ReactMarkdown>
+        <main className="p-4 flex flex-col gap-y-4">
+          <GenericCard title="Introduction">
+            <div className="max-w-5xl">
+              <div className="markdown">
+                <ReactMarkdown>{course.description}</ReactMarkdown>
+              </div>
             </div>
-          </div>
-        </GenericCard>
+          </GenericCard>
 
-        <CourseAssessment
-          status={status}
-          userCourse={userCourse}
-          callbacks={callbacks}
-        />
+          <CourseAssessment
+            status={status}
+            userCourse={userCourse}
+            callbacks={callbacks}
+          />
 
-        {status === StageStatus.Completed && (
-          <div className="mt-6 flex justify-start">
-            <Button onClick={handleContinue}>Continue</Button>
-          </div>
-        )}
-      </main>
+          {status === StageStatus.Completed && (
+            <div className="mt-6 flex justify-start">
+              <Button onClick={handleContinue}>Continue</Button>
+            </div>
+          )}
+        </main>
+      </Overlay>
     </>
   );
 }

@@ -65,6 +65,7 @@ export function useNavigation() {
     nextItem,
     path,
     backItem,
+    backIndex,
     backDirection,
     backDistance,
   };
