@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 
-import { CircleCheck } from "lucide-react";
+import { StatusIcon } from "@/components/stage/stage-status";
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { StageStatus } from "@/types/stage-status";
 
 interface Props {
   slug: string;
@@ -21,7 +22,7 @@ export function CourseNavStages({ slug, stages }: Props) {
         <SidebarMenuItem key={stage.slug}>
           <SidebarMenuButton asChild>
             <Link href={`/courses/${slug}/stages/${stage.slug}`}>
-              <CircleCheck />
+              <StatusIcon status={StageStatus.Pending} />
               <span>{stage.name}</span>
             </Link>
           </SidebarMenuButton>

@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge";
-import { CircleCheck } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { StageStatus } from "@/types/stage-status";
+import { Check, CircleCheck, Ellipsis, Hash } from "lucide-react";
 
 interface StatusProps {
   status: StageStatus;
@@ -33,5 +34,36 @@ export function StatusBadge({ status }: StatusProps) {
       {config.icon}
       {status}
     </Badge>
+  );
+}
+
+interface StatusIconProps extends StatusProps {
+  icon?: React.ReactNode;
+  className?: string;
+}
+
+export function StatusIcon({ status, icon, className }: StatusIconProps) {
+  const statusMap = {
+    [StageStatus.Pending]: {
+      className: className ?? "rounded-[3px] border-gray-300 text-gray-400",
+      icon: icon || <Hash size={16} />,
+    },
+    [StageStatus.InProgress]: {
+      className: "rounded-full border-green-700 text-green-700",
+      icon: <Ellipsis size={16} />,
+    },
+    [StageStatus.Completed]: {
+      className: "rounded-full border-green-700 text-green-700",
+      icon: <Check size={16} />,
+    },
+  };
+
+  const config = statusMap[status];
+  if (!config) return null;
+
+  return (
+    <div className={cn("border px-0.5 py-0.5", config.className)}>
+      {config.icon}
+    </div>
   );
 }

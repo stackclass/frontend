@@ -2,8 +2,7 @@
 
 import Link from "next/link";
 
-import { SquareCode } from "lucide-react";
-
+import { StatusIcon } from "@/components/stage/stage-status";
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -11,6 +10,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { StageStatus } from "@/types/stage-status";
 
 interface Props {
   slug: string;
@@ -29,7 +29,7 @@ export function CourseNavExtensions({ slug, title, stages }: Props) {
           <SidebarMenuItem key={stage.slug}>
             <SidebarMenuButton asChild>
               <Link href={`/courses/${slug}/stages/${stage.slug}`}>
-                <SquareCode />
+                <StatusIcon status={StageStatus.Pending} />
                 <span>{stage.name}</span>
               </Link>
             </SidebarMenuButton>
