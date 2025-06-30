@@ -12,6 +12,7 @@ import {
   Callbacks,
   CourseAssessment,
 } from "@/components/course/course-assessment";
+import { StageCompleted } from "@/components/stage/stage-completed";
 import { Button } from "@/components/ui/button";
 import { useCreateUserCourse } from "@/hooks/use-user-course";
 import { useRouter } from "next/navigation";
@@ -89,6 +90,8 @@ export default function CourseIntroductionPage() {
       )}
 
       <StageTabs tabs={[{ value: "instructions", label: "Instructions" }]} />
+
+      {status === StageStatus.Completed && <StageCompleted />}
 
       <main className="p-4 flex flex-col gap-y-4">
         <GenericCard title="Introduction">

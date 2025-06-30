@@ -9,6 +9,7 @@ import { StageHeader } from "@/components/stage/stage-header";
 import { StageTabs } from "@/components/stage/stage-tabs";
 
 import { useCourse } from "@/app/(course)/layout";
+import { StageCompleted } from "@/components/stage/stage-completed";
 import { getSetupStatus, StageStatus } from "@/types/stage-status";
 import Link from "next/link";
 
@@ -32,6 +33,8 @@ export default function CourseSetupPage() {
       />
 
       <StageTabs tabs={[{ value: "instructions", label: "Instructions" }]} />
+
+      {status === StageStatus.Completed && <StageCompleted />}
 
       <main className="p-4 flex flex-col gap-y-4">
         <GenericCard title="Repository Setup" status={status}>

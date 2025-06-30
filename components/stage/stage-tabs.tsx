@@ -1,7 +1,6 @@
-import Link from "next/link";
-import { Separator } from "@/components/ui/separator";
 import type { LucideIcon } from "lucide-react";
 import { BookOpen, Code2, MessageSquare } from "lucide-react";
+import Link from "next/link";
 
 interface TabItem {
   value: string;
@@ -59,7 +58,6 @@ export function StageTabs({ tabs, active }: StageTabsProps) {
           );
         })}
       </div>
-      <Separator />
     </div>
   );
 }

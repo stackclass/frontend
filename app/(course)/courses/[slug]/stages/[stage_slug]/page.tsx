@@ -10,9 +10,10 @@ import { StageHeader } from "@/components/stage/stage-header";
 import { StageTabs } from "@/components/stage/stage-tabs";
 
 import { GenericCard } from "@/components/stage/generic-card";
+import { StageCompleted } from "@/components/stage/stage-completed";
 import { useStage } from "@/hooks/use-stage";
 import { useUserStage } from "@/hooks/use-user-stage";
-import { getStageStatus } from "@/types/stage-status";
+import { getStageStatus, StageStatus } from "@/types/stage-status";
 import ReactMarkdown from "react-markdown";
 
 export default function StagePage() {
@@ -44,6 +45,8 @@ export default function StagePage() {
       <StageHeader title={stage.name} slug={stage.slug} status={status} />
 
       <StageTabs tabs={[{ value: "instructions", label: "Instructions" }]} />
+
+      {status === StageStatus.Completed && <StageCompleted />}
 
       <main className="p-4 flex flex-col gap-y-4">
         {stage.solution && (
