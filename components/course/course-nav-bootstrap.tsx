@@ -6,6 +6,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { useNavigation } from "@/hooks/use-navigation";
 import { getIntroductionStatus, getSetupStatus } from "@/types/stage-status";
 import { ArrowRight, Settings2 } from "lucide-react";
 import Link from "next/link";
@@ -13,6 +14,7 @@ import { StatusIcon } from "../stage/stage-status";
 
 export function CourseNavBootstrap({ slug }: { slug: string }) {
   const { userCourse } = useCourse();
+  const { currentSlug } = useNavigation();
 
   const introStatus = getIntroductionStatus(userCourse);
   const setupStatus = getSetupStatus(userCourse);
@@ -20,7 +22,7 @@ export function CourseNavBootstrap({ slug }: { slug: string }) {
   return (
     <SidebarMenu>
       <SidebarMenuItem>
-        <SidebarMenuButton asChild>
+        <SidebarMenuButton asChild isActive={currentSlug === "introduction"}>
           <Link href={`/courses/${slug}/introduction`}>
             <StatusIcon
               status={introStatus}
@@ -32,7 +34,7 @@ export function CourseNavBootstrap({ slug }: { slug: string }) {
         </SidebarMenuButton>
       </SidebarMenuItem>
       <SidebarMenuItem>
-        <SidebarMenuButton asChild>
+        <SidebarMenuButton asChild isActive={currentSlug === "setup"}>
           <Link href={`/courses/${slug}/setup`}>
             <StatusIcon status={setupStatus} icon={<Settings2 size={16} />} />
             <span>Repository Setup</span>

@@ -95,7 +95,7 @@ export function CourseSidebar({
         <Separator />
       </SidebarHeader>
       <SidebarContent>
-        <SidebarGroup>
+        <SidebarGroup className="gap-1">
           <CourseNavBootstrap slug={course.slug} />
           <CourseNavStages slug={course.slug} stages={baseStages} />
         </SidebarGroup>
