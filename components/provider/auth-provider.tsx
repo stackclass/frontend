@@ -2,45 +2,56 @@
 
 import { auth } from "@/lib/auth";
 import authClient from "@/lib/auth-client";
-import { createContext, useContext, useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { createContext, useContext } from "react";
 
 type Session = typeof auth.$Infer.Session;
 
-const AuthContext = createContext<Session | null>(null);
+interface AuthContextValue {
+  session: Session | null;
+  isLoading: boolean;
+  isError: boolean;
+}
+
+const AuthContext = createContext<AuthContextValue | null>(null);
 
 export default function AuthProvider({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [session, setSession] = useState<Session | null>(null);
-
-  useEffect(() => {
-    const fetchSession = async () => {
-      try {
-        const { data: session } = await authClient.getSession({
-          fetchOptions: {
-            onSuccess: (ctx) => {
-              const jwt = ctx.response.headers.get("set-auth-jwt") || "";
-              localStorage.setItem("jwt", jwt);
-            },
+  const {
+    data: session,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["session"],
+    queryFn: async () => {
+      const { data } = await authClient.getSession({
+        fetchOptions: {
+          onSuccess: (ctx) => {
+            const jwt = ctx.response.headers.get("set-auth-jwt") || "";
+            localStorage.setItem("jwt", jwt);
           },
-        });
-        setSession(session);
-      } catch (error) {
-        console.error("Failed to fetch session:", error);
-        setSession(null);
-      }
-    };
-
-    fetchSession();
-  }, []);
+        },
+      });
+      return data;
+    },
+  });
 
   return (
-    <AuthContext.Provider value={session}>{children}</AuthContext.Provider>
+    <AuthContext.Provider
+      value={{ session: session || null, isLoading, isError }}
+    >
+      {children}
+    </AuthContext.Provider>
   );
 }
 
 export function useSession() {
-  return useContext(AuthContext);
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("useSession must be used within an AuthProvider");
+  }
+  return context;
 }

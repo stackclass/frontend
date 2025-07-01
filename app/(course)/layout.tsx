@@ -44,8 +44,10 @@ export default function CourseLayout({
 
   // Checking if the session is valid. If it's not,
   // we are redirecting the user to the home page.
-  const session = useSession();
-  if (!session) redirect("/");
+  const { session, isLoading: sessionLoading } = useSession();
+  if (!sessionLoading && !session) {
+    redirect(`/courses/${slug}/overview`);
+  }
 
   // Fetch course details
   const {
@@ -98,7 +100,8 @@ export default function CourseLayout({
     });
   }, [stages, userStages]);
 
-  const isLoading = courseLoading || stagesLoading || userCourseLoading;
+  const isLoading =
+    sessionLoading || courseLoading || stagesLoading || userCourseLoading;
 
   if (isLoading) return <Loading message="Loading course details..." />;
 

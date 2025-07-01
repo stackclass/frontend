@@ -13,7 +13,7 @@ import { useSession } from "@/components/provider/auth-provider";
 import Link from "next/link";
 
 export default function Header() {
-  const session = useSession();
+  const { session } = useSession();
 
   return (
     <header className="fixed top-0 w-full bg-white border-b z-50">
