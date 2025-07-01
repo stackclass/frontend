@@ -38,9 +38,10 @@ export default function Overlay({ children }: { children: React.ReactNode }) {
   const config = configMap.get(backDirection);
 
   return (
-    <div className="relative w-full h-full">
+    <div className="relative">
       {children}
-      <div className="fixed inset-0 bg-white/80 backdrop-blur-sm flex items-center justify-center z-50">
+
+      <div className="absolute inset-0 bg-white/50 backdrop-blur-xs flex items-start pt-40 justify-center z-9">
         <div className="bg-white p-8 rounded-lg shadow-lg mx-4 max-w-md border text-center  overflow-y-auto max-h-[90vh]">
           <div className="w-full mb-4">
             <div className="text-6xl mb-2">{config?.icon}</div>
