@@ -18,7 +18,6 @@ export default function CourseSetupPage() {
   const { course, userCourse } = useCourse();
 
   const status = getSetupStatus(userCourse);
-  const repository = `${process.env.NEXT_PUBLIC_BACKEND_URL}/git/5859dab1ca7ee5c7`;
   const projectName = `codecraft-${course.slug}`;
 
   return (
@@ -54,7 +53,7 @@ export default function CourseSetupPage() {
 
               <Code title="command line">
                 <div>
-                  git clone {repository} {projectName}
+                  git clone {userCourse.repository} {projectName}
                 </div>
                 <div>cd {projectName}</div>
               </Code>

@@ -43,7 +43,7 @@ export default function CourseLayout({
   const { slug } = useParams<{ slug: string }>();
 
   // Checking if the session is valid. If it's not,
-  // we are redirecting the user to the home page.
+  // we are redirecting to the course overview page.
   const { session, isLoading: sessionLoading } = useSession();
   if (!sessionLoading && !session) {
     redirect(`/courses/${slug}/overview`);
@@ -85,6 +85,7 @@ export default function CourseLayout({
         started_at: new Date().toISOString(),
         completed_stage_count: 0,
         activated: false,
+        repository: "",
       },
       isNew: true,
     };

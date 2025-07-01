@@ -56,6 +56,9 @@ export interface UserCourse {
 
   /// Whether the first Git push was received
   activated: boolean;
+
+  /// The git repository URL of the user course
+  repository: string;
 }
 
 export interface CreateCourseRequest {
