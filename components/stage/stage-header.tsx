@@ -19,7 +19,9 @@ export function StageHeader({
       <div className="flex items-center space-x-4">
         <h1 className="text-2xl font-bold">{title}</h1>
         {slug && (
-          <span className="text-2xl font-bold text-gray-500">#{slug}</span>
+          <span className="text-2xl font-bold text-gray-500 uppercase">
+            #{slug}
+          </span>
         )}
         {status && <StatusBadge status={status} />}
       </div>
