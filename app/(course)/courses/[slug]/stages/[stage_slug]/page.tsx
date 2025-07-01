@@ -65,6 +65,7 @@ export default function StagePage() {
             status={status}
             difficulty={stage.difficulty}
             instruction={stage.instruction}
+            expandable={stage.solution != undefined}
           />
         </main>
       </Overlay>
