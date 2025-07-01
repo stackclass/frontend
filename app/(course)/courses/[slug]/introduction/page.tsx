@@ -15,7 +15,10 @@ import {
 import Overlay from "@/components/stage/overlay";
 import { StageCompleted } from "@/components/stage/stage-completed";
 import { Button } from "@/components/ui/button";
-import { useCreateUserCourse } from "@/hooks/use-user-course";
+import {
+  useCreateUserCourse,
+  useUpdateUserCourse,
+} from "@/hooks/use-user-course";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 
@@ -39,6 +42,13 @@ export default function CourseIntroductionPage() {
     },
   };
 
+  const navigateToNextStage = (currentStageSlug?: string) => {
+    const targetPath = currentStageSlug
+      ? `/courses/${course.slug}/stages/${currentStageSlug}`
+      : `/courses/${course.slug}/setup`;
+    router.push(targetPath);
+  };
+
   const hasChanges =
     userCourse.proficiency !== contextUserCourse.proficiency ||
     userCourse.cadence !== contextUserCourse.cadence ||
@@ -47,10 +57,20 @@ export default function CourseIntroductionPage() {
   const { mutate: createUserCourse } = useCreateUserCourse({
     onSuccess: (data) => {
       console.log("User course created successfully:", data);
-      router.push(`/courses/${course.slug}/setup`);
+      navigateToNextStage(data.current_stage_slug);
     },
     onError: (error) => {
       console.error("Failed to create user course:", error);
+    },
+  });
+
+  const { mutate: updateUserCourse } = useUpdateUserCourse(course.slug, {
+    onSuccess: () => {
+      console.log("User course updated successfully");
+      navigateToNextStage(userCourse.current_stage_slug);
+    },
+    onError: (error) => {
+      console.error("Failed to update user course:", error);
     },
   });
 
@@ -62,20 +82,14 @@ export default function CourseIntroductionPage() {
         cadence: userCourse.cadence || "once_week",
         accountability: userCourse.accountability || false,
       });
+    } else if (hasChanges) {
+      updateUserCourse({
+        proficiency: userCourse.proficiency || "beginner",
+        cadence: userCourse.cadence || "once_week",
+        accountability: userCourse.accountability || false,
+      });
     } else {
-      if (hasChanges) {
-        console.log("Updating user course:", {
-          proficiency: userCourse.proficiency,
-          cadence: userCourse.cadence,
-          accountability: userCourse.accountability,
-        });
-      }
-
-      // Navigate to current stage
-      const targetPath = userCourse.current_stage_slug
-        ? `/courses/${course.slug}/stages/${userCourse.current_stage_slug}`
-        : `/courses/${course.slug}/setup`;
-      router.push(targetPath);
+      navigateToNextStage(userCourse.current_stage_slug);
     }
   };
 

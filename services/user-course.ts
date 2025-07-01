@@ -1,6 +1,9 @@
 import http from "@/lib/http";
-import { CreateUserCourseRequest, UserCourse } from "@/types/course";
-import { UserStage } from "@/types/stage";
+import {
+  CreateUserCourseRequest,
+  UpdateUserCourseRequest,
+  UserCourse,
+} from "@/types/course";
 import { AxiosResponse } from "axios";
 
 export default class UserCourseService {
@@ -27,5 +30,16 @@ export default class UserCourseService {
    */
   static async getUserCourse(slug: string): Promise<AxiosResponse<UserCourse>> {
     return http.get(`/v1/user/courses/${slug}`);
+  }
+
+  /**
+   * Update this course for the current user.
+   * @param data - The data for updating a user course.
+   */
+  static async updateUserCourse(
+    slug: string,
+    data: UpdateUserCourseRequest,
+  ): Promise<AxiosResponse<void>> {
+    return http.patch(`/v1/user/courses/${slug}`, data);
   }
 }

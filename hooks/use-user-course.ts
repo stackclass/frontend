@@ -1,5 +1,9 @@
 import UserCourseService from "@/services/user-course";
-import { CreateUserCourseRequest, UserCourse } from "@/types/course";
+import {
+  CreateUserCourseRequest,
+  UpdateUserCourseRequest,
+  UserCourse,
+} from "@/types/course";
 import {
   useMutation,
   UseMutationOptions,
@@ -27,6 +31,22 @@ export const useCreateUserCourse = (
   return useMutation<UserCourse, Error, CreateUserCourseRequest>({
     mutationFn: (data) =>
       UserCourseService.createUserCourse(data).then((res) => res.data),
+    ...options,
+  });
+};
+
+/**
+ * Update a user course.
+ * @param slug - The slug of the course.
+ * @param options - Optional mutation options.
+ */
+export const useUpdateUserCourse = (
+  slug: string,
+  options?: UseMutationOptions<void, Error, UpdateUserCourseRequest>,
+) => {
+  return useMutation<void, Error, UpdateUserCourseRequest>({
+    mutationFn: (data) =>
+      UserCourseService.updateUserCourse(slug, data).then((res) => res.data),
     ...options,
   });
 };

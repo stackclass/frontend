@@ -76,3 +76,14 @@ export interface CreateUserCourseRequest {
   /// Whether the user wants accountability emails
   accountability: boolean;
 }
+
+export interface UpdateUserCourseRequest {
+  /// Language proficiency level of the user
+  proficiency: string;
+
+  /// Practice cadence of the user
+  cadence: string;
+
+  /// Whether the user wants accountability emails
+  accountability: boolean;
+}
