@@ -95,14 +95,14 @@ export default function CourseIntroductionPage() {
 
   return (
     <>
-      {status != StageStatus.Pending ? (
-        <StageHeader title="Introduction" status={status} />
-      ) : (
-        <StageHeader
-          title="Introduction"
-          description="Complete the pre-challenge assessment to begin this course."
-        />
-      )}
+      <StageHeader
+        title="Introduction"
+        status={status != StageStatus.Pending && status}
+        description={
+          status == StageStatus.Pending &&
+          "Complete the pre-challenge assessment to begin this course."
+        }
+      />
 
       <StageTabs tabs={[{ value: "instructions", label: "Instructions" }]} />
 

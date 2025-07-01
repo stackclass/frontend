@@ -43,7 +43,15 @@ export default function StagePage() {
 
   return (
     <>
-      <StageHeader title={stage.name} slug={stage.slug} status={status} />
+      <StageHeader
+        title={stage.name}
+        slug={stage.slug}
+        status={status}
+        description={
+          status == StageStatus.Pending &&
+          "Complete previous stages to gain access to this stage."
+        }
+      />
 
       <StageTabs tabs={[{ value: "instructions", label: "Instructions" }]} />
 

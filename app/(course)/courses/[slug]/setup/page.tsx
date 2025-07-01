@@ -26,9 +26,8 @@ export default function CourseSetupPage() {
         title="Repository Setup"
         status={status}
         description={
-          status == StageStatus.Pending
-            ? "Complete introduction step to proceed"
-            : ""
+          status == StageStatus.Pending &&
+          "Complete introduction step to proceed"
         }
       />
 

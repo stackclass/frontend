@@ -4,8 +4,8 @@ import { StageStatus } from "@/types/stage-status";
 interface StageHeaderProps {
   title: string;
   slug?: string;
-  status?: StageStatus;
-  description?: string;
+  status?: StageStatus | boolean;
+  description?: string | boolean;
 }
 
 export function StageHeader({
@@ -23,7 +23,9 @@ export function StageHeader({
             #{slug}
           </span>
         )}
-        {status && <StatusBadge status={status} />}
+        {status && typeof status !== "boolean" && (
+          <StatusBadge status={status} />
+        )}
       </div>
 
       {description && <p className="text-sm text-gray-500">{description}</p>}
