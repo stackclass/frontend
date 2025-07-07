@@ -41,7 +41,7 @@ export function useNavigation() {
       targetSlug = userCourse.current_stage_slug;
     } else if (getSetupStatus(userCourse) === StageStatus.InProgress) {
       targetSlug = "setup";
-    } else if (getIntroductionStatus(userCourse) === StageStatus.InProgress) {
+    } else if (getIntroductionStatus(userCourse) !== StageStatus.Completed) {
       targetSlug = "introduction";
     }
 
