@@ -29,16 +29,7 @@ export interface StageDetail extends Stage {
   instruction: string;
 
   /// The solution to this stage, if available.
-  solution?: Solution;
-}
-
-export interface Solution {
-  /// Detailed description of the solution approach and logic
-  explanation: string;
-
-  /// Collection of file changes needed to implement this solution
-  /// Stored as tuples of (file_path, patch_content)
-  patches: [string, string][];
+  solution?: string;
 }
 
 export interface UserStage {

@@ -1,5 +1,5 @@
 import http from "@/lib/http";
-import { Solution, Stage, StageDetail } from "@/types/stage";
+import { Stage, StageDetail } from "@/types/stage";
 import { AxiosResponse } from "axios";
 
 /**

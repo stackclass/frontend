@@ -63,7 +63,7 @@ export default function StagePage() {
             <GenericCard title="How to pass this stage">
               <div className="max-w-5xl">
                 <div className="markdown">
-                  <ReactMarkdown>{stage.solution.explanation}</ReactMarkdown>
+                  <ReactMarkdown>{stage.solution}</ReactMarkdown>
                 </div>
               </div>
             </GenericCard>
