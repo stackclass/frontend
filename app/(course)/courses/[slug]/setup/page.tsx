@@ -68,7 +68,7 @@ export default function CourseSetupPage() {
 
               <Code title="command line">
                 <div>git commit --allow-empty -m 'test'</div>
-                <div>git push origin master</div>
+                <div>git push origin main</div>
               </Code>
 
               <p className={userCourse.activated ? "line-through" : ""}>

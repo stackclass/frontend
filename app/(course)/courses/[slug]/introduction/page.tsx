@@ -26,6 +26,7 @@ export default function CourseIntroductionPage() {
   const router = useRouter();
 
   const { course, userCourse: contextUserCourse, isNew } = useCourse();
+  const [isNewState, setIsNewState] = useState(isNew);
 
   const [userCourse, setUserCourse] = useState(contextUserCourse);
   const status = useMemo(() => getIntroductionStatus(userCourse), [userCourse]);
@@ -57,6 +58,7 @@ export default function CourseIntroductionPage() {
   const { mutate: createUserCourse } = useCreateUserCourse({
     onSuccess: (data) => {
       console.log("User course created successfully:", data);
+      setIsNewState(false);
       navigateToNextStage(data.current_stage_slug);
     },
     onError: (error) => {
@@ -75,7 +77,7 @@ export default function CourseIntroductionPage() {
   });
 
   const handleContinue = () => {
-    if (isNew) {
+    if (isNewState) {
       createUserCourse({
         course_slug: course.slug,
         proficiency: userCourse.proficiency || "beginner",
@@ -107,7 +109,7 @@ export default function CourseIntroductionPage() {
       <StageTabs tabs={[{ value: "instructions", label: "Instructions" }]} />
 
       <Overlay>
-        {status === StageStatus.Completed && <StageCompleted />}
+        {!isNewState && status === StageStatus.Completed && <StageCompleted />}
 
         <main className="p-4 flex flex-col gap-y-4">
           <GenericCard title="Introduction">
@@ -124,11 +126,14 @@ export default function CourseIntroductionPage() {
             callbacks={callbacks}
           />
 
-          {status === StageStatus.Completed && (
-            <div className="mt-6 flex justify-start">
-              <Button onClick={handleContinue}>Continue</Button>
-            </div>
-          )}
+          <div className="mt-6 flex justify-start">
+            <Button
+              onClick={handleContinue}
+              disabled={status !== StageStatus.Completed}
+            >
+              Continue
+            </Button>
+          </div>
         </main>
       </Overlay>
     </>

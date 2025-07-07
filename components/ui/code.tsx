@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import {
   Card,
   CardAction,
@@ -20,11 +20,15 @@ interface CodeProps {
 
 export function Code({ title, className, children }: CodeProps) {
   const [copied, setCopied] = useState(false);
+  const codeRef = useRef<HTMLPreElement>(null);
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(children?.toString() || "");
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1000);
+    if (codeRef.current) {
+      const textContent = codeRef.current.innerText || "";
+      navigator.clipboard.writeText(textContent);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1000);
+    }
   };
 
   return (
@@ -45,7 +49,7 @@ export function Code({ title, className, children }: CodeProps) {
         </CardAction>
       </CardHeader>
       <CardContent>
-        <pre>
+        <pre ref={codeRef}>
           <code>{children}</code>
         </pre>
       </CardContent>
