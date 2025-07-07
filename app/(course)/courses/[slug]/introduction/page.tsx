@@ -25,9 +25,12 @@ import { useMemo, useState } from "react";
 export default function CourseIntroductionPage() {
   const router = useRouter();
 
-  const { course, userCourse: contextUserCourse, isNew } = useCourse();
-  const [isNewState, setIsNewState] = useState(isNew);
-
+  const {
+    course,
+    userCourse: contextUserCourse,
+    isNew,
+    updateUserCourse: updateContextUserCourse,
+  } = useCourse();
   const [userCourse, setUserCourse] = useState(contextUserCourse);
   const status = useMemo(() => getIntroductionStatus(userCourse), [userCourse]);
 
@@ -58,7 +61,7 @@ export default function CourseIntroductionPage() {
   const { mutate: createUserCourse } = useCreateUserCourse({
     onSuccess: (data) => {
       console.log("User course created successfully:", data);
-      setIsNewState(false);
+      updateContextUserCourse(data);
       navigateToNextStage(data.current_stage_slug);
     },
     onError: (error) => {
@@ -77,7 +80,7 @@ export default function CourseIntroductionPage() {
   });
 
   const handleContinue = () => {
-    if (isNewState) {
+    if (isNew) {
       createUserCourse({
         course_slug: course.slug,
         proficiency: userCourse.proficiency || "beginner",
@@ -109,7 +112,7 @@ export default function CourseIntroductionPage() {
       <StageTabs tabs={[{ value: "instructions", label: "Instructions" }]} />
 
       <Overlay>
-        {!isNewState && status === StageStatus.Completed && <StageCompleted />}
+        {!isNew && status === StageStatus.Completed && <StageCompleted />}
 
         <main className="p-4 flex flex-col gap-y-4">
           <GenericCard title="Introduction">

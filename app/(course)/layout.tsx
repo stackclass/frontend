@@ -1,7 +1,7 @@
 "use client";
 
 import { redirect, useParams } from "next/navigation";
-import { createContext, useContext, useMemo } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
 import CourseHeader from "@/components/course/course-header";
 import { CourseSidebar } from "@/components/course/course-sidebar";
@@ -23,6 +23,7 @@ interface CourseContextValue {
   userCourse: UserCourse;
   stages: StageWithState[];
   isNew: boolean;
+  updateUserCourse: (newUserCourse: UserCourse) => void;
 }
 
 const CourseContext = createContext<CourseContextValue | null>(null);
@@ -73,8 +74,20 @@ export default function CourseLayout({
   // Fetching all user stages for a course
   const { data: userStages } = useUserStages(slug, { retry: false });
 
+  const [userCourseData, setUserCourseData] = useState<UserCourse | null>(null);
+
+  useEffect(() => {
+    if (rawUserCourse) {
+      setUserCourseData(rawUserCourse);
+    }
+  }, [rawUserCourse]);
+
+  const updateUserCourse = (newUserCourse: UserCourse) => {
+    setUserCourseData(newUserCourse);
+  };
+
   const { userCourse, isNew } = useMemo(() => {
-    if (rawUserCourse) return { userCourse: rawUserCourse, isNew: false };
+    if (userCourseData) return { userCourse: userCourseData, isNew: false };
 
     return {
       userCourse: {
@@ -89,7 +102,7 @@ export default function CourseLayout({
       },
       isNew: true,
     };
-  }, [rawUserCourse, slug]);
+  }, [userCourseData, slug]);
 
   const stagesWithState = useMemo(() => {
     if (!stages) return [];
@@ -118,6 +131,7 @@ export default function CourseLayout({
     userCourse,
     stages: stagesWithState,
     isNew,
+    updateUserCourse,
   };
 
   return (
