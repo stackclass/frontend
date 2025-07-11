@@ -1,6 +1,6 @@
 {
-  "name": "codecraft-frontend",
-  "version": "0.8.0",
+  "name": "stackclass-frontend",
+  "version": "0.9.0",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",

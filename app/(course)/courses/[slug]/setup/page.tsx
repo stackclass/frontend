@@ -18,7 +18,7 @@ export default function CourseSetupPage() {
   const { course, userCourse } = useCourse();
 
   const status = getSetupStatus(userCourse);
-  const projectName = `codecraft-${course.slug}`;
+  const projectName = `stackclass-${course.slug}`;
 
   return (
     <>

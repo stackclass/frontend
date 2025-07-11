@@ -17,8 +17,8 @@ export const auth = betterAuth({
   plugins: [
     jwt({
       jwt: {
-        issuer: "codecraft",
-        audience: "codecraft",
+        issuer: "StackClass",
+        audience: "StackClass",
         expirationTime: "1h",
         definePayload: ({ user }) => {
           return {

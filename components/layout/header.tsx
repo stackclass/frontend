@@ -20,7 +20,7 @@ export default function Header() {
       <div className="container lg:max-w-screen-lg mx-auto flex items-center md:flex-row md:px-6 h-16 justify-between px-4">
         <div className="flex items-center space-x-8">
           <Link href="/catalog" className="font-bold text-lg">
-            Codecraft
+            StackClass
           </Link>
 
           <NavigationMenu className="hidden md:flex">
