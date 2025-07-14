@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import authClient from "@/lib/auth-client";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 interface UserNavigationProps {
@@ -25,8 +26,8 @@ export function UserNavigation({ user }: UserNavigationProps) {
 
   return (
     <div className="flex items-center gap-3">
-      <img
-        src={user.image || undefined}
+      <Image
+        src={user.image || "/default-avatar.svg"}
         className="w-8 h-8 rounded-full border border-gray-200"
         alt="User profile"
       />

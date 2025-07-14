@@ -39,7 +39,9 @@ export default function CourseSetupPage() {
         <main className="p-4 flex flex-col gap-y-4">
           <GenericCard title="Repository Setup" status={status}>
             <div className="max-w-5xl flex flex-col space-y-4">
-              <p>We've prepared a starter repository with some code for you.</p>
+              <p>
+                We&apos;ve prepared a starter repository with some code for you.
+              </p>
 
               <div className="flex items-center space-x-2">
                 {status == StageStatus.Completed ? (
@@ -67,14 +69,14 @@ export default function CourseSetupPage() {
               </div>
 
               <Code title="command line">
-                <div>git commit --allow-empty -m 'test'</div>
+                <div>git commit --allow-empty -m &apos;test&apos;</div>
                 <div>git push origin main</div>
               </Code>
 
               <p className={userCourse.activated ? "line-through" : ""}>
-                When you run the above command, the "Listening for a git push"
-                message below will change, and the first stage will be
-                activated.
+                When you run the above command, the &quot;Listening for a git
+                push&quot; message below will change, and the first stage will
+                be activated.
               </p>
 
               {status == StageStatus.Pending && (

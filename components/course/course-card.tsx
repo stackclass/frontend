@@ -2,6 +2,7 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import { ArrowRight, GraduationCap } from "lucide-react";
 import { Course } from "@/types/course";
+import Image from "next/image";
 
 interface CourseCardProps {
   course: Course;
@@ -28,7 +29,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
         </div>
         <div className="w-10 h-10 transform scale-100 group-hover:scale-105 flex-shrink-0 transition-transform">
           {course.logo ? (
-            <img src={course.logo} alt={`${course.name} logo`} />
+            <Image src={course.logo} alt={`${course.name} logo`} />
           ) : (
             <GraduationCap className="w-full h-full text-gray-400" />
           )}

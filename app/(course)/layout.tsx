@@ -58,11 +58,10 @@ export default function CourseLayout({
   } = useGetCourse(slug);
 
   // Fetch user course details
-  const {
-    data: rawUserCourse,
-    isLoading: userCourseLoading,
-    error: _userCourseError,
-  } = useUserCourse(slug, { retry: false });
+  const { data: rawUserCourse, isLoading: userCourseLoading } = useUserCourse(
+    slug,
+    { retry: false },
+  );
 
   // Fetch all stages
   const {

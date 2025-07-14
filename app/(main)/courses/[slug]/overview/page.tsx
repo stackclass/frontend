@@ -75,7 +75,7 @@ export default function CourseOverviewPage() {
         setLoading(false);
       }
     }
-  }, [courseLoading, stagesLoading, extensionsLoading]);
+  }, [courseLoading, stagesLoading, extensionsLoading, extensions, stages]);
 
   if (loading) return <Loading message="Loading course detail..." />;
   if (error) return <ErrorMessage message={error} />;
@@ -120,8 +120,8 @@ export default function CourseOverviewPage() {
           <div className="bg-blue-50 p-4 rounded-lg sticky top-24">
             <h4 className="font-medium mb-2">Before starting</h4>
             <p className="text-sm">
-              Make sure you've read the "Welcome" section of the book that
-              contains these chapters:
+              Make sure you&apos;ve read the &quot;Welcome&quot; section of the
+              book that contains these chapters:
             </p>
             <ul className="list-disc pl-5 mt-2 text-sm space-y-1">
               <li>Introduction (chapter 1)</li>

@@ -10,7 +10,7 @@ export function StageCompleted() {
       <div className="flex items-center flex-wrap gap-4">
         <div className="text-2xl pl-1">🎉</div>
         <div className="text-green-700">
-          <p>You've completed this step.</p>
+          <p>You&apos;ve completed this step.</p>
         </div>
 
         <StageNavButton />

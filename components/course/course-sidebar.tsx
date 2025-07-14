@@ -82,7 +82,7 @@ export function CourseSidebar({
         setLoading(false);
       }
     }
-  }, [extensionsLoading, stages]);
+  }, [extensionsLoading, extensions, stages]);
 
   const baseStages = stages.filter((stage) => !stage.stage.extension_slug);
 
