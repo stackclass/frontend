@@ -4,10 +4,11 @@
 name: Continuous Integration
 
 on:
-  push:
-    branches: ["main"]
   pull_request:
-    branches: ["main"]
+  push:
+    paths-ignore:
+      - .github/**
+      - README.md
 
 jobs:
   build:
