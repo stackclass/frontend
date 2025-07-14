@@ -13,17 +13,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
-    # Environment variables for CI testing
-    # All values are dummies - replace with real secrets for production
-    # Variables sourced from .env.example with dummy values
     env:
-      NEXT_PUBLIC_BACKEND_URL: "http://dummy-backend.test"
-      BETTER_AUTH_SECRET: "dummy_auth_secret_32_chars_long_xxxx"
-      BETTER_AUTH_URL: "http://dummy-auth.test"
-      BETTER_DATABASE_URL: "postgres://dummy_user:dummy_pass@dummy.db/dummy_db"
-      GITHUB_CLIENT_ID: "dummy_github_client_id"
-      GITHUB_CLIENT_SECRET: "dummy_github_client_secret"
+      NEXT_TELEMETRY_DISABLED: 1
 
     steps:
       - uses: actions/checkout@v4
@@ -33,4 +24,6 @@ jobs:
 
       - run: npm install
       - run: npm run lint
+
+      - run: cp .env.example .env
       - run: npm run build --if-present
