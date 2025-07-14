@@ -12,6 +12,16 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    # Environment variables for CI build
+    # Note: These are dummy values only for passing the build process
+    # Real secrets should NEVER be committed to the repository
+    # For production, use GitHub Secrets or other secure storage
+    env:
+      BETTER_AUTH_SECRET: "dummy_secret_for_ci"
+      GITHUB_CLIENT_ID: "dummy_client_id"
+      GITHUB_CLIENT_SECRET: "dummy_client_secret"
+
     steps:
       - uses: actions/checkout@v4
 
