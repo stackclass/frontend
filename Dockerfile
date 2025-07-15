@@ -25,6 +25,8 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+# Copy the environment example file to .env for the build phase. This is
+# necessary because `npm run build` may require environment variables.
 COPY .env.example .env
 
 
@@ -40,6 +42,12 @@ RUN \
     else npm run build; \
     # else echo "Lockfile not found." && exit 1; \
     fi
+
+# Remove the .env file after the build is complete. In the runner phase,
+# environment variables should be provided externally, e.g., via Docker secrets
+# or runtime env vars.
+RUN rm -f .env
+RUN rm -f /app/.next/standalone/.env
 
 # Production image, copy all the files and run next
 FROM base AS runner

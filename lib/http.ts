@@ -1,78 +1,121 @@
 import axios, {
+  AxiosError,
   AxiosInstance,
   AxiosResponse,
-  AxiosError,
   InternalAxiosRequestConfig,
 } from "axios";
 
 const TOKEN_KEY = "jwt";
 
-const baseURL = process.env.NEXT_PUBLIC_BACKEND_URL;
-if (!baseURL) {
-  if (process.env.NODE_ENV === "production") {
-    throw new Error("BACKEND_URL is required in production environment.");
-  } else {
-    console.warn("BACKEND_URL is not defined. Using default development URL.");
-  }
-}
-
-// Create an axios instance with default configurations
-const http: AxiosInstance = axios.create({
-  baseURL: baseURL || "http://localhost:3000",
-  timeout: parseInt(process.env.HTTP_TIMEOUT || "10000", 10),
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
+const getBaseURL = (): string | undefined =>
+  typeof window !== "undefined"
+    ? window.env?.NEXT_PUBLIC_BACKEND_URL
+    : undefined;
 
 // Request interceptor: Automatically add the token to headers
-http.interceptors.request.use(
-  (config: InternalAxiosRequestConfig) => {
-    // Only access localStorage in the client-side environment
-    if (typeof window !== "undefined") {
-      const token = localStorage.getItem(TOKEN_KEY);
-      if (token) {
-        config.headers = config.headers || {};
-        config.headers.Authorization = `Bearer ${token}`;
+const setupRequestInterceptors = (instance: AxiosInstance): void => {
+  instance.interceptors.request.use(
+    (config: InternalAxiosRequestConfig) => {
+      // Only access localStorage in the client-side environment
+      if (typeof window !== "undefined") {
+        const token = localStorage.getItem(TOKEN_KEY);
+        if (token) {
+          config.headers = config.headers || {};
+          config.headers.Authorization = `Bearer ${token}`;
+        }
       }
-    }
-    return config;
-  },
-  (error: AxiosError) => {
-    return Promise.reject(error);
-  },
-);
+      return config;
+    },
+    (error: AxiosError) => {
+      return Promise.reject(error);
+    },
+  );
+};
 
 interface ErrorResponse {
   message?: string;
 }
 
 // Response interceptor: Standardize success/error responses
-http.interceptors.response.use(
-  (response: AxiosResponse) => response,
-  (error: AxiosError<ErrorResponse>) => {
-    if (error.response) {
-      const { status, data } = error.response;
-      const message = data?.message || error.message;
+const setupResponseInterceptors = (instance: AxiosInstance): void => {
+  instance.interceptors.response.use(
+    (response: AxiosResponse) => response,
+    (error: AxiosError<ErrorResponse>) => {
+      if (error.response) {
+        const { status, data } = error.response;
+        const message = data?.message || error.message;
 
-      // Handle specific status codes (e.g., 401 for token removal)
-      if (status === 401 && typeof window !== "undefined") {
-        localStorage.removeItem(TOKEN_KEY);
+        // Handle specific status codes (e.g., 401 for token removal)
+        if (status === 401 && typeof window !== "undefined") {
+          localStorage.removeItem(TOKEN_KEY);
+        }
+
+        return Promise.reject({
+          code: status,
+          message: message,
+        });
       }
 
+      // Network or other errors
       return Promise.reject({
-        code: status,
-        message: message,
+        code: -1,
+        message: error.message || "Network error",
       });
+    },
+  );
+};
+
+// Create an axios instance with default configurations
+const createHttpInstance = (baseURL: string): AxiosInstance => {
+  const instance: AxiosInstance = axios.create({
+    baseURL,
+    timeout: parseInt(process.env.HTTP_TIMEOUT || "10000", 10),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  setupRequestInterceptors(instance);
+  setupResponseInterceptors(instance);
+
+  return instance;
+};
+
+let httpInstance: AxiosInstance | null = null;
+let lastBaseURL: string | undefined = undefined;
+
+export const getHttpInstance = (): AxiosInstance => {
+  const currentBaseURL = getBaseURL();
+
+  if (currentBaseURL === undefined) {
+    throw new Error(
+      "Cannot initialize HTTP client: NEXT_PUBLIC_BACKEND_URL is not defined. " +
+        "Ensure EnvProvider is properly initialized.",
+    );
+  }
+
+  if (!httpInstance || currentBaseURL !== lastBaseURL) {
+    httpInstance = createHttpInstance(currentBaseURL!);
+    lastBaseURL = currentBaseURL;
+  }
+
+  return httpInstance;
+};
+
+const proxy = new Proxy({} as AxiosInstance, {
+  get<T extends keyof AxiosInstance>(_: unknown, method: T) {
+    const http = getHttpInstance();
+    const property = http[method];
+
+    // Handle function properties
+    if (typeof property === "function") {
+      return (...args: unknown[]) =>
+        (property as (...args: unknown[]) => unknown)(...args);
     }
 
-    // Network or other errors
-    return Promise.reject({
-      code: -1,
-      message: error.message || "Network error",
-    });
+    // Return non-function properties as-is
+    return property;
   },
-);
+});
 
-// Export the instance
-export default http;
+export default proxy;
