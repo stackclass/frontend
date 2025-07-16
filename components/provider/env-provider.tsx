@@ -5,7 +5,7 @@ export const EnvProvider: FC = () => {
   const env: Record<string, string> = {};
 
   Object.keys(process.env).forEach((key) => {
-    if (key.startsWith("NEXT_PUBLIC_")) {
+    if (key.startsWith("PUBLIC_")) {
       env[key] = process.env[key] as string;
     }
   });

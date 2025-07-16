@@ -8,9 +8,7 @@ import axios, {
 const TOKEN_KEY = "jwt";
 
 const getBaseURL = (): string | undefined =>
-  typeof window !== "undefined"
-    ? window.env?.NEXT_PUBLIC_BACKEND_URL
-    : undefined;
+  typeof window !== "undefined" ? window.env?.PUBLIC_BACKEND_URL : undefined;
 
 // Request interceptor: Automatically add the token to headers
 const setupRequestInterceptors = (instance: AxiosInstance): void => {
@@ -89,7 +87,7 @@ export const getHttpInstance = (): AxiosInstance => {
 
   if (currentBaseURL === undefined) {
     throw new Error(
-      "Cannot initialize HTTP client: NEXT_PUBLIC_BACKEND_URL is not defined. " +
+      "Cannot initialize HTTP client: PUBLIC_BACKEND_URL is not defined. " +
         "Ensure EnvProvider is properly initialized.",
     );
   }
