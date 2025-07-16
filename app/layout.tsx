@@ -1,5 +1,4 @@
 import AuthProvider from "@/components/provider/auth-provider";
-import { EnvProvider } from "@/components/provider/env-provider";
 import QueryClientProvider from "@/components/provider/query-client-provider";
 import type { Metadata } from "next";
 import "./globals.css";
@@ -17,7 +16,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <EnvProvider />
         <QueryClientProvider>
           <AuthProvider>{children}</AuthProvider>
         </QueryClientProvider>
