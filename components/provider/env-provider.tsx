@@ -1,7 +1,8 @@
-import { FC } from "react";
+import "server-only";
+
 import { EnvProviderClient } from "./env-provider-client";
 
-export const EnvProvider: FC = () => {
+export const EnvProvider = () => {
   const env: Record<string, string> = {};
 
   Object.keys(process.env).forEach((key) => {
