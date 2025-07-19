@@ -1,4 +1,17 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Frontend web application for StackClass
+
+[![License](https://img.shields.io/github/license/stackclass/frontend)](https://github.com/stackclass/frontend/blob/main/LICENSE)
+[![GitHub contributors](https://img.shields.io/github/contributors/stackclass/frontend)](https://github.com/stackclass/frontend/graphs/contributors)
+[![GitHub issues](https://img.shields.io/github/issues/stackclass/frontend)](https://github.com/stackclass/frontend/issues)
+
+A modern frontend for StackClass built with Next.js.
+
+## Features
+
+- **Next.js**: Fast and SEO-friendly React framework.
+- **Geist Font**: Optimized font loading with `next/font`.
+- **Vercel Deployment**: Easy deployment on Vercel.
+- **Responsive Design**: Works on all devices.
 
 ## Getting Started
 
@@ -16,24 +29,12 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Contributing
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+If anything feels off, or if you feel that some functionality is missing, please
+check out the [contributing page](CONTRIBUTING.md). There you will find
+instructions for sharing your feedback, building the project locally, and
+submitting pull requests to the project.
 
 ## License
 
