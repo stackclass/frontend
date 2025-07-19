@@ -1,10 +1,17 @@
 export default function Footer() {
   return (
-    <footer className="py-6 text-center text-gray-400 z-50">
-      <div className="container mx-auto px-4 space-x-4">
-        <span>© 2025 StackClass Programming challenges for developers.</span>
-        <a href="/terms">Terms and Conditions</a>
-        <a href="/privacy">Privacy Policy</a>
+    <footer className="py-6 text-gray-600 z-50">
+      <div className="container lg:max-w-screen-lg mx-auto px-3">
+        <div className="flex flex-col md:flex-row justify-between items-center ">
+          <div className="flex items-center flex-col md:flex-row space-x-4 mb-4 md:mb-0">
+            <div className="text-lg font-bold">StackClass</div>
+            <div>Programming challenges for developers.</div>
+          </div>
+          <div className="flex space-x-4">
+            <a href="/terms">Terms and Conditions</a>
+            <a href="/privacy">Privacy Policy</a>
+          </div>
+        </div>
       </div>
     </footer>
   );

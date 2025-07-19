@@ -10,7 +10,6 @@ import {
 import { SignInButton } from "@/components/auth/sign-in-btn";
 import { UserNavigation } from "@/components/auth/user-nav";
 import { useSession } from "@/components/provider/auth-provider";
-import Link from "next/link";
 
 export default function Header() {
   const { session } = useSession();
@@ -19,9 +18,9 @@ export default function Header() {
     <header className="fixed top-0 w-full bg-white border-b z-50">
       <div className="container lg:max-w-screen-lg mx-auto flex items-center md:flex-row md:px-6 h-16 justify-between px-4">
         <div className="flex items-center space-x-8">
-          <Link href="/catalog" className="font-bold text-lg">
+          <a href="/" className="font-bold text-lg">
             StackClass
-          </Link>
+          </a>
 
           <NavigationMenu className="hidden md:flex">
             <NavigationMenuList>
