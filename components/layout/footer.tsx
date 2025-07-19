@@ -25,7 +25,11 @@ export default function Footer() {
         <div>
           <h3 className="font-bold mb-4">LEGAL</h3>
           <ul className="space-y-2 text-gray-400">
-            <li>Terms</li>
+            <li>
+              <a href="/terms" className="hover:text-white transition-colors">
+                Terms
+              </a>
+            </li>
             <li>Privacy</li>
           </ul>
         </div>
