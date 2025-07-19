@@ -30,7 +30,11 @@ export default function Footer() {
                 Terms
               </a>
             </li>
-            <li>Privacy</li>
+            <li>
+              <a href="/privacy" className="hover:text-white transition-colors">
+                Privacy
+              </a>
+            </li>
           </ul>
         </div>
       </div>
