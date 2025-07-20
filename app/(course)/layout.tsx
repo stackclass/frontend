@@ -6,6 +6,7 @@ import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import CourseHeader from "@/components/course/course-header";
 import { CourseSidebar } from "@/components/course/course-sidebar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { toast } from "sonner";
 
 import { ErrorMessage } from "@/components/common/error-message";
 import { Loading } from "@/components/common/loading";
@@ -47,6 +48,7 @@ export default function CourseLayout({
   // we are redirecting to the course overview page.
   const { session, isLoading: sessionLoading } = useSession();
   if (!sessionLoading && !session) {
+    toast.error("Please sign in to access this course.");
     redirect(`/courses/${slug}/overview`);
   }
 

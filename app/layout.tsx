@@ -1,5 +1,6 @@
 import AuthProvider from "@/components/provider/auth-provider";
 import QueryClientProvider from "@/components/provider/query-client-provider";
+import { Toaster } from "@/components/ui/sonner";
 import type { Metadata } from "next";
 import "./globals.css";
 
@@ -19,6 +20,7 @@ export default function RootLayout({
         <QueryClientProvider>
           <AuthProvider>{children}</AuthProvider>
         </QueryClientProvider>
+        <Toaster position="top-center" richColors visibleToasts={1} />
       </body>
     </html>
   );
