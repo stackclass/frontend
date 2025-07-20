@@ -12,6 +12,7 @@ import { StageTabs } from "@/components/stage/stage-tabs";
 import { GenericCard } from "@/components/stage/generic-card";
 import Overlay from "@/components/stage/overlay";
 import { StageCompleted } from "@/components/stage/stage-completed";
+import TestRunner from "@/components/stage/test-runner";
 import { useStage } from "@/hooks/use-stage";
 import { useUserStage } from "@/hooks/use-user-stage";
 import { getStageStatus, StageStatus } from "@/types/stage-status";
@@ -68,6 +69,7 @@ export default function StagePage() {
               </div>
             </GenericCard>
           )}
+          <TestRunner />
           <InstructionCard
             title="Your Task"
             status={status}
