@@ -11,14 +11,21 @@ import { StageTabs } from "@/components/stage/stage-tabs";
 import { useCourse } from "@/app/(course)/layout";
 import Overlay from "@/components/stage/overlay";
 import { StageCompleted } from "@/components/stage/stage-completed";
+import { useUserCourseStatus } from "@/hooks/use-user-course-status";
 import { getSetupStatus, StageStatus } from "@/types/stage-status";
 import Link from "next/link";
 
 export default function CourseSetupPage() {
   const { course, userCourse } = useCourse();
 
-  const status = getSetupStatus(userCourse);
   const projectName = `stackclass-${course.slug}`;
+
+  const { status: userCourseStatus } = useUserCourseStatus(
+    course.slug,
+    userCourse,
+  );
+
+  const status = getSetupStatus(userCourseStatus);
 
   return (
     <>
