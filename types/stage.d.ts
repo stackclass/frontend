@@ -40,7 +40,10 @@ export interface UserStage {
   stage_slug: string;
 
   /// Current progress status (in_progress, completed)
-  status: string;
+  status: "in_progress" | "completed";
+
+  /// Test result status (passed, failed)
+  test: "passed" | "failed";
 
   /// Timestamp when the stage was started
   started_at: string;

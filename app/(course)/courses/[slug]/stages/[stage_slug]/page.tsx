@@ -15,14 +15,17 @@ import { StageCompleted } from "@/components/stage/stage-completed";
 import TestRunner from "@/components/stage/test-runner";
 import { useStage } from "@/hooks/use-stage";
 import { useUserStage } from "@/hooks/use-user-stage";
+import { useUserStageStatus } from "@/hooks/use-user-stage-status";
 import { getStageStatus, StageStatus } from "@/types/stage-status";
 import ReactMarkdown from "react-markdown";
+import { UserStage } from "@/types/stage";
 
 export default function StagePage() {
   const { slug, stage_slug } = useParams<{
     slug: string;
     stage_slug: string;
   }>();
+
   const {
     data: stage,
     isLoading: stageLoading,
@@ -35,12 +38,18 @@ export default function StagePage() {
     { retry: false },
   );
 
+  const { status: userStageStatus } = useUserStageStatus(
+    slug,
+    stage_slug,
+    userStage ?? null,
+  );
+
   const isLoading = stageLoading || userStageLoading;
   if (isLoading) return <Loading message="Loading stage details..." />;
   if (stageError) return <ErrorMessage message={stageError.message} />;
   if (!stage) return <NotFound message="Stage not found." />;
 
-  const status = getStageStatus({ stage, userStage: userStage ?? null });
+  const status = getStageStatus(userStageStatus as UserStage);
 
   return (
     <>
@@ -69,7 +78,9 @@ export default function StagePage() {
               </div>
             </GenericCard>
           )}
-          <TestRunner />
+
+          {userStageStatus && <TestRunner status={userStageStatus.test} />}
+
           <InstructionCard
             title="Your Task"
             status={status}

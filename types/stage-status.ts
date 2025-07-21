@@ -1,5 +1,5 @@
 import { UserCourse } from "@/types/course";
-import { StageWithState } from "@/types/stage";
+import { StageWithState, UserStage } from "@/types/stage";
 
 export enum StageStatus {
   Pending = "Pending",
@@ -38,11 +38,11 @@ export function getSetupStatus(userCourse: UserCourse | null): StageStatus {
   return status;
 }
 
-export function getStageStatus(stageWithState: StageWithState): StageStatus {
-  if (!stageWithState.userStage) {
+export function getStageStatus(userStage: UserStage | null): StageStatus {
+  if (!userStage) {
     return StageStatus.Pending;
   }
-  switch (stageWithState.userStage.status) {
+  switch (userStage.status) {
     case "in_progress":
       return StageStatus.InProgress;
     case "completed":
@@ -50,4 +50,12 @@ export function getStageStatus(stageWithState: StageWithState): StageStatus {
     default:
       return StageStatus.Pending;
   }
+}
+
+export interface UserStageStatus {
+  /// Current progress status (in_progress, completed)
+  status: "in_progress" | "completed";
+
+  /// Test result status (passed, failed)
+  test: "passed" | "failed";
 }

@@ -36,7 +36,7 @@ export function CourseNavExtensions({ slug, title, stages }: Props) {
               asChild
             >
               <Link href={`/courses/${slug}/stages/${stage.stage.slug}`}>
-                <StatusIcon status={getStageStatus(stage)} />
+                <StatusIcon status={getStageStatus(stage.userStage)} />
                 <span>{stage.stage.name}</span>
               </Link>
             </SidebarMenuButton>
