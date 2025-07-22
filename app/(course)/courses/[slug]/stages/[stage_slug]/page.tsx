@@ -19,6 +19,7 @@ import { useUserStageStatus } from "@/hooks/use-user-stage-status";
 import { getStageStatus, StageStatus } from "@/types/stage-status";
 import ReactMarkdown from "react-markdown";
 import { UserStage } from "@/types/stage";
+import { useMemo } from "react";
 
 export default function StagePage() {
   const { slug, stage_slug } = useParams<{
@@ -44,12 +45,16 @@ export default function StagePage() {
     userStage ?? null,
   );
 
+  // Use useMemo to dynamically update status when userStageStatus changes
+  const status = useMemo(
+    () => getStageStatus(userStageStatus as UserStage),
+    [userStageStatus],
+  );
+
   const isLoading = stageLoading || userStageLoading;
   if (isLoading) return <Loading message="Loading stage details..." />;
   if (stageError) return <ErrorMessage message={stageError.message} />;
   if (!stage) return <NotFound message="Stage not found." />;
-
-  const status = getStageStatus(userStageStatus as UserStage);
 
   return (
     <>

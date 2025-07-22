@@ -16,14 +16,20 @@ import * as React from "react";
 import { Code } from "../ui/code";
 
 interface TestRunnerProps {
-  status?: "passed" | "failed";
+  status: "passed" | "failed";
 }
 
-const getStatusConfig = (status: TestRunnerProps["status"]) => {
-  return {
-    color: status === "failed" ? "red" : "green",
-    message: status === "failed" ? "Tests failed." : "Tests passed.",
-  };
+const statusConfig = {
+  passed: {
+    message: "Tests passed.",
+    bgColor: "bg-green-500",
+    textColor: "text-green-500",
+  },
+  failed: {
+    message: "Tests failed.",
+    bgColor: "bg-red-500",
+    textColor: "text-red-500",
+  },
 };
 
 export default function TestRunner({ status }: TestRunnerProps) {
@@ -32,8 +38,8 @@ export default function TestRunner({ status }: TestRunnerProps) {
   // Return null if no status is provided to prevent rendering the component
   if (!status) return null;
 
-  // Get color and message based on test status (passed/failed)
-  const { color, message } = getStatusConfig(status);
+  // Get config based on test status (passed/failed)
+  const config = statusConfig[status];
 
   return (
     <Collapsible open={isOpen} onOpenChange={setIsOpen}>
@@ -42,9 +48,9 @@ export default function TestRunner({ status }: TestRunnerProps) {
           <CardTitle>
             <div className="flex items-center space-x-2">
               <h2 className="text-lg">TEST RUNNER:</h2>
-              <span className={`h-3 w-3 rounded-full bg-${color}-500`} />
-              <span className={`text-sm font-medium text-${color}-500`}>
-                {message}
+              <span className={`h-3 w-3 rounded-full ${config.bgColor}`} />
+              <span className={`text-sm font-medium ${config.textColor}`}>
+                {config.message}
               </span>
             </div>
           </CardTitle>
