@@ -65,7 +65,7 @@ export default function StagePage() {
 
       <StageTabs tabs={[{ value: "instructions", label: "Instructions" }]} />
 
-      <Overlay>
+      <Overlay visible={status === StageStatus.Completed}>
         {status === StageStatus.Completed && <StageCompleted />}
 
         <main className="p-4 flex flex-col gap-y-4">

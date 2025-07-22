@@ -1,7 +1,7 @@
 import { StageNavButton } from "@/components/stage/stage-nav-button";
 import { Button } from "@/components/ui/button";
 import { useNavigation } from "@/hooks/use-navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // Config map for different states
 const configMap = new Map([
@@ -26,9 +26,19 @@ const configMap = new Map([
   ],
 ]);
 
-export default function Overlay({ children }: { children: React.ReactNode }) {
-  const [isVisible, setIsVisible] = useState(true);
+export default function Overlay({
+  children,
+  visible,
+}: {
+  children: React.ReactNode;
+  visible: boolean;
+}) {
+  const [isVisible, setIsVisible] = useState(visible);
   const { currentIndex, backIndex, backDirection } = useNavigation();
+
+  useEffect(() => {
+    setIsVisible(visible);
+  }, [visible]);
 
   if (!isVisible || currentIndex === backIndex) {
     return <>{children}</>;

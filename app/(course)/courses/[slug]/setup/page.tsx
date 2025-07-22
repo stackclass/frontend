@@ -14,6 +14,7 @@ import { StageCompleted } from "@/components/stage/stage-completed";
 import { useUserCourseStatus } from "@/hooks/use-user-course-status";
 import { getSetupStatus, StageStatus } from "@/types/stage-status";
 import Link from "next/link";
+import { useMemo } from "react";
 
 export default function CourseSetupPage() {
   const { course, userCourse } = useCourse();
@@ -25,7 +26,11 @@ export default function CourseSetupPage() {
     userCourse,
   );
 
-  const status = getSetupStatus(userCourseStatus);
+  // Use useMemo to dynamically update status when userCourseStatus changes
+  const status = useMemo(
+    () => getSetupStatus(userCourseStatus),
+    [userCourseStatus],
+  );
 
   return (
     <>
@@ -40,7 +45,7 @@ export default function CourseSetupPage() {
 
       <StageTabs tabs={[{ value: "instructions", label: "Instructions" }]} />
 
-      <Overlay>
+      <Overlay visible={status === StageStatus.Completed}>
         {status === StageStatus.Completed && <StageCompleted />}
 
         <main className="p-4 flex flex-col gap-y-4">
