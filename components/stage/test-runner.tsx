@@ -35,9 +35,6 @@ const statusConfig = {
 export default function TestRunner({ status }: TestRunnerProps) {
   const [isOpen, setIsOpen] = React.useState(false);
 
-  // Return null if no status is provided to prevent rendering the component
-  if (!status) return null;
-
   // Get config based on test status (passed/failed)
   const config = statusConfig[status];
 

@@ -39,10 +39,19 @@ export default function StagePage() {
     { retry: false },
   );
 
+  // Convert UserStage to UserStageStatus if userStage is not null
+  const initialStatus = useMemo(
+    () =>
+      userStage
+        ? { status: userStage.status, test: userStage.test || "failed" }
+        : null,
+    [userStage],
+  );
+
   const { status: userStageStatus } = useUserStageStatus(
     slug,
     stage_slug,
-    userStage ?? null,
+    initialStatus,
   );
 
   // Use useMemo to dynamically update status when userStageStatus changes

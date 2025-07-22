@@ -10,7 +10,7 @@ export const useUserCourseStatus = (
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
-    if (initialStatus === null) return;
+    if (initialStatus === null || initialStatus.activated) return;
 
     const handleUpdate = (event: UserCourse) => setStatus(event);
     const handleError = (err: Error) => setError(err);
