@@ -1,16 +1,13 @@
-import http from "@/lib/http";
-import { AxiosError } from "axios";
-import { Readable } from "stream";
-
 type EventHandler<T> = (event: T) => void;
 type ErrorHandler = (error: Error) => void;
 
 class SSEClient {
   private static instances: Record<string, SSEClient> = {};
-  private abortController: AbortController | null = null;
-  private eventSource: Readable | null = null;
+  private eventSource: EventSource | null = null;
   private messageHandlers: Set<EventHandler<unknown>> = new Set();
   private errorHandlers: Set<ErrorHandler> = new Set();
+  private static baseURL =
+    process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3000";
 
   private constructor() {}
 
@@ -27,113 +24,63 @@ class SSEClient {
 
   /**
    * Handle errors that occur during SSE connection or message processing
-   * @param error The error that occurred, can be any type (Error, string, etc.)
+   * @param error The error that occurred (can be an Event or Error)
    */
-  private handleError(error: unknown): void {
+  private handleError(error: Event | Error): void {
     const normalizedError =
-      error instanceof Error ? error : new Error(String(error));
-
+      error instanceof Error ? error : new Error("SSE connection error");
     this.errorHandlers.forEach((handler) => handler(normalizedError));
   }
 
   /**
+   * Build the full URL for SSE subscription, including token if available
+   * @param relativeUrl The relative URL path
+   * @returns The full URL with token if applicable
+   */
+  private buildFullUrl(relativeUrl: string): string {
+    const token =
+      typeof window !== "undefined" ? localStorage.getItem("jwt") : null;
+    return `${SSEClient.baseURL}${relativeUrl}${token ? `?token=${encodeURIComponent(token)}` : ""}`;
+  }
+
+  /**
    * Subscribe to SSE events
-   * @param url Relative path (will automatically include baseURL)
+   * @param relativeUrl Relative path (will automatically include baseURL)
    * @param onMessage Message handler callback
    * @param onError Error handler callback
    */
-  public async subscribe<T>(
-    url: string,
+  public subscribe<T>(
+    relativeUrl: string,
     onMessage: EventHandler<T>,
     onError?: ErrorHandler,
-  ): Promise<void> {
+  ): void {
     this.messageHandlers.add(onMessage as EventHandler<unknown>);
     if (onError) this.errorHandlers.add(onError);
 
     // If already connected, no need to connect again
     if (this.eventSource) return;
 
-    this.abortController = new AbortController();
+    // Create a new EventSource instance with the full URL
+    this.eventSource = new EventSource(this.buildFullUrl(relativeUrl));
 
-    try {
-      const response = await http.get<Readable>(url, {
-        responseType: "stream",
-        signal: this.abortController.signal,
-        headers: {
-          Accept: "text/event-stream",
-          "Cache-Control": "no-cache",
-          Connection: "keep-alive",
-        },
-      });
-
-      this.eventSource = response.data;
-      this.setupEventSourceListeners();
-    } catch (error) {
-      if (!this.abortController?.signal.aborted) {
-        const err = error as AxiosError;
-        this.handleError(new Error(`SSE connection failed: ${err.message}`));
-      }
-      this.cleanup();
-    }
-  }
-
-  /**
-   * Set up event listeners for the SSE connection
-   */
-  private setupEventSourceListeners(): void {
-    if (!this.eventSource) return;
-
-    this.eventSource.on("data", (chunk: Buffer) => {
+    // Set up event listeners
+    this.eventSource.onmessage = (event) => {
       try {
-        const data = chunk.toString();
-        const eventData = this.parseSSEData(data);
-        if (eventData) {
-          this.messageHandlers.forEach((handler) => handler(eventData));
-        }
+        const data = JSON.parse(event.data);
+        this.messageHandlers.forEach((handler) => handler(data));
       } catch (err) {
-        this.handleError(err);
+        this.handleError(
+          err instanceof Error
+            ? err
+            : new Error(`Failed to parse SSE data: ${String(err)}`),
+        );
       }
-    });
+    };
 
-    this.eventSource.on("error", (err: Error) => {
-      this.handleError(err);
+    this.eventSource.onerror = (event) => {
+      this.handleError(event);
       this.cleanup();
-    });
-
-    this.eventSource.on("end", () => {
-      this.cleanup();
-    });
-  }
-
-  /**
-   * Parse raw SSE data string into usable data
-   * @param data The raw SSE data string received from the server
-   * @returns Parsed data object if successful, null if no data or parsing failed
-   *
-   * SSE data format is typically:
-   * data: {"key": "value"}\n\n
-   * This method extracts and parses the JSON portion
-   */
-  private parseSSEData(data: string): unknown | null {
-    const lines = data.split("\n");
-    for (const line of lines) {
-      if (line.startsWith("data:")) {
-        const eventData = line.replace("data:", "").trim();
-        if (eventData) {
-          try {
-            return JSON.parse(eventData);
-          } catch (err) {
-            this.handleError(
-              new Error(
-                `Failed to parse SSE data: ${err instanceof Error ? err.message : String(err)}`,
-              ),
-            );
-            return null;
-          }
-        }
-      }
-    }
-    return null;
+    };
   }
 
   /**
@@ -159,12 +106,8 @@ class SSEClient {
    * Clean up resources and reset state
    */
   private cleanup(): void {
-    if (this.abortController) {
-      this.abortController.abort();
-      this.abortController = null;
-    }
     if (this.eventSource) {
-      this.eventSource.destroy();
+      this.eventSource.close();
       this.eventSource = null;
     }
     this.messageHandlers.clear();

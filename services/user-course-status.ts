@@ -13,8 +13,8 @@ class UserCourseStatusService {
     onUpdate: (event: UserCourse) => void,
     onError?: (error: Error) => void,
   ): void {
-    const url = `/v1/user/courses/${slug}//status`;
-    this.client.subscribe<UserCourse>(url, onUpdate, onError);
+    const relativeUrl = `/v1/user/courses/${slug}/status`;
+    this.client.subscribe<UserCourse>(relativeUrl, onUpdate, onError);
   }
 
   /**

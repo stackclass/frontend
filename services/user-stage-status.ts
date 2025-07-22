@@ -14,8 +14,8 @@ class UserStageStatusService {
     onUpdate: (event: UserStageStatus) => void,
     onError?: (error: Error) => void,
   ): void {
-    const url = `/v1/user/courses/${courseSlug}/stages/${stageSlug}/status`;
-    this.client.subscribe<UserStageStatus>(url, onUpdate, onError);
+    const relativeUrl = `/v1/user/courses/${courseSlug}/stages/${stageSlug}/status`;
+    this.client.subscribe<UserStageStatus>(relativeUrl, onUpdate, onError);
   }
 
   /**
