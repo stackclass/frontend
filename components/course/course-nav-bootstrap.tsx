@@ -1,6 +1,6 @@
 "use client";
 
-import { useCourse } from "@/app/(course)/layout";
+import { useCourseContext } from "@/app/(course)/layout";
 import {
   SidebarMenu,
   SidebarMenuButton,
@@ -13,7 +13,7 @@ import Link from "next/link";
 import { StatusIcon } from "../stage/stage-status";
 
 export function CourseNavBootstrap({ slug }: { slug: string }) {
-  const { userCourse } = useCourse();
+  const { userCourse } = useCourseContext();
   const { currentSlug } = useNavigation();
 
   const introStatus = getIntroductionStatus(userCourse);

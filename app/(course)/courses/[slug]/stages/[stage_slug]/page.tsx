@@ -21,12 +21,15 @@ import { UserStage } from "@/types/stage";
 import { getStageStatus, StageStatus } from "@/types/stage-status";
 import { useMemo } from "react";
 import ReactMarkdown from "react-markdown";
+import { useCourseContext } from "@/app/(course)/layout";
 
 export default function StagePage() {
   const { slug, stage_slug } = useParams<{
     slug: string;
     stage_slug: string;
   }>();
+
+  const { attempts } = useCourseContext();
 
   const {
     data: stage,
@@ -111,7 +114,7 @@ export default function StagePage() {
 
         <div className="lg:col-span-2 border-l py-4 bg-gray-100 hidden lg:block">
           <div className="sticky top-16 hidden md:block">
-            <Attempts attempts={[]} currentUserId="" />
+            <Attempts attempts={attempts} currentUserId="" />
           </div>
         </div>
       </div>

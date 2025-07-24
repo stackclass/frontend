@@ -8,7 +8,7 @@ import { GenericCard } from "@/components/stage/generic-card";
 import { StageHeader } from "@/components/stage/stage-header";
 import { StageTabs } from "@/components/stage/stage-tabs";
 
-import { useCourse } from "@/app/(course)/layout";
+import { useCourseContext } from "@/app/(course)/layout";
 import { Attempts } from "@/components/course/course-attempts";
 import Overlay from "@/components/stage/overlay";
 import { StageCompleted } from "@/components/stage/stage-completed";
@@ -18,7 +18,7 @@ import Link from "next/link";
 import { useMemo } from "react";
 
 export default function CourseSetupPage() {
-  const { course, userCourse } = useCourse();
+  const { course, userCourse, attempts } = useCourseContext();
 
   const projectName = `stackclass-${course.slug}`;
 
@@ -137,7 +137,7 @@ export default function CourseSetupPage() {
 
         <div className="lg:col-span-2 border-l py-4 bg-gray-100 hidden lg:block">
           <div className="sticky top-16">
-            <Attempts attempts={[]} currentUserId="" />
+            <Attempts attempts={attempts} currentUserId="" />
           </div>
         </div>
       </div>

@@ -15,7 +15,7 @@ import { StageGroup } from "@/components/stage/stage-group";
 import { StageItem } from "@/components/stage/stage-item";
 
 import { Attempts } from "@/components/course/course-attempts";
-import { useGetCourse } from "@/hooks/use-course";
+import { useAttempts, useGetCourse } from "@/hooks/use-course";
 import { useExtensions } from "@/hooks/use-extension";
 import { useStages } from "@/hooks/use-stage";
 import type { Stage } from "@/types/stage";
@@ -37,9 +37,15 @@ export default function CourseOverviewPage() {
   const { data: stages = [], isLoading: stagesLoading } = useStages(slug);
   const { data: extensions = [], isLoading: extensionsLoading } =
     useExtensions(slug);
+  const { data: attempts = [], isLoading: attemptsLoading } = useAttempts(slug);
 
   useEffect(() => {
-    if (!courseLoading && !stagesLoading && !extensionsLoading) {
+    if (
+      !courseLoading &&
+      !stagesLoading &&
+      !extensionsLoading &&
+      !attemptsLoading
+    ) {
       try {
         // Group stages
         const groupedStages: StageGroupData[] = [];
@@ -76,7 +82,14 @@ export default function CourseOverviewPage() {
         setLoading(false);
       }
     }
-  }, [courseLoading, stagesLoading, extensionsLoading, extensions, stages]);
+  }, [
+    courseLoading,
+    stagesLoading,
+    extensionsLoading,
+    attemptsLoading,
+    extensions,
+    stages,
+  ]);
 
   if (loading) return <Loading message="Loading course detail..." />;
   if (error) return <ErrorMessage message={error} />;
@@ -119,7 +132,7 @@ export default function CourseOverviewPage() {
 
         <div className="sticky top-24">
           <div className="border-1 rounded-lg px-2 py-4">
-            <Attempts attempts={[]} currentUserId="" />
+            <Attempts attempts={attempts} currentUserId="" />
           </div>
         </div>
       </div>

@@ -12,12 +12,13 @@ import { ErrorMessage } from "@/components/common/error-message";
 import { Loading } from "@/components/common/loading";
 import { NotFound } from "@/components/common/not-found";
 import { useSession } from "@/components/provider/auth-provider";
-import { useGetCourse } from "@/hooks/use-course";
+import { useAttempts, useGetCourse } from "@/hooks/use-course";
 import { useStages } from "@/hooks/use-stage";
 import { useUserCourse } from "@/hooks/use-user-course";
 import { useUserStages } from "@/hooks/use-user-stage";
 import type { CourseDetail, UserCourse } from "@/types/course";
 import type { StageWithState } from "@/types/stage";
+import { Attempt } from "@/types/attempt";
 
 interface CourseContextValue {
   course: CourseDetail;
@@ -25,11 +26,12 @@ interface CourseContextValue {
   stages: StageWithState[];
   isNew: boolean;
   updateUserCourse: (newUserCourse: UserCourse) => void;
+  attempts: Attempt[];
 }
 
 const CourseContext = createContext<CourseContextValue | null>(null);
 
-export function useCourse() {
+export function useCourseContext() {
   const context = useContext(CourseContext);
   if (!context) {
     throw new Error("useCourse must be used within a CourseLayout");
@@ -115,8 +117,14 @@ export default function CourseLayout({
     });
   }, [stages, userStages]);
 
+  const { data: attempts = [], isLoading: attemptsLoading } = useAttempts(slug);
+
   const isLoading =
-    sessionLoading || courseLoading || stagesLoading || userCourseLoading;
+    sessionLoading ||
+    courseLoading ||
+    stagesLoading ||
+    userCourseLoading ||
+    attemptsLoading;
 
   if (isLoading) return <Loading message="Loading course details..." />;
 
@@ -133,6 +141,7 @@ export default function CourseLayout({
     stages: stagesWithState,
     isNew,
     updateUserCourse,
+    attempts,
   };
 
   return (

@@ -26,7 +26,7 @@ import { CourseSwitcher } from "@/components/course/course-switcher";
 
 import type { StageWithState } from "@/types/stage";
 
-import { useCourse } from "@/app/(course)/layout";
+import { useCourseContext } from "@/app/(course)/layout";
 import { useExtensions } from "@/hooks/use-extension";
 
 interface ExtensionGroup {
@@ -39,7 +39,7 @@ export function CourseSidebar({
   ...props
 }: React.ComponentProps<typeof Sidebar>) {
   const { toggleSidebar } = useSidebar();
-  const { course, stages } = useCourse();
+  const { course, stages } = useCourseContext();
   const { slug } = useParams<{ slug: string }>();
 
   const [extensionGroups, setExtensionGroups] = React.useState<

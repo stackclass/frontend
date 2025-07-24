@@ -7,7 +7,7 @@ import { StageHeader } from "@/components/stage/stage-header";
 import { StageTabs } from "@/components/stage/stage-tabs";
 import { getIntroductionStatus, StageStatus } from "@/types/stage-status";
 
-import { useCourse } from "@/app/(course)/layout";
+import { useCourseContext } from "@/app/(course)/layout";
 import {
   Callbacks,
   CourseAssessment,
@@ -31,7 +31,8 @@ export default function CourseIntroductionPage() {
     userCourse: contextUserCourse,
     isNew,
     updateUserCourse: updateContextUserCourse,
-  } = useCourse();
+    attempts,
+  } = useCourseContext();
   const [userCourse, setUserCourse] = useState(contextUserCourse);
   const status = useMemo(() => getIntroductionStatus(userCourse), [userCourse]);
 
@@ -146,7 +147,7 @@ export default function CourseIntroductionPage() {
 
         <div className="lg:col-span-2 border-l py-4 bg-gray-100 hidden lg:block">
           <div className="sticky top-16">
-            <Attempts attempts={[]} currentUserId="" />
+            <Attempts attempts={attempts} currentUserId="" />
           </div>
         </div>
       </div>
