@@ -12,6 +12,7 @@ import {
   Callbacks,
   CourseAssessment,
 } from "@/components/course/course-assessment";
+import { Attempts } from "@/components/course/course-attempts";
 import Overlay from "@/components/stage/overlay";
 import { StageCompleted } from "@/components/stage/stage-completed";
 import { Button } from "@/components/ui/button";
@@ -111,34 +112,44 @@ export default function CourseIntroductionPage() {
 
       <StageTabs tabs={[{ value: "instructions", label: "Instructions" }]} />
 
-      <Overlay visible={status === StageStatus.Completed}>
-        {!isNew && status === StageStatus.Completed && <StageCompleted />}
+      <div className="grid grid-cols-1 lg:grid-cols-8 h-full">
+        <div className="lg:col-span-6">
+          <Overlay visible={status === StageStatus.Completed}>
+            {!isNew && status === StageStatus.Completed && <StageCompleted />}
 
-        <main className="p-4 flex flex-col gap-y-4">
-          <GenericCard title="Introduction">
-            <div className="max-w-5xl">
-              <div className="markdown">
-                <ReactMarkdown>{course.description}</ReactMarkdown>
+            <main className="p-4 flex flex-col gap-y-4">
+              <GenericCard title="Introduction">
+                <div className="max-w-5xl">
+                  <div className="markdown">
+                    <ReactMarkdown>{course.description}</ReactMarkdown>
+                  </div>
+                </div>
+              </GenericCard>
+
+              <CourseAssessment
+                status={status}
+                userCourse={userCourse}
+                callbacks={callbacks}
+              />
+
+              <div className="mt-6 flex justify-start">
+                <Button
+                  onClick={handleContinue}
+                  disabled={status !== StageStatus.Completed}
+                >
+                  Continue
+                </Button>
               </div>
-            </div>
-          </GenericCard>
+            </main>
+          </Overlay>
+        </div>
 
-          <CourseAssessment
-            status={status}
-            userCourse={userCourse}
-            callbacks={callbacks}
-          />
-
-          <div className="mt-6 flex justify-start">
-            <Button
-              onClick={handleContinue}
-              disabled={status !== StageStatus.Completed}
-            >
-              Continue
-            </Button>
+        <div className="lg:col-span-2 border-l py-4 bg-gray-100 hidden lg:block">
+          <div className="sticky top-16">
+            <Attempts attempts={[]} currentUserId="" />
           </div>
-        </main>
-      </Overlay>
+        </div>
+      </div>
     </>
   );
 }

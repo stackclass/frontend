@@ -9,6 +9,7 @@ import { InstructionCard } from "@/components/stage/instruction-card";
 import { StageHeader } from "@/components/stage/stage-header";
 import { StageTabs } from "@/components/stage/stage-tabs";
 
+import { Attempts } from "@/components/course/course-attempts";
 import { GenericCard } from "@/components/stage/generic-card";
 import Overlay from "@/components/stage/overlay";
 import { StageCompleted } from "@/components/stage/stage-completed";
@@ -16,10 +17,10 @@ import TestRunner from "@/components/stage/test-runner";
 import { useStage } from "@/hooks/use-stage";
 import { useUserStage } from "@/hooks/use-user-stage";
 import { useUserStageStatus } from "@/hooks/use-user-stage-status";
-import { getStageStatus, StageStatus } from "@/types/stage-status";
-import ReactMarkdown from "react-markdown";
 import { UserStage } from "@/types/stage";
+import { getStageStatus, StageStatus } from "@/types/stage-status";
 import { useMemo } from "react";
+import ReactMarkdown from "react-markdown";
 
 export default function StagePage() {
   const { slug, stage_slug } = useParams<{
@@ -79,31 +80,41 @@ export default function StagePage() {
 
       <StageTabs tabs={[{ value: "instructions", label: "Instructions" }]} />
 
-      <Overlay visible={status === StageStatus.Completed}>
-        {status === StageStatus.Completed && <StageCompleted />}
+      <div className="grid grid-cols-1 lg:grid-cols-8 h-full">
+        <div className="lg:col-span-6">
+          <Overlay visible={status === StageStatus.Completed}>
+            {status === StageStatus.Completed && <StageCompleted />}
 
-        <main className="p-4 flex flex-col gap-y-4">
-          {stage.solution && (
-            <GenericCard title="How to pass this stage">
-              <div className="max-w-5xl">
-                <div className="markdown">
-                  <ReactMarkdown>{stage.solution}</ReactMarkdown>
-                </div>
-              </div>
-            </GenericCard>
-          )}
+            <main className="p-4 flex flex-col gap-y-4">
+              {stage.solution && (
+                <GenericCard title="How to pass this stage">
+                  <div className="max-w-5xl">
+                    <div className="markdown">
+                      <ReactMarkdown>{stage.solution}</ReactMarkdown>
+                    </div>
+                  </div>
+                </GenericCard>
+              )}
 
-          {userStageStatus && <TestRunner status={userStageStatus.test} />}
+              {userStageStatus && <TestRunner status={userStageStatus.test} />}
 
-          <InstructionCard
-            title="Your Task"
-            status={status}
-            difficulty={stage.difficulty}
-            instruction={stage.instruction}
-            expandable={stage.solution != undefined}
-          />
-        </main>
-      </Overlay>
+              <InstructionCard
+                title="Your Task"
+                status={status}
+                difficulty={stage.difficulty}
+                instruction={stage.instruction}
+                expandable={stage.solution != undefined}
+              />
+            </main>
+          </Overlay>
+        </div>
+
+        <div className="lg:col-span-2 border-l py-4 bg-gray-100 hidden lg:block">
+          <div className="sticky top-16 hidden md:block">
+            <Attempts attempts={[]} currentUserId="" />
+          </div>
+        </div>
+      </div>
     </>
   );
 }

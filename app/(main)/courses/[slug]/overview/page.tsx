@@ -14,6 +14,7 @@ import { NotFound } from "@/components/common/not-found";
 import { StageGroup } from "@/components/stage/stage-group";
 import { StageItem } from "@/components/stage/stage-item";
 
+import { Attempts } from "@/components/course/course-attempts";
 import { useGetCourse } from "@/hooks/use-course";
 import { useExtensions } from "@/hooks/use-extension";
 import { useStages } from "@/hooks/use-stage";
@@ -116,18 +117,9 @@ export default function CourseOverviewPage() {
           </div>
         </div>
 
-        <div className="space-y-6">
-          <div className="bg-blue-50 p-4 rounded-lg sticky top-24">
-            <h4 className="font-medium mb-2">Before starting</h4>
-            <p className="text-sm">
-              Make sure you&apos;ve read the &quot;Welcome&quot; section of the
-              book that contains these chapters:
-            </p>
-            <ul className="list-disc pl-5 mt-2 text-sm space-y-1">
-              <li>Introduction (chapter 1)</li>
-              <li>A Map of the Territory (chapter 2)</li>
-              <li>The Lox Language (chapter 3)</li>
-            </ul>
+        <div className="sticky top-24">
+          <div className="border-1 rounded-lg px-2 py-4">
+            <Attempts attempts={[]} currentUserId="" />
           </div>
         </div>
       </div>
