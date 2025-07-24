@@ -1,4 +1,5 @@
 import http from "@/lib/http";
+import { Attempt } from "@/types/attempt";
 import { Course, CourseDetail, CreateCourseRequest } from "@/types/course";
 import { AxiosResponse } from "axios";
 
@@ -46,5 +47,13 @@ export default class CourseService {
    */
   static async update(slug: string): Promise<AxiosResponse<Course>> {
     return http.patch(`/v1/courses/${slug}`);
+  }
+
+  /**
+   * Find all attempts for a course.
+   * @param slug - The course slug.
+   */
+  static async findAttempts(slug: string): Promise<AxiosResponse<Attempt[]>> {
+    return http.get(`/v1/courses/${slug}/attempts`);
   }
 }
