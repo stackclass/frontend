@@ -1,4 +1,5 @@
 import CourseService from "@/services/course";
+import { Attempt } from "@/types/attempt";
 import { Course, CourseDetail, CreateCourseRequest } from "@/types/course";
 import {
   useMutation,
@@ -64,6 +65,22 @@ export const useUpdateCourse = (
 ) => {
   return useMutation<Course, unknown, string>({
     mutationFn: (slug) => CourseService.update(slug).then((res) => res.data),
+    ...options,
+  });
+};
+
+/**
+ * Hook for fetching all attempts for a course.
+ * @param slug - The course slug.
+ * @param options - Optional react-query options.
+ */
+export const useAttempts = (
+  slug: string,
+  options?: UseQueryOptions<Attempt[]>,
+) => {
+  return useQuery<Attempt[]>({
+    queryKey: ["attempts", slug],
+    queryFn: () => CourseService.findAttempts(slug).then((res) => res.data),
     ...options,
   });
 };
