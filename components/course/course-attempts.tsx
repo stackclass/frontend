@@ -4,7 +4,7 @@ import { Attempt } from "@/types/attempt";
 
 interface AttemptsProps {
   attempts: Attempt[];
-  currentUserId: string;
+  currentUserId?: string;
 }
 
 export function Attempts({ attempts, currentUserId }: AttemptsProps) {

@@ -16,9 +16,11 @@ import { useUserCourseStatus } from "@/hooks/use-user-course-status";
 import { getSetupStatus, StageStatus } from "@/types/stage-status";
 import Link from "next/link";
 import { useMemo } from "react";
+import { useSession } from "@/components/provider/auth-provider";
 
 export default function CourseSetupPage() {
   const { course, userCourse, attempts } = useCourseContext();
+  const { session } = useSession();
 
   const projectName = `stackclass-${course.slug}`;
 
@@ -137,7 +139,7 @@ export default function CourseSetupPage() {
 
         <div className="lg:col-span-2 border-l py-4 bg-gray-100 hidden lg:block">
           <div className="sticky top-16">
-            <Attempts attempts={attempts} currentUserId="" />
+            <Attempts attempts={attempts} currentUserId={session?.user.id} />
           </div>
         </div>
       </div>

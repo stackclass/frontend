@@ -22,9 +22,12 @@ import {
 } from "@/hooks/use-user-course";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
+import { useSession } from "@/components/provider/auth-provider";
 
 export default function CourseIntroductionPage() {
   const router = useRouter();
+
+  const { session } = useSession();
 
   const {
     course,
@@ -147,7 +150,7 @@ export default function CourseIntroductionPage() {
 
         <div className="lg:col-span-2 border-l py-4 bg-gray-100 hidden lg:block">
           <div className="sticky top-16">
-            <Attempts attempts={attempts} currentUserId="" />
+            <Attempts attempts={attempts} currentUserId={session?.user.id} />
           </div>
         </div>
       </div>
