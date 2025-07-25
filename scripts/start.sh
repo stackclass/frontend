@@ -12,8 +12,8 @@ for VAR in "${VARIABLES[@]}"; do
 done
 
 # Find and replace BAKED values with real values
-find /app/public /app/.next -type f -name "*.js" | xargs grep -i -l "BAKED_" |
-while read file; do
+find /app/public /app/.next -type f -print0 | xargs -0 grep -i -l "BAKED_" |
+while read -r file; do
     for VAR in "${VARIABLES[@]}"; do
         sed -i "s|BAKED_$VAR|${!VAR}|g" "$file"
     done
