@@ -15,6 +15,8 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const ANALYTICS_ID = process.env.NEXT_PUBLIC_ANALYTICS_ID;
+
   return (
     <html lang="en">
       <body>
@@ -23,9 +25,7 @@ export default function RootLayout({
         </QueryClientProvider>
         <Toaster position="top-center" richColors visibleToasts={1} />
 
-        {process.env.NEXT_PUBLIC_ANALYTICS_ID && (
-          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_ANALYTICS_ID} />
-        )}
+        {ANALYTICS_ID && <GoogleAnalytics gaId={ANALYTICS_ID} />}
       </body>
     </html>
   );
