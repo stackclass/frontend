@@ -1,6 +1,6 @@
 {
   "name": "stackclass-frontend",
-  "version": "0.20.0",
+  "version": "0.21.0",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@next/third-parties": "^15.4.4",
     "@radix-ui/react-avatar": "^1.1.10",
     "@radix-ui/react-collapsible": "^1.1.11",
     "@radix-ui/react-dialog": "^1.1.14",

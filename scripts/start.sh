@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define a list of environment variables to check and replace
-VARIABLES=("NEXT_PUBLIC_BACKEND_URL")
+VARIABLES=("NEXT_PUBLIC_BACKEND_URL" "NEXT_PUBLIC_ANALYTICS_ID")
 
 # Check if each variable is set
 for VAR in "${VARIABLES[@]}"; do

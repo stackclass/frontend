@@ -34,6 +34,7 @@ COPY .env.example .env
 
 # Set public environment variable placeholders
 ARG NEXT_PUBLIC_BACKEND_URL=BAKED_NEXT_PUBLIC_BACKEND_URL
+ARG NEXT_PUBLIC_ANALYTICS_ID=BAKED_NEXT_PUBLIC_ANALYTICS_ID
 
 # Next.js collects completely anonymous telemetry data about general usage.
 # Learn more here: https://nextjs.org/telemetry
