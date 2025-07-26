@@ -14,10 +14,7 @@ export function StageNavButton({ className }: { className?: string }) {
 
   return (
     <Button
-      className={cn(
-        "w-fit font-bold bg-teal-500 hover:bg-teal-600 rounded-sm",
-        className,
-      )}
+      className={cn("w-fit font-bold hover:bg-primary rounded-sm", className)}
       asChild
     >
       <Link href={backItem ? path(backItem) : "#"}>

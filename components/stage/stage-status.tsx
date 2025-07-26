@@ -49,11 +49,11 @@ export function StatusIcon({ status, icon, className }: StatusIconProps) {
       icon: icon || <Hash size={16} />,
     },
     [StageStatus.InProgress]: {
-      className: "rounded-full border-green-700 text-green-700",
+      className: "rounded-full border-primary text-primary",
       icon: <Ellipsis size={16} />,
     },
     [StageStatus.Completed]: {
-      className: "rounded-full text-white bg-green-700",
+      className: "rounded-full text-white bg-primary",
       icon: <Check size={16} />,
     },
   };

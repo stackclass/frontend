@@ -9,7 +9,9 @@ import { InstructionCard } from "@/components/stage/instruction-card";
 import { StageHeader } from "@/components/stage/stage-header";
 import { StageTabs } from "@/components/stage/stage-tabs";
 
+import { useCourseContext } from "@/app/(course)/layout";
 import { Attempts } from "@/components/course/course-attempts";
+import { useSession } from "@/components/provider/auth-provider";
 import { GenericCard } from "@/components/stage/generic-card";
 import Overlay from "@/components/stage/overlay";
 import { StageCompleted } from "@/components/stage/stage-completed";
@@ -21,8 +23,6 @@ import { UserStage } from "@/types/stage";
 import { getStageStatus, StageStatus } from "@/types/stage-status";
 import { useMemo } from "react";
 import ReactMarkdown from "react-markdown";
-import { useCourseContext } from "@/app/(course)/layout";
-import { useSession } from "@/components/provider/auth-provider";
 
 export default function StagePage() {
   const { slug, stage_slug } = useParams<{
@@ -87,7 +87,7 @@ export default function StagePage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-8 h-full">
         <div className="lg:col-span-6">
-          <Overlay visible={status === StageStatus.Completed}>
+          <Overlay visible={status !== StageStatus.InProgress}>
             {status === StageStatus.Completed && <StageCompleted />}
 
             <main className="p-4 flex flex-col gap-y-4">
@@ -114,7 +114,7 @@ export default function StagePage() {
           </Overlay>
         </div>
 
-        <div className="lg:col-span-2 border-l py-4 bg-gray-100 hidden lg:block">
+        <div className="lg:col-span-2 border-l py-4 bg-accent hidden lg:block">
           <div className="sticky top-16 hidden md:block">
             <Attempts attempts={attempts} currentUserId={session?.user.id} />
           </div>

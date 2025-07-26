@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Code } from "@/components/ui/code";
-import { ArrowRight, CircleCheck } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 
 import { GenericCard } from "@/components/stage/generic-card";
 import { StageHeader } from "@/components/stage/stage-header";
@@ -10,13 +10,13 @@ import { StageTabs } from "@/components/stage/stage-tabs";
 
 import { useCourseContext } from "@/app/(course)/layout";
 import { Attempts } from "@/components/course/course-attempts";
+import { useSession } from "@/components/provider/auth-provider";
 import Overlay from "@/components/stage/overlay";
 import { StageCompleted } from "@/components/stage/stage-completed";
 import { useUserCourseStatus } from "@/hooks/use-user-course-status";
 import { getSetupStatus, StageStatus } from "@/types/stage-status";
 import Link from "next/link";
 import { useMemo } from "react";
-import { useSession } from "@/components/provider/auth-provider";
 
 export default function CourseSetupPage() {
   const { course, userCourse, attempts } = useCourseContext();
@@ -50,7 +50,7 @@ export default function CourseSetupPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-8 h-full">
         <div className="lg:col-span-6">
-          <Overlay visible={status === StageStatus.Completed}>
+          <Overlay visible={status !== StageStatus.InProgress}>
             {status === StageStatus.Completed && <StageCompleted />}
 
             <main className="p-4 flex flex-col gap-y-4">
@@ -63,9 +63,11 @@ export default function CourseSetupPage() {
 
                   <div className="flex items-center space-x-2">
                     {status == StageStatus.Completed ? (
-                      <CircleCheck color="green" />
+                      <div className="bg-primary text-primary-foreground rounded-full">
+                        <Check size={18} />
+                      </div>
                     ) : (
-                      <span className="font-bold text-teal-700">Step 1:</span>
+                      <span className="font-bold text-primary">Step 1:</span>
                     )}
                     <span>Clone the repository</span>
                   </div>
@@ -79,9 +81,11 @@ export default function CourseSetupPage() {
 
                   <div className="flex items-center space-x-2">
                     {status == StageStatus.Completed ? (
-                      <CircleCheck color="green" />
+                      <div className="bg-primary text-primary-foreground rounded-full">
+                        <Check size={18} />
+                      </div>
                     ) : (
-                      <span className="font-bold text-teal-700">Step 2:</span>
+                      <span className="font-bold text-primary">Step 2:</span>
                     )}
                     <span>Push an empty commit</span>
                   </div>
@@ -137,7 +141,7 @@ export default function CourseSetupPage() {
           </Overlay>
         </div>
 
-        <div className="lg:col-span-2 border-l py-4 bg-gray-100 hidden lg:block">
+        <div className="lg:col-span-2 border-l py-4 bg-accent hidden lg:block">
           <div className="sticky top-16">
             <Attempts attempts={attempts} currentUserId={session?.user.id} />
           </div>

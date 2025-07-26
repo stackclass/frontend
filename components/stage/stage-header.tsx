@@ -15,7 +15,7 @@ export function StageHeader({
   description,
 }: StageHeaderProps) {
   return (
-    <div className="p-4 bg-gray-100">
+    <div className="p-4 bg-accent">
       <div className="flex items-center space-x-4">
         <h1 className="text-2xl font-bold">{title}</h1>
         {slug && (

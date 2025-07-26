@@ -1,4 +1,3 @@
-import { WifiZero, WifiLow, WifiHigh, Wifi } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -14,30 +13,47 @@ interface DifficultyIndicatorProps {
   difficulty: Difficulty;
 }
 
+const SignalBars = ({ levels }: { levels: number }) => {
+  return (
+    <div className="flex items-end">
+      {[0.7, 0.9, 1.1].map((height, index) => (
+        <div
+          key={index}
+          className={cn(
+            "w-[4px] mr-[2px] rounded-[1px]",
+            index < levels ? "bg-primary" : "bg-gray-300 dark:bg-gray-700/80",
+          )}
+          style={{ height: `${height}em` }}
+        />
+      ))}
+    </div>
+  );
+};
+
 export function DifficultyIndicator({ difficulty }: DifficultyIndicatorProps) {
   const difficultyConfig = {
     very_easy: {
-      color: "text-green-500",
+      color: "text-primary",
       text: "VERY EASY",
-      icon: <WifiZero size="14" />,
+      icon: <SignalBars levels={0} />,
       tip: "We'd expect a proficient developer to take < 5 minutes to complete this stage.",
     },
     easy: {
-      color: "text-teal-500",
+      color: "text-primary",
       text: "EASY",
-      icon: <WifiLow size="14" />,
+      icon: <SignalBars levels={1} />,
       tip: "We'd expect a proficient developer to take 5-10 minutes to complete this stage.",
     },
     medium: {
-      color: "text-blue-500",
+      color: "text-primary",
       text: "MEDIUM",
-      icon: <WifiHigh size="14" />,
+      icon: <SignalBars levels={2} />,
       tip: "We'd expect a proficient developer to take 30 minutes to 1 hour to complete this stage.",
     },
     hard: {
-      color: "text-amber-500",
+      color: "text-primary",
       text: "HARD",
-      icon: <Wifi size="14" />,
+      icon: <SignalBars levels={3} />,
       tip: "We'd expect a proficient developer to take more than 1 hour to complete this stage.",
     },
   };
@@ -48,8 +64,8 @@ export function DifficultyIndicator({ difficulty }: DifficultyIndicatorProps) {
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <div className={cn("flex items-center", config.color)}>
-            <span className="text-sm font-bold mr-2">{config.text}</span>
+          <div className={cn("flex text-xs items-baseline", config.color)}>
+            <span className="text-xs font-extrabold mr-2">{config.text}</span>
             {config.icon}
           </div>
         </TooltipTrigger>

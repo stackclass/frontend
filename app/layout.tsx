@@ -19,7 +19,7 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body>
+      <body className="bg-background text-foreground">
         <QueryClientProvider>
           <AuthProvider>{children}</AuthProvider>
         </QueryClientProvider>

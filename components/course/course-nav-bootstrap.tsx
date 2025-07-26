@@ -27,7 +27,7 @@ export function CourseNavBootstrap({ slug }: { slug: string }) {
             <StatusIcon
               status={introStatus}
               icon={<ArrowRight size={16} />}
-              className="rounded-full border-green-700 text-green-700"
+              className="rounded-full border-primary text-primary"
             />
             <span>Introduction</span>
           </Link>

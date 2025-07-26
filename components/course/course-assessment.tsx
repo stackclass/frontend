@@ -71,7 +71,9 @@ function AssessmentItem<T extends string | boolean>({
                   <span className="ml-2 font-semibold">
                     {selectedOption.label}
                   </span>
-                  <Check className="ml-2 h-5 w-5 text-green-500" />
+                  <span className="ml-2 bg-primary text-primary-foreground rounded-full">
+                    <Check size={16} />
+                  </span>
                 </>
               )}
             </div>

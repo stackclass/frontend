@@ -13,6 +13,7 @@ import {
   CourseAssessment,
 } from "@/components/course/course-assessment";
 import { Attempts } from "@/components/course/course-attempts";
+import { useSession } from "@/components/provider/auth-provider";
 import Overlay from "@/components/stage/overlay";
 import { StageCompleted } from "@/components/stage/stage-completed";
 import { Button } from "@/components/ui/button";
@@ -22,7 +23,6 @@ import {
 } from "@/hooks/use-user-course";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
-import { useSession } from "@/components/provider/auth-provider";
 
 export default function CourseIntroductionPage() {
   const router = useRouter();
@@ -118,7 +118,7 @@ export default function CourseIntroductionPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-8 h-full">
         <div className="lg:col-span-6">
-          <Overlay visible={status === StageStatus.Completed}>
+          <Overlay visible={status !== StageStatus.InProgress}>
             {!isNew && status === StageStatus.Completed && <StageCompleted />}
 
             <main className="p-4 flex flex-col gap-y-4">
@@ -148,7 +148,7 @@ export default function CourseIntroductionPage() {
           </Overlay>
         </div>
 
-        <div className="lg:col-span-2 border-l py-4 bg-gray-100 hidden lg:block">
+        <div className="lg:col-span-2 border-l py-4 bg-accent hidden lg:block">
           <div className="sticky top-16">
             <Attempts attempts={attempts} currentUserId={session?.user.id} />
           </div>
