@@ -72,12 +72,19 @@ export default function CourseSetupPage() {
                     <span>Clone the repository</span>
                   </div>
 
-                  <Code title="command line">
-                    <div>
-                      git clone {userCourse.repository} {projectName}
-                    </div>
-                    <div>cd {projectName}</div>
-                  </Code>
+                  {status !== StageStatus.Pending ? (
+                    <Code title="command line">
+                      <div>
+                        git clone {userCourse.repository} {projectName}
+                      </div>
+                      <div>cd {projectName}</div>
+                    </Code>
+                  ) : (
+                    <p>
+                      ⚠️ Please complete the Pre-Challenge Assessment in order
+                      to view the instructions for cloning your repository.
+                    </p>
+                  )}
 
                   <div className="flex items-center space-x-2">
                     {status == StageStatus.Completed ? (
