@@ -49,7 +49,7 @@ export function Code({ title, className, children }: CodeProps) {
         </CardAction>
       </CardHeader>
       <CardContent>
-        <pre ref={codeRef}>
+        <pre ref={codeRef} className="overflow-y-hidden">
           <code>{children}</code>
         </pre>
       </CardContent>
