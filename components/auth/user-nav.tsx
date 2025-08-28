@@ -30,11 +30,15 @@ export function UserNavigation({ user }: UserNavigationProps) {
         src={user.image || "/default-avatar.svg"}
         width={100}
         height={100}
-        className="w-8 h-8 rounded-full border border-gray-200"
+        className="w-8 h-8 rounded-full border"
         alt="User profile"
       />
-      <span className="text-gray-800 font-medium text-sm">{user.name}</span>
-      <Button variant="outline" onClick={handleSignOut} className="text-sm">
+      <span className="font-medium text-sm">{user.name}</span>
+      <Button
+        variant="outline"
+        onClick={handleSignOut}
+        className="text-sm cursor-pointer"
+      >
         Sign out
       </Button>
     </div>
