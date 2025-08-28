@@ -51,8 +51,7 @@ export function Attempts({ attempts, currentUserId }: AttemptsProps) {
                 {attempt.completed}/{attempt.total}
               </div>
               <Progress
-                max={attempt.total}
-                value={attempt.completed}
+                value={(attempt.completed / attempt.total) * 100}
                 className="h-4 rounded-sm w-[48px]"
               />
             </div>
