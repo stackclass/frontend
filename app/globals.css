@@ -96,7 +96,7 @@ code {
     --popover: oklch(0.21 0.006 285.885);
     --popover-foreground: oklch(0.985 0 0);
     --primary: oklch(0.6 0.13 215);
-    --primary-foreground: oklch(0.379 0.146 265.522);
+    --primary-foreground: oklch(0.985 0 0);
     --secondary: oklch(0.274 0.006 286.033);
     --secondary-foreground: oklch(0.985 0 0);
     --muted: oklch(0.274 0.006 286.033);
@@ -188,7 +188,7 @@ code {
     }
 
     pre {
-        background-color: var(--color-gray-200);
+        background-color: var(--color-accent);
         padding: 1rem;
         margin-bottom: 1rem;
     }
@@ -201,8 +201,8 @@ code {
     }
 
     code {
-        background-color: var(--color-gray-100);
-        border: 1px solid #e5e7eb;
+        background-color: var(--color-accent);
+        border: 1px solid var(--color-border);
         border-radius: 4px;
         padding: 0.2em 0.4em;
     }

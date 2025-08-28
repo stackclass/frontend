@@ -28,7 +28,11 @@ export function StageHeader({
         )}
       </div>
 
-      {description && <p className="text-sm text-gray-500">{description}</p>}
+      {description && (
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          {description}
+        </p>
+      )}
     </div>
   );
 }

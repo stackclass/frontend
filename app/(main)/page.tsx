@@ -14,7 +14,7 @@ export default function Home() {
             software engineer.
           </span>
         </h1>
-        <p className="text-xl font-bold text-gray-600 max-w-3xl mx-auto mb-8">
+        <p className="text-xl font-bold text-gray-600 dark:text-gray-400 max-w-3xl mx-auto mb-8">
           Stop following tutorials designed for beginners.
           <br className="hidden md:block" />
           Start working on projects that actually challenge you.
@@ -48,7 +48,7 @@ export default function Home() {
       </section>
 
       <section>
-        <h3 className="text-center text-gray-500 mb-8">
+        <h3 className="text-center text-gray-500 dark:text-gray-400 mb-8">
           Enjoyed by developers at the world’s best companies
         </h3>
         <div className="flex flex-wrap justify-center gap-8">
@@ -72,7 +72,7 @@ export default function Home() {
           ].map((company) => (
             <div
               key={company}
-              className="text-2xl font-bold text-gray-700 opacity-70"
+              className="text-2xl font-bold text-gray-700 dark:text-gray-400 opacity-70"
             >
               {company}
             </div>
@@ -83,12 +83,12 @@ export default function Home() {
       <section>
         <div className="grid grid-cols-1 md:grid-cols-[4fr_5fr] gap-8">
           <div className="flex flex-col justify-center">
-            <h2 className="text-3xl font-bold text-gray-900 mb-6">
+            <h2 className="text-3xl font-bold mb-6">
               Projects that go way
               <br />
               beyond the basics
             </h2>
-            <div className="text-gray-600 space-y-4 mb-8">
+            <div className="text-gray-600 dark:text-gray-400 space-y-4 mb-8">
               <p>
                 Challenge yourself beyond implementing CRUD features. Build
                 something that actually stimulates you.
@@ -99,7 +99,7 @@ export default function Home() {
               </p>
               <p>Become a confident developer.</p>
             </div>
-            <div className="border rounded-lg p-4 text-gray-600 text-xs">
+            <div className="border rounded-lg p-4 text-gray-600 dark:text-gray-400 text-xs">
               <p className="mb-6 =">
                 I&apos;m learning about how Redis works under the hood, system
                 calls, socket programming in Python — something I&apos;ve never
@@ -157,17 +157,17 @@ export default function Home() {
             </div>
           </div>
           <div className="flex flex-col justify-center">
-            <h2 className="text-3xl font-bold text-gray-900 mb-6">
+            <h2 className="text-3xl font-bold mb-6">
               Be in the company of
               <br />
               prolific developers
             </h2>
-            <div className="text-gray-600 space-y-4 mb-8">
+            <div className="text-gray-600 dark:text-gray-400 space-y-4 mb-8">
               <p>Is there a more idiomatic approach? Or a concise one?</p>
               <p>Study how other engineers approach the same problems.</p>
               <p>Develop a circle of influence you can’t find at work.</p>
             </div>
-            <div className="border rounded-lg p-6 text-gray-600 text-xs">
+            <div className="border rounded-lg p-6 text-gray-600 dark:text-gray-400 text-xs">
               <p className="mb-6">
                 The Redis challenge was extremely fun. I ended up having to read
                 Redis protocol specification doc pretty carefully in its
@@ -202,12 +202,12 @@ export default function Home() {
       <section>
         <div className="grid grid-cols-1 md:grid-cols-[4fr_5fr] gap-8">
           <div className="flex flex-col justify-center">
-            <h2 className="text-3xl font-bold text-gray-900 mb-6">
+            <h2 className="text-3xl font-bold mb-6">
               Use your favourite
               <br />
               tools to code. No limits.
             </h2>
-            <div className="text-gray-600 space-y-4 mb-8">
+            <div className="text-gray-600 dark:text-gray-400 space-y-4 mb-8">
               <p>Don&apos;t be limited by web-based editors.</p>
               <p>
                 Code in your usual IDE, with your preferred customisations. Push
@@ -216,7 +216,7 @@ export default function Home() {
               </p>
               <p>StackClass is designed for pros.</p>
             </div>
-            <div className="border rounded-lg p-6 text-gray-600 text-xs">
+            <div className="border rounded-lg p-6 text-gray-600 dark:text-gray-400 text-xs">
               <p className="mb-6">
                 There are few sites I like as much that have a step by step
                 guide. The real-time feedback is so good, it&apos;s creepy!

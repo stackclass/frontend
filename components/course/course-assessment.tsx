@@ -61,7 +61,7 @@ function AssessmentItem<T extends string | boolean>({
       <Card className="px-6 py-4 rounded-none border-t border-l-0 border-r-0 border-b-0">
         <CollapsibleTrigger asChild>
           <div className="flex items-center justify-between cursor-pointer">
-            <div className="flex items-center text-gray-600">
+            <div className="flex items-center text-gray-600 dark:text-gray-400">
               <span className="font-bold">
                 {title}
                 {value !== null && ":"}
@@ -84,7 +84,7 @@ function AssessmentItem<T extends string | boolean>({
         </CollapsibleTrigger>
 
         <CollapsibleContent>
-          <p className="text-gray-600 mb-3">{description}</p>
+          <p className="text-gray-600 dark:text-gray-400 mb-3">{description}</p>
           <div className="flex flex-wrap gap-2">
             {options.map((option) => (
               <Button

@@ -33,7 +33,7 @@ export function Code({ title, className, children }: CodeProps) {
 
   return (
     <Card className={cn("rounded-sm pt-0", className)}>
-      <CardHeader className="bg-gray-100 pl-4 pr-4 pt-2 pb-2 flex items-center justify-between">
+      <CardHeader className="bg-accent pl-4 pr-4 pt-2 pb-2 flex items-center justify-between">
         <CardTitle className="m-0 text-sm flex items-center">
           <SquareTerminal size={14} className="mr-1" />
           <span>{title}</span>

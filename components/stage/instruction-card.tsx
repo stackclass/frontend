@@ -56,7 +56,7 @@ export const InstructionCard = ({
           className={`relative ${!expanded ? "max-h-[200px] overflow-hidden" : ""}`}
         >
           {!expanded && (
-            <div className="absolute inset-x-0 bottom-0 h-100 bg-gradient-to-t from-white to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 h-100 bg-gradient-to-t from-card to-transparent" />
           )}
           <div className="max-w-5xl">
             <div className="markdown">

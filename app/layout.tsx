@@ -1,5 +1,6 @@
 import AuthProvider from "@/components/provider/auth-provider";
 import QueryClientProvider from "@/components/provider/query-client-provider";
+import ThemeProvider from "@/components/provider/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata } from "next";
@@ -18,13 +19,19 @@ export default function RootLayout({
   const ANALYTICS_ID = process.env.NEXT_PUBLIC_ANALYTICS_ID;
 
   return (
-    <html lang="en">
-      <body className="bg-background text-foreground">
-        <QueryClientProvider>
-          <AuthProvider>{children}</AuthProvider>
-        </QueryClientProvider>
-        <Toaster position="top-center" richColors visibleToasts={1} />
-
+    <html lang="en" suppressHydrationWarning>
+      <body>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <QueryClientProvider>
+            <AuthProvider>{children}</AuthProvider>
+          </QueryClientProvider>
+          <Toaster position="top-center" richColors visibleToasts={1} />
+        </ThemeProvider>
         {ANALYTICS_ID && <GoogleAnalytics gaId={ANALYTICS_ID} />}
       </body>
     </html>

@@ -23,7 +23,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
       <div className="flex justify-between gap-x-4">
         <div className="mb-4">
           <h2 className="font-bold text-lg">{course.name}</h2>
-          <div className="text-gray-600 mt-2 line-clamp-2 min-h-[2.5rem]">
+          <div className="text-gray-600 dark:text-gray-400 mt-2 line-clamp-2 min-h-[2.5rem]">
             {course.summary}
           </div>
         </div>

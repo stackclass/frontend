@@ -51,14 +51,14 @@ export default function Overlay({
     <div className="relative">
       {children}
 
-      <div className="absolute inset-0 bg-white/50 backdrop-blur-xs flex items-start pt-40 justify-center z-9">
-        <div className="bg-white p-8 rounded-lg shadow-lg mx-4 max-w-md border text-center  overflow-y-auto max-h-[90vh]">
+      <div className="absolute inset-0 bg-background/50 backdrop-blur-xs flex items-start pt-40 justify-center z-9">
+        <div className="bg-background p-8 rounded-lg shadow-lg mx-4 max-w-md border text-center  overflow-y-auto max-h-[90vh]">
           <div className="w-full mb-4">
             <div className="text-6xl mb-2">{config?.icon}</div>
-            <h2 className="text-2xl font-semibold text-gray-900">
-              {config?.title}
-            </h2>
-            <p className="text-gray-600 text-balance">{config?.subtitle}</p>
+            <h2 className="text-2xl font-semibold">{config?.title}</h2>
+            <p className="text-gray-600 dark:text-gray-400 text-balance">
+              {config?.subtitle}
+            </p>
           </div>
 
           <div className="space-y-3">
@@ -66,7 +66,7 @@ export default function Overlay({
 
             <Button
               variant="link"
-              className="w-full text-gray-600 underline cursor-pointer"
+              className="w-full text-gray-600 dark:text-gray-400 underline cursor-pointer"
               onClick={() => setIsVisible(false)}
             >
               {config?.action}

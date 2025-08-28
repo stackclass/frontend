@@ -22,7 +22,7 @@ export function SignInButton() {
     <Button
       variant="ghost"
       onClick={handleSignIn}
-      className="flex space-x-2 text-sm text-gray-600"
+      className="flex space-x-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white cursor-pointer"
     >
       <span>Sign in with GitHub</span>
       <svg
