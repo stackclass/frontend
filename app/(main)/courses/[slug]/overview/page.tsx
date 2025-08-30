@@ -18,6 +18,7 @@ import { Attempts } from "@/components/course/course-attempts";
 import { useAttempts, useGetCourse } from "@/hooks/use-course";
 import { useExtensions } from "@/hooks/use-extension";
 import { useStages } from "@/hooks/use-stage";
+import { useUserCourse } from "@/hooks/use-user-course";
 import type { Stage } from "@/types/stage";
 
 interface StageGroupData {
@@ -34,6 +35,10 @@ export default function CourseOverviewPage() {
   const [stageGroups, setStageGroups] = useState<StageGroupData[]>([]);
 
   const { data: course, isLoading: courseLoading } = useGetCourse(slug);
+  const { data: userCourse, isLoading: userCourseLoading } = useUserCourse(
+    slug,
+    { retry: false },
+  );
   const { data: stages = [], isLoading: stagesLoading } = useStages(slug);
   const { data: extensions = [], isLoading: extensionsLoading } =
     useExtensions(slug);
@@ -42,6 +47,7 @@ export default function CourseOverviewPage() {
   useEffect(() => {
     if (
       !courseLoading &&
+      !userCourseLoading &&
       !stagesLoading &&
       !extensionsLoading &&
       !attemptsLoading
@@ -84,6 +90,7 @@ export default function CourseOverviewPage() {
     }
   }, [
     courseLoading,
+    userCourseLoading,
     stagesLoading,
     extensionsLoading,
     attemptsLoading,
@@ -108,7 +115,7 @@ export default function CourseOverviewPage() {
 
       <Button size="lg" className="w-fit font-bold" asChild>
         <Link href={`/courses/${slug}`}>
-          Start Building <ArrowRight />
+          {userCourse ? "Resume Building" : "Start Building"} <ArrowRight />
         </Link>
       </Button>
 
