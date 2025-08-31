@@ -1,16 +1,20 @@
 "use client";
 
-import { redirect, useParams } from "next/navigation";
-import { useCourseContext } from "@/app/(course)/layout";
+import { useUserCourse } from "@/hooks/use-user-course";
 import {
   getIntroductionStatus,
   getSetupStatus,
   StageStatus,
 } from "@/types/stage-status";
+import { redirect, useParams } from "next/navigation";
 
 export default function CourseEntryPage() {
   const { slug } = useParams<{ slug: string }>();
-  const { userCourse } = useCourseContext();
+
+  const { data: userCourseData } = useUserCourse(slug, {
+    retry: false,
+  });
+  const userCourse = userCourseData ?? null;
 
   let targetPath = `/courses/${slug}/introduction`;
 
