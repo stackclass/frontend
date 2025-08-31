@@ -8,24 +8,25 @@ import { GenericCard } from "@/components/stage/generic-card";
 import { StageHeader } from "@/components/stage/stage-header";
 import { StageTabs } from "@/components/stage/stage-tabs";
 
-import { useCourseContext } from "@/app/(course)/layout";
+import { NotFound } from "@/components/common/not-found";
 import { Attempts } from "@/components/course/course-attempts";
 import { useSession } from "@/components/provider/auth-provider";
 import Overlay from "@/components/stage/overlay";
 import { StageCompleted } from "@/components/stage/stage-completed";
 import { useUserCourseStatus } from "@/hooks/use-user-course-status";
+import { useCourseStore } from "@/stores/course-store";
 import { getSetupStatus, StageStatus } from "@/types/stage-status";
 import Link from "next/link";
 import { useMemo } from "react";
 
 export default function CourseSetupPage() {
-  const { course, userCourse, attempts } = useCourseContext();
+  const { course, userCourse, attempts } = useCourseStore();
   const { session } = useSession();
 
-  const projectName = `stackclass-${course.slug}`;
+  const projectName = `stackclass-${course?.slug}`;
 
   const { status: userCourseStatus } = useUserCourseStatus(
-    course.slug,
+    course?.slug || "",
     userCourse,
   );
 
@@ -34,6 +35,8 @@ export default function CourseSetupPage() {
     () => getSetupStatus(userCourseStatus),
     [userCourseStatus],
   );
+
+  if (!course || !userCourse) return <NotFound message="Course not found." />;
 
   return (
     <>

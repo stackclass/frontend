@@ -1,15 +1,15 @@
 "use client";
 
-import { useCourseContext } from "@/app/(course)/layout";
 import {
   getIntroductionStatus,
   getSetupStatus,
   StageStatus,
 } from "@/types/stage-status";
 import { useParams, usePathname } from "next/navigation";
+import { useCourseStore } from "@/stores/course-store";
 
 export function useNavigation() {
-  const { stages, userCourse } = useCourseContext();
+  const { stages, userCourse } = useCourseStore();
   const { slug } = useParams<{ slug: string }>();
   const pathname = usePathname();
 

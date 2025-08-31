@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { useParams } from "next/navigation";
 
 import { ErrorMessage } from "@/components/common/error-message";
@@ -9,7 +10,6 @@ import { InstructionCard } from "@/components/stage/instruction-card";
 import { StageHeader } from "@/components/stage/stage-header";
 import { StageTabs } from "@/components/stage/stage-tabs";
 
-import { useCourseContext } from "@/app/(course)/layout";
 import { Attempts } from "@/components/course/course-attempts";
 import { useSession } from "@/components/provider/auth-provider";
 import { GenericCard } from "@/components/stage/generic-card";
@@ -19,9 +19,10 @@ import TestRunner from "@/components/stage/test-runner";
 import { useStage } from "@/hooks/use-stage";
 import { useUserStage } from "@/hooks/use-user-stage";
 import { useUserStageStatus } from "@/hooks/use-user-stage-status";
+import { useCourseStore } from "@/stores/course-store";
 import { UserStage } from "@/types/stage";
 import { getStageStatus, StageStatus } from "@/types/stage-status";
-import { useMemo } from "react";
+
 import ReactMarkdown from "react-markdown";
 
 export default function StagePage() {
@@ -30,7 +31,7 @@ export default function StagePage() {
     stage_slug: string;
   }>();
 
-  const { attempts } = useCourseContext();
+  const { attempts } = useCourseStore();
   const { session } = useSession();
 
   const {
