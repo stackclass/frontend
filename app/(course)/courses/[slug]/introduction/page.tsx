@@ -7,7 +7,7 @@ import { StageHeader } from "@/components/stage/stage-header";
 import { StageTabs } from "@/components/stage/stage-tabs";
 import { getIntroductionStatus, StageStatus } from "@/types/stage-status";
 
-import { useCourseContext } from "@/app/(course)/layout";
+import { NotFound } from "@/components/common/not-found";
 import {
   Callbacks,
   CourseAssessment,
@@ -21,37 +21,49 @@ import {
   useCreateUserCourse,
   useUpdateUserCourse,
 } from "@/hooks/use-user-course";
+import { useCourseStore, useIsNewUserCourse } from "@/stores/course-store";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 
 export default function CourseIntroductionPage() {
   const router = useRouter();
-
   const { session } = useSession();
 
-  const {
-    course,
-    userCourse: contextUserCourse,
-    isNew,
-    updateUserCourse: updateContextUserCourse,
-    attempts,
-  } = useCourseContext();
-  const [userCourse, setUserCourse] = useState(contextUserCourse);
-  const status = useMemo(() => getIntroductionStatus(userCourse), [userCourse]);
+  const { course, userCourse, attempts, setUserCourse } = useCourseStore();
+  const isNew = useIsNewUserCourse();
+
+  const [localUserCourse, setLocalUserCourse] = useState(
+    userCourse || {
+      course_slug: course?.slug || "",
+      proficiency: null,
+      cadence: null,
+      accountability: null,
+      started_at: new Date().toISOString(),
+      completed_stage_count: 0,
+      activated: false,
+      repository: "",
+    },
+  );
+
+  const status = useMemo(
+    () => getIntroductionStatus(localUserCourse),
+    [localUserCourse],
+  );
 
   const callbacks: Callbacks = {
     onProficiencyChange: (proficiency) => {
-      setUserCourse((prev) => ({ ...prev, proficiency }));
+      setLocalUserCourse((prev) => ({ ...prev, proficiency }));
     },
     onCadenceChange: (cadence) => {
-      setUserCourse((prev) => ({ ...prev, cadence }));
+      setLocalUserCourse((prev) => ({ ...prev, cadence }));
     },
     onAccountabilityChange: (accountability) => {
-      setUserCourse((prev) => ({ ...prev, accountability }));
+      setLocalUserCourse((prev) => ({ ...prev, accountability }));
     },
   };
 
   const navigateToNextStage = (currentStageSlug?: string) => {
+    if (!course) return;
     const targetPath = currentStageSlug
       ? `/courses/${course.slug}/stages/${currentStageSlug}`
       : `/courses/${course.slug}/setup`;
@@ -59,14 +71,14 @@ export default function CourseIntroductionPage() {
   };
 
   const hasChanges =
-    userCourse.proficiency !== contextUserCourse.proficiency ||
-    userCourse.cadence !== contextUserCourse.cadence ||
-    userCourse.accountability !== contextUserCourse.accountability;
+    localUserCourse.proficiency !== userCourse?.proficiency ||
+    localUserCourse.cadence !== userCourse?.cadence ||
+    localUserCourse.accountability !== userCourse?.accountability;
 
   const { mutate: createUserCourse } = useCreateUserCourse({
     onSuccess: (data) => {
       console.log("User course created successfully:", data);
-      updateContextUserCourse(data);
+      setUserCourse(data);
       navigateToNextStage(data.current_stage_slug);
     },
     onError: (error) => {
@@ -74,10 +86,11 @@ export default function CourseIntroductionPage() {
     },
   });
 
-  const { mutate: updateUserCourse } = useUpdateUserCourse(course.slug, {
+  const { mutate: updateUserCourse } = useUpdateUserCourse(course?.slug || "", {
     onSuccess: () => {
       console.log("User course updated successfully");
-      navigateToNextStage(userCourse.current_stage_slug);
+      setUserCourse(localUserCourse);
+      navigateToNextStage(localUserCourse.current_stage_slug);
     },
     onError: (error) => {
       console.error("Failed to update user course:", error);
@@ -85,23 +98,27 @@ export default function CourseIntroductionPage() {
   });
 
   const handleContinue = () => {
+    if (!course) return;
+
     if (isNew) {
       createUserCourse({
         course_slug: course.slug,
-        proficiency: userCourse.proficiency || "beginner",
-        cadence: userCourse.cadence || "once_week",
-        accountability: userCourse.accountability || false,
+        proficiency: localUserCourse.proficiency || "beginner",
+        cadence: localUserCourse.cadence || "once_week",
+        accountability: localUserCourse.accountability || false,
       });
     } else if (hasChanges) {
       updateUserCourse({
-        proficiency: userCourse.proficiency || "beginner",
-        cadence: userCourse.cadence || "once_week",
-        accountability: userCourse.accountability || false,
+        proficiency: localUserCourse.proficiency || "beginner",
+        cadence: localUserCourse.cadence || "once_week",
+        accountability: localUserCourse.accountability || false,
       });
     } else {
-      navigateToNextStage(userCourse.current_stage_slug);
+      navigateToNextStage(localUserCourse.current_stage_slug);
     }
   };
+
+  if (!course) return <NotFound message="Course not found." />;
 
   return (
     <>
@@ -132,7 +149,7 @@ export default function CourseIntroductionPage() {
 
               <CourseAssessment
                 status={status}
-                userCourse={userCourse}
+                userCourse={localUserCourse}
                 callbacks={callbacks}
               />
 

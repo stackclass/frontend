@@ -19,15 +19,14 @@ import {
 } from "@/components/ui/sidebar";
 
 import { Loading } from "@/components/common/loading";
+import { NotFound } from "@/components/common/not-found";
 import { CourseNavBootstrap } from "@/components/course/course-nav-bootstrap";
 import { CourseNavExtensions } from "@/components/course/course-nav-extensions";
 import { CourseNavStages } from "@/components/course/course-nav-stages";
 import { CourseSwitcher } from "@/components/course/course-switcher";
-
-import type { StageWithState } from "@/types/stage";
-
-import { useCourseContext } from "@/app/(course)/layout";
 import { useExtensions } from "@/hooks/use-extension";
+import { useCourseStore } from "@/stores/course-store";
+import type { StageWithState } from "@/types/stage";
 
 interface ExtensionGroup {
   title: string;
@@ -39,7 +38,7 @@ export function CourseSidebar({
   ...props
 }: React.ComponentProps<typeof Sidebar>) {
   const { toggleSidebar } = useSidebar();
-  const { course, stages } = useCourseContext();
+  const { course, stages } = useCourseStore();
   const { slug } = useParams<{ slug: string }>();
 
   const [extensionGroups, setExtensionGroups] = React.useState<
@@ -87,6 +86,7 @@ export function CourseSidebar({
   const baseStages = stages.filter((stage) => !stage.stage.extension_slug);
 
   if (loading) return <Loading message="Loading extensions..." />;
+  if (!course) return <NotFound message="Course not found." />;
 
   return (
     <Sidebar {...props}>
