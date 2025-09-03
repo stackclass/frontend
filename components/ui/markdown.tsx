@@ -10,6 +10,7 @@ import rehypeKatex from "rehype-katex";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import { useTheme } from "next-themes";
+import type { PluggableList } from "unified";
 
 export interface MarkdownProps {
   children?: string;
@@ -36,8 +37,8 @@ export default function Markdown(props: MarkdownProps) {
   }, [props.children]);
 
   const elem = useMemo(() => {
-    const remarkPlugins: any[] = [remarkGfm];
-    const rehypePlugins: any[] = [];
+    const remarkPlugins: PluggableList = [remarkGfm];
+    const rehypePlugins: PluggableList = [];
 
     if (props.katex === true) {
       remarkPlugins.push(remarkMath);
@@ -51,7 +52,7 @@ export default function Markdown(props: MarkdownProps) {
           rehypePlugins={rehypePlugins}
           components={{
             code(props) {
-              const { children, className, node, ...rest } = props;
+              const { children, className, ...rest } = props;
               const match = /language-(\w+)/.exec(className || "");
               const code = String(children).replace(/\n$/, "");
 
