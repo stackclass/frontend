@@ -1,12 +1,8 @@
 "use client";
 
-import { Command } from "lucide-react";
-import {
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-} from "@/components/ui/sidebar";
+import { SidebarMenu, SidebarMenuItem } from "@/components/ui/sidebar";
 import { CourseDetail } from "@/types/course";
+import { Command } from "lucide-react";
 
 interface CourseSwitcherProps {
   course: CourseDetail;
@@ -16,17 +12,14 @@ export function CourseSwitcher({ course }: CourseSwitcherProps) {
   return (
     <SidebarMenu>
       <SidebarMenuItem>
-        <SidebarMenuButton
-          size="lg"
-          className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-        >
-          <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
+        <div className="flex gap-2 items-center">
+          <div className="bg-sidebar-primary text-white flex aspect-square size-8 items-center justify-center rounded-lg">
             <Command className="size-4" />
           </div>
-          <div className="grid flex-1 text-left font-bold text-lg leading-tight">
+          <div className="flex-1 text-left font-bold text-lg leading-tight">
             {course.name}
           </div>
-        </SidebarMenuButton>
+        </div>
       </SidebarMenuItem>
     </SidebarMenu>
   );
