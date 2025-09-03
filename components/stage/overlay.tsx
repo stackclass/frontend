@@ -52,7 +52,7 @@ export default function Overlay({
       {children}
 
       <div className="absolute inset-0 bg-background/50 backdrop-blur-xs flex items-start pt-40 justify-center z-9">
-        <div className="bg-background p-8 rounded-lg shadow-lg mx-4 max-w-md border text-center  overflow-y-auto max-h-[90vh]">
+        <div className="bg-accent dark:bg-accent p-8 rounded-lg shadow-lg mx-4 max-w-md border text-center  overflow-y-auto max-h-[90vh]">
           <div className="w-full mb-4">
             <div className="text-6xl mb-2">{config?.icon}</div>
             <h2 className="text-2xl font-semibold">{config?.title}</h2>

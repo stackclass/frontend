@@ -1,7 +1,7 @@
 "use client";
 
-import { useMemo } from "react";
 import { useParams } from "next/navigation";
+import { useMemo } from "react";
 
 import { ErrorMessage } from "@/components/common/error-message";
 import { Loading } from "@/components/common/loading";
@@ -23,7 +23,7 @@ import { useCourseStore } from "@/stores/course-store";
 import { UserStage } from "@/types/stage";
 import { getStageStatus, StageStatus } from "@/types/stage-status";
 
-import ReactMarkdown from "react-markdown";
+import Markdown from "@/components/ui/markdown";
 
 export default function StagePage() {
   const { slug, stage_slug } = useParams<{
@@ -96,7 +96,7 @@ export default function StagePage() {
                 <GenericCard title="How to pass this stage">
                   <div className="max-w-5xl">
                     <div className="markdown">
-                      <ReactMarkdown>{stage.solution}</ReactMarkdown>
+                      <Markdown>{stage.solution}</Markdown>
                     </div>
                   </div>
                 </GenericCard>

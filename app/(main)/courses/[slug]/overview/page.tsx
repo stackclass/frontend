@@ -4,7 +4,6 @@ import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import ReactMarkdown from "react-markdown";
 
 import { Button } from "@/components/ui/button";
 
@@ -15,6 +14,7 @@ import { StageGroup } from "@/components/stage/stage-group";
 import { StageItem } from "@/components/stage/stage-item";
 
 import { Attempts } from "@/components/course/course-attempts";
+import Markdown from "@/components/ui/markdown";
 import { useAttempts, useGetCourse } from "@/hooks/use-course";
 import { useExtensions } from "@/hooks/use-extension";
 import { useStages } from "@/hooks/use-stage";
@@ -123,7 +123,7 @@ export default function CourseOverviewPage() {
         <div className="lg:col-span-2 space-y-6">
           <div className="border rounded-lg p-6 prose max-w-none">
             <div className="markdown">
-              <ReactMarkdown>{course.description}</ReactMarkdown>
+              <Markdown>{course.description}</Markdown>
             </div>
 
             {/* Render all stage groups */}

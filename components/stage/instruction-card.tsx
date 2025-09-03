@@ -14,8 +14,8 @@ import { Difficulty } from "@/types/stage";
 import { StageStatus } from "@/types/stage-status";
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
-import ReactMarkdown from "react-markdown";
 import { Button } from "../ui/button";
+import Markdown from "../ui/markdown";
 
 interface InstructionCardProps {
   title: string;
@@ -60,7 +60,7 @@ export const InstructionCard = ({
           )}
           <div className="max-w-5xl">
             <div className="markdown">
-              <ReactMarkdown>{instruction}</ReactMarkdown>
+              <Markdown>{instruction}</Markdown>
             </div>
           </div>
         </div>

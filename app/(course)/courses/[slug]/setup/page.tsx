@@ -8,7 +8,6 @@ import { GenericCard } from "@/components/stage/generic-card";
 import { StageHeader } from "@/components/stage/stage-header";
 import { StageTabs } from "@/components/stage/stage-tabs";
 
-import { NotFound } from "@/components/common/not-found";
 import { Attempts } from "@/components/course/course-attempts";
 import { useSession } from "@/components/provider/auth-provider";
 import Overlay from "@/components/stage/overlay";

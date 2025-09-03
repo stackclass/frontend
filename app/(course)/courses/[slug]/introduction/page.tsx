@@ -1,13 +1,10 @@
 "use client";
 
-import ReactMarkdown from "react-markdown";
-
 import { GenericCard } from "@/components/stage/generic-card";
 import { StageHeader } from "@/components/stage/stage-header";
 import { StageTabs } from "@/components/stage/stage-tabs";
 import { getIntroductionStatus, StageStatus } from "@/types/stage-status";
 
-import { NotFound } from "@/components/common/not-found";
 import {
   Callbacks,
   CourseAssessment,
@@ -17,6 +14,7 @@ import { useSession } from "@/components/provider/auth-provider";
 import Overlay from "@/components/stage/overlay";
 import { StageCompleted } from "@/components/stage/stage-completed";
 import { Button } from "@/components/ui/button";
+import Markdown from "@/components/ui/markdown";
 import {
   useCreateUserCourse,
   useUpdateUserCourse,
@@ -140,7 +138,7 @@ export default function CourseIntroductionPage() {
               <GenericCard title="Introduction">
                 <div className="max-w-5xl">
                   <div className="markdown">
-                    <ReactMarkdown>{course?.description}</ReactMarkdown>
+                    <Markdown>{course?.description}</Markdown>
                   </div>
                 </div>
               </GenericCard>

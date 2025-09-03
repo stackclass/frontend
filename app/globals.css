@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@plugin "@tailwindcss/typography";
 
 body {
     font-family:
@@ -134,23 +135,6 @@ code {
 .markdown {
     a {
         color: var(--color-primary);
-        font-weight: bold;
-    }
-
-    p {
-        margin-bottom: 1.25em;
-    }
-
-    ul {
-        list-style-type: disc;
-        margin-top: 1.25em;
-        margin-bottom: 1.25em;
-        padding-inline-start: 1.625em;
-    }
-
-    li {
-        margin-top: 0.5em;
-        margin-bottom: 0.5em;
     }
 
     h1,
@@ -159,56 +143,39 @@ code {
     h4,
     h5,
     h6 {
-        font-weight: bold;
         margin-top: 1em;
-        margin-bottom: 1em;
-    }
-    h2 {
-        font-size: var(--text-2xl);
-        line-height: var(--text-2xl--line-height);
-    }
-
-    h3 {
-        font-size: var(--text-xl);
-        line-height: var(--text-xl--line-height);
-    }
-
-    h4 {
-        font-size: var(--text-lg);
-        line-height: var(--text-lg--line-height);
-    }
-
-    h5 {
-        font-size: var(--text-base);
-        line-height: var(--text-base--line-height);
-    }
-
-    h6 {
-        font-size: var(--text-base);
     }
 
     pre {
-        background-color: var(--color-accent);
-        padding: 1rem;
-        margin-bottom: 1rem;
+        border: 1px solid var(--border);
+        background: rgb(250, 250, 250);
+        color: var(--foreground);
+        padding: 1em;
+        margin: 0;
     }
 
     pre code {
-        background-color: initial;
-        border: initial;
-        border-radius: initial;
-        padding: initial;
+        background: rgb(250, 250, 250);
+        font-family:
+            "Fira Code", "Fira Mono", Menlo, Consolas, "DejaVu Sans Mono",
+            monospace;
     }
 
-    code {
-        background-color: var(--color-accent);
-        border: 1px solid var(--color-border);
-        border-radius: 4px;
-        padding: 0.2em 0.4em;
+    pre .highlight div {
+        padding: 0 !important;
+        margin: 0 !important;
     }
+}
 
-    hr {
-        margin-top: 2em;
-        margin-bottom: 2em;
-    }
+.dark .markdown pre {
+    background: rgb(40, 42, 54);
+}
+
+.dark .markdown pre code {
+    background: none;
+    font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+}
+
+.code .markdown pre {
+    border: none;
 }
