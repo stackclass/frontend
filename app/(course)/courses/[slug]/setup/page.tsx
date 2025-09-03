@@ -36,8 +36,6 @@ export default function CourseSetupPage() {
     [userCourseStatus],
   );
 
-  if (!course || !userCourse) return <NotFound message="Course not found." />;
-
   return (
     <>
       <StageHeader
@@ -78,7 +76,7 @@ export default function CourseSetupPage() {
                   {status !== StageStatus.Pending ? (
                     <Code title="command line">
                       <div>
-                        git clone {userCourse.repository} {projectName}
+                        git clone {userCourse?.repository} {projectName}
                       </div>
                       <div>cd {projectName}</div>
                     </Code>
@@ -105,7 +103,7 @@ export default function CourseSetupPage() {
                     <div>git push origin main</div>
                   </Code>
 
-                  <p className={userCourse.activated ? "line-through" : ""}>
+                  <p className={userCourse?.activated ? "line-through" : ""}>
                     When you run the above command, the &quot;Listening for a
                     git push&quot; message below will change, and the first
                     stage will be activated.
@@ -138,7 +136,7 @@ export default function CourseSetupPage() {
                       </p>
                       <Button size="lg" className="w-fit font-bold" asChild>
                         <Link
-                          href={`/courses/${course.slug}/stages/${userCourse.current_stage_slug}`}
+                          href={`/courses/${course?.slug}/stages/${userCourse?.current_stage_slug}`}
                         >
                           Continue <ArrowRight />
                         </Link>

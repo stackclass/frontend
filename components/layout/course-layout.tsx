@@ -38,8 +38,8 @@ export default function CourseLayout({
   if (isLoading || sessionLoading)
     return <Loading message="Loading course details..." />;
 
-  if (error) return <ErrorMessage message="Failed to load course details." />;
   if (!course) return <NotFound message="Course not found." />;
+  if (error) return <ErrorMessage message="Failed to load course details." />;
 
   return (
     <SidebarProvider>

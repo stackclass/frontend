@@ -118,8 +118,6 @@ export default function CourseIntroductionPage() {
     }
   };
 
-  if (!course) return <NotFound message="Course not found." />;
-
   return (
     <>
       <StageHeader
@@ -142,7 +140,7 @@ export default function CourseIntroductionPage() {
               <GenericCard title="Introduction">
                 <div className="max-w-5xl">
                   <div className="markdown">
-                    <ReactMarkdown>{course.description}</ReactMarkdown>
+                    <ReactMarkdown>{course?.description}</ReactMarkdown>
                   </div>
                 </div>
               </GenericCard>

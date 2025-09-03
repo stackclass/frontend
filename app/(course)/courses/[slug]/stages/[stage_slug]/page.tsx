@@ -69,8 +69,8 @@ export default function StagePage() {
 
   const isLoading = stageLoading || userStageLoading;
   if (isLoading) return <Loading message="Loading stage details..." />;
-  if (stageError) return <ErrorMessage message={stageError.message} />;
   if (!stage) return <NotFound message="Stage not found." />;
+  if (stageError) return <ErrorMessage message={stageError.message} />;
 
   return (
     <>
