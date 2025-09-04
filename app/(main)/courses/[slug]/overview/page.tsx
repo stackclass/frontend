@@ -127,7 +127,7 @@ export default function CourseOverviewPage() {
             </div>
 
             {/* Render all stage groups */}
-            <div className="stages">
+            <div className="stages not-prose">
               {stageGroups.map((group) => (
                 <StageGroup key={group.slug || "base"} title={group.title}>
                   {group.stages.map((stage) => (
