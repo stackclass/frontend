@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Code } from "@/components/ui/code";
 import { ArrowRight, Check } from "lucide-react";
+import { useEffect } from "react";
 
 import { GenericCard } from "@/components/stage/generic-card";
 import { StageHeader } from "@/components/stage/stage-header";
@@ -19,20 +20,26 @@ import Link from "next/link";
 import { useMemo } from "react";
 
 export default function CourseSetupPage() {
-  const { course, userCourse, attempts } = useCourseStore();
+  const { course, userCourse, attempts, setUserCourse } = useCourseStore();
   const { session } = useSession();
 
   const projectName = `stackclass-${course?.slug}`;
 
-  const { status: userCourseStatus } = useUserCourseStatus(
+  const { status: updatedUserCourse } = useUserCourseStatus(
     course?.slug || "",
     userCourse,
   );
 
+  useEffect(() => {
+    if (updatedUserCourse && updatedUserCourse !== userCourse) {
+      setUserCourse(updatedUserCourse);
+    }
+  }, [updatedUserCourse, userCourse, setUserCourse]);
+
   // Use useMemo to dynamically update status when userCourseStatus changes
   const status = useMemo(
-    () => getSetupStatus(userCourseStatus),
-    [userCourseStatus],
+    () => getSetupStatus(updatedUserCourse),
+    [updatedUserCourse],
   );
 
   return (
@@ -128,20 +135,22 @@ export default function CourseSetupPage() {
                     </Button>
                   )}
 
-                  {status == StageStatus.Completed && (
-                    <>
-                      <p>
-                        🎉 Git push received! The first stage is now activated.
-                      </p>
-                      <Button size="lg" className="w-fit font-bold" asChild>
-                        <Link
-                          href={`/courses/${course?.slug}/stages/${userCourse?.current_stage_slug}`}
-                        >
-                          Continue <ArrowRight />
-                        </Link>
-                      </Button>
-                    </>
-                  )}
+                  {status == StageStatus.Completed &&
+                    userCourse?.current_stage_slug && (
+                      <>
+                        <p>
+                          🎉 Git push received! The first stage is now
+                          activated.
+                        </p>
+                        <Button size="lg" className="w-fit font-bold" asChild>
+                          <Link
+                            href={`/courses/${course?.slug}/stages/${userCourse.current_stage_slug}`}
+                          >
+                            Continue <ArrowRight />
+                          </Link>
+                        </Button>
+                      </>
+                    )}
                 </div>
               </GenericCard>
             </main>
