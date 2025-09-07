@@ -48,7 +48,7 @@ export function Code({ title, className, children }: CodeProps) {
           </Button>
         </CardAction>
       </CardHeader>
-      <CardContent className="markdown p-0">
+      <CardContent className="p-4">
         <pre ref={codeRef} className="overflow-y-hidden">
           <code>{children}</code>
         </pre>

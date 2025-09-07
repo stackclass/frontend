@@ -154,11 +154,19 @@ code {
         margin: 0;
     }
 
-    pre code {
+    code {
+        border: 1px solid var(--border);
+        border-radius: 6px;
         background: rgb(250, 250, 250);
-        font-family:
-            "Fira Code", "Fira Mono", Menlo, Consolas, "DejaVu Sans Mono",
-            monospace;
+        color: var(--foreground);
+        padding: 1px 4px;
+        font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+    }
+
+    pre code {
+        border: none;
+        background: rgb(250, 250, 250);
+        padding: 0;
     }
 
     pre .highlight div {
@@ -167,13 +175,13 @@ code {
     }
 }
 
-.dark .markdown pre {
+.dark .markdown pre,
+.dark .markdown code {
     background: rgb(40, 42, 54);
 }
 
 .dark .markdown pre code {
     background: none;
-    font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
 }
 
 .code .markdown pre {

@@ -52,7 +52,7 @@ export default function Markdown(props: MarkdownProps) {
           rehypePlugins={rehypePlugins}
           components={{
             code(props) {
-              const { children, className, ...rest } = props;
+              const { children, className, node, ...rest } = props;
               const match = /language-(\w+)/.exec(className || "");
               const code = String(children).replace(/\n$/, "");
 
@@ -60,12 +60,7 @@ export default function Markdown(props: MarkdownProps) {
                 PreTag: "div" as const,
                 language: match?.[1] || "text",
                 style: isDark ? darkStyle : lightStyle,
-                ...Object.fromEntries(
-                  Object.entries(rest).filter(
-                    ([key]) =>
-                      !["ref", "key", "onTransitionStartCapture"].includes(key),
-                  ),
-                ),
+                children: code,
               };
 
               return match ? (
@@ -75,7 +70,7 @@ export default function Markdown(props: MarkdownProps) {
                   </SyntaxHighlighter>
                 </div>
               ) : (
-                <code className={cn("unknown", className)} {...rest}>
+                <code className={cn("not-prose", className)} {...rest}>
                   {children}
                 </code>
               );
