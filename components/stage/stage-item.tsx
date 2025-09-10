@@ -26,7 +26,9 @@ export function StageItem({ course, stage }: StageItemProps) {
       <div className="flex items-center">
         <div className="w-2 h-2 rounded-full bg-gray-200 mr-2"></div>
         <SquareTerminal className="w-5 h-5 text-gray-400 mr-2" />
-        <span className="text-gray-800 dark:text-gray-400">{stage.name}</span>
+        <span className="text-gray-800 dark:text-gray-400 md:max-w-none md:truncate-0 max-w-[160px] truncate">
+          {stage.name}
+        </span>
       </div>
 
       <DifficultyIndicator difficulty={stage.difficulty} />
