@@ -9,22 +9,27 @@ export const useUserStageStatus = (
 ) => {
   const [status, setStatus] = useState<UserStageStatus | null>(initialStatus);
   const [error, setError] = useState<Error | null>(null);
-  const prevInitialStatusRef = useRef<UserStageStatus | null>(initialStatus);
+
+  // Use ref to track the initial status state
+  const initialStatusState = useRef(initialStatus?.status);
 
   useEffect(() => {
-    if (prevInitialStatusRef.current !== initialStatus) {
-      prevInitialStatusRef.current = initialStatus;
-      setStatus(initialStatus);
-    }
-  }, [initialStatus]);
-
-  useEffect(() => {
+    // Only subscribe if the stage is initially in progress
     if (initialStatus?.status !== "in_progress") {
       return;
     }
 
-    const handleUpdate = (event: UserStageStatus) => setStatus(event);
-    const handleError = (err: Error) => setError(err);
+    console.log(`Subscribing to stage status for: ${courseSlug}/${stageSlug}`);
+
+    const handleUpdate = (event: UserStageStatus) => {
+      console.log("Received stage status update:", event);
+      setStatus(event);
+    };
+
+    const handleError = (err: Error) => {
+      console.error("Stage status SSE error:", err);
+      setError(err);
+    };
 
     UserStageStatusService.subscribe(
       courseSlug,
@@ -34,9 +39,12 @@ export const useUserStageStatus = (
     );
 
     return () => {
+      console.log(
+        `Unsubscribing from stage status for: ${courseSlug}/${stageSlug}`,
+      );
       UserStageStatusService.unsubscribe(handleUpdate);
     };
-  }, [courseSlug, stageSlug, initialStatus]);
+  }, [courseSlug, stageSlug]); // Only depend on slugs, not initialStatus
 
   return { status, error };
 };
