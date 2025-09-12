@@ -23,10 +23,10 @@ export function StageItem({ course, stage }: StageItemProps) {
       className="flex items-center justify-between py-1 px-2 mb-0 hover:bg-gray-50 dark:hover:bg-gray-900 rounded cursor-pointer"
       onClick={handleClick}
     >
-      <div className="flex items-center">
-        <div className="w-2 h-2 rounded-full bg-gray-200 mr-2"></div>
-        <SquareTerminal className="w-5 h-5 text-gray-400 mr-2" />
-        <span className="text-gray-800 dark:text-gray-400 md:max-w-none md:truncate-0 max-w-[160px] truncate">
+      <div className="flex items-center min-w-0 flex-1">
+        <div className="w-2 h-2 rounded-full bg-gray-200 mr-2 flex-shrink-0"></div>
+        <SquareTerminal className="w-5 h-5 text-gray-400 mr-2 flex-shrink-0" />
+        <span className="text-gray-800 dark:text-gray-400 truncate pr-2">
           {stage.name}
         </span>
       </div>
