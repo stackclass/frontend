@@ -29,7 +29,6 @@ export const auth = betterAuth({
       jwks: {
         keyPairConfig: {
           alg: "RS256",
-          // @ts-expect-error - extractable is a valid option for keyPairConfig
           extractable: true,
         },
       },
