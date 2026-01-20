@@ -11,11 +11,11 @@ export const useUserStageStatus = (
   const [error, setError] = useState<Error | null>(null);
 
   // Use ref to track the initial status state
-  const initialStatusState = useRef(initialStatus?.status);
+  const initialStatusRef = useRef(initialStatus?.status);
 
   useEffect(() => {
     // Only subscribe if the stage is initially in progress
-    if (initialStatus?.status !== "in_progress") {
+    if (initialStatusRef.current !== "in_progress") {
       return;
     }
 
@@ -44,7 +44,7 @@ export const useUserStageStatus = (
       );
       UserStageStatusService.unsubscribe(handleUpdate);
     };
-  }, [courseSlug, stageSlug]); // Only depend on slugs, not initialStatus
+  }, [courseSlug, stageSlug]); // Only depend on slugs, use ref for initialStatus
 
   return { status, error };
 };

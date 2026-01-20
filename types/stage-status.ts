@@ -1,5 +1,5 @@
 import { UserCourse } from "@/types/course";
-import { StageWithState, UserStage } from "@/types/stage";
+import { UserStage } from "@/types/stage";
 
 export enum StageStatus {
   Pending = "Pending",

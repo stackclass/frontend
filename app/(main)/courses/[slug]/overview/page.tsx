@@ -3,11 +3,10 @@
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 
 import { Button } from "@/components/ui/button";
 
-import { ErrorMessage } from "@/components/common/error-message";
 import { Loading } from "@/components/common/loading";
 import { NotFound } from "@/components/common/not-found";
 import { StageGroup } from "@/components/stage/stage-group";
@@ -30,10 +29,6 @@ interface StageGroupData {
 export default function CourseOverviewPage() {
   const { slug } = useParams<{ slug: string }>();
 
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-  const [stageGroups, setStageGroups] = useState<StageGroupData[]>([]);
-
   const { data: course, isLoading: courseLoading } = useGetCourse(slug);
   const { data: userCourse, isLoading: userCourseLoading } = useUserCourse(
     slug,
@@ -44,62 +39,43 @@ export default function CourseOverviewPage() {
     useExtensions(slug);
   const { data: attempts = [], isLoading: attemptsLoading } = useAttempts(slug);
 
-  useEffect(() => {
-    if (
-      !courseLoading &&
-      !userCourseLoading &&
-      !stagesLoading &&
-      !extensionsLoading &&
-      !attemptsLoading
-    ) {
-      try {
-        // Group stages
-        const groupedStages: StageGroupData[] = [];
+  const loading =
+    courseLoading ||
+    userCourseLoading ||
+    stagesLoading ||
+    extensionsLoading ||
+    attemptsLoading;
 
-        // 1. Add base stages
-        const baseStages = stages.filter((stage) => !stage.extension_slug);
-        if (baseStages.length > 0) {
-          groupedStages.push({
-            title: "Stages",
-            stages: baseStages,
-          });
-        }
+  const stageGroups = useMemo(() => {
+    const groupedStages: StageGroupData[] = [];
 
-        // 2. Add extended stages
-        extensions.forEach((extension) => {
-          const extensionStages = stages.filter(
-            (stage) => stage.extension_slug === extension.slug,
-          );
-          if (extensionStages.length > 0) {
-            groupedStages.push({
-              title: extension.name,
-              slug: extension.slug,
-              stages: extensionStages,
-            });
-          }
-        });
-
-        setStageGroups(groupedStages);
-        setLoading(false);
-      } catch (err) {
-        setError(
-          err instanceof Error ? err.message : "An unknown error occurred",
-        );
-        setLoading(false);
-      }
+    // 1. Add base stages
+    const baseStages = stages.filter((stage) => !stage.extension_slug);
+    if (baseStages.length > 0) {
+      groupedStages.push({
+        title: "Stages",
+        stages: baseStages,
+      });
     }
-  }, [
-    courseLoading,
-    userCourseLoading,
-    stagesLoading,
-    extensionsLoading,
-    attemptsLoading,
-    extensions,
-    stages,
-  ]);
+
+    // 2. Add extended stages
+    extensions.forEach((extension) => {
+      const extensionStages = stages.filter(
+        (stage) => stage.extension_slug === extension.slug,
+      );
+      if (extensionStages.length > 0) {
+        groupedStages.push({
+          title: extension.name,
+          slug: extension.slug,
+          stages: extensionStages,
+        });
+      }
+    });
+
+    return groupedStages;
+  }, [stages, extensions]);
 
   if (loading) return <Loading message="Loading course detail..." />;
-  if (error) return <ErrorMessage message={error} />;
   if (!course) return <NotFound message="Course not found." />;
 
   return (

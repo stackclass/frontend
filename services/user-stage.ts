@@ -1,5 +1,4 @@
 import http from "@/lib/http";
-import { CreateUserCourseRequest, UserCourse } from "@/types/course";
 import { UserStage } from "@/types/stage";
 import { AxiosResponse } from "axios";
 
