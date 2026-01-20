@@ -34,6 +34,6 @@ export default [
   },
   ...tseslint.configs.recommended,
   {
-    ignores: [".next/**", "node_modules/**"],
+    ignores: [".next/**", "node_modules/**", "next-env.d.ts"],
   },
 ];
