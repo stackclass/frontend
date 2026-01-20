@@ -13,21 +13,51 @@ A modern frontend for StackClass built with Next.js.
 - **Vercel Deployment**: Easy deployment on Vercel.
 - **Responsive Design**: Works on all devices.
 
+## Prerequisites
+
+- [Node.js](https://nodejs.org/) 22 or later
+- [just](https://github.com/casey/just) command runner (recommended)
+
 ## Getting Started
 
-First, run the development server:
+This project uses [just](https://github.com/casey/just) as a command runner. To see all available commands:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+just
+```
+
+### Setup
+
+```bash
+just setup  # Copies .env.example to .env and installs dependencies
+```
+
+### Development
+
+```bash
+just dev    # Run the development server
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+### Other Commands
+
+```bash
+just build      # Build for production
+just lint       # Run ESLint
+just typecheck  # Run TypeScript type checking
+just check      # Run all checks (lint + typecheck)
+just all        # Run all checks and build
+just clean      # Clean build artifacts
+```
+
+### Docker
+
+```bash
+just docker-build           # Build Docker image
+just docker-run             # Run Docker container
+just docker-build v1.0.0    # Build with specific tag
+```
 
 ## Contributing
 

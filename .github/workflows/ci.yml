@@ -24,8 +24,8 @@ jobs:
         with:
           node-version: 22
 
-      - run: npm install
-      - run: npm run lint
+      - name: Install just
+        uses: extractions/setup-just@v3
 
-      - run: cp .env.example .env
-      - run: npm run build --if-present
+      - run: just setup
+      - run: just all

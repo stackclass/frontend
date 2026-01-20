@@ -29,61 +29,76 @@ and provide as much detail as possible, including:
    cd frontend
    ```
 
-3. **Create a Branch**: Create a new branch for your changes.
+3. **Install Prerequisites**: Make sure you have [just](https://github.com/casey/just) installed.
+
+4. **Setup Development Environment**:
+
+   ```bash
+   just setup  # Copies .env.example to .env and installs dependencies
+   ```
+
+5. **Create a Branch**: Create a new branch for your changes.
 
    ```bash
    git checkout -b your-branch-name
    ```
 
-4. **Make Changes**: Make your changes locally.
+6. **Make Changes**: Make your changes locally.
 
-5. **Run Tests**: Ensure all tests pass before submitting your changes.
+7. **Run Checks**: Ensure all checks pass before submitting your changes.
 
    ```bash
-   npm run test
+   just all  # Runs lint, typecheck, and build
    ```
 
-6. **Commit Changes**: Commit your changes with a clear commit message.
+8. **Commit Changes**: Commit your changes with a clear commit message.
 
    ```bash
    git add .
    git commit -m "Describe your changes"
    ```
 
-7. **Push Changes**: Push your changes to GitHub.
+9. **Push Changes**: Push your changes to GitHub.
 
    ```bash
    git push origin your-branch-name
    ```
 
-8. **Create a Pull Request**: Create a Pull Request on GitHub and describe your changes.
+10. **Create a Pull Request**: Create a Pull Request on GitHub and describe your changes.
     Make sure your PR includes the following:
 
-   - The purpose of the changes
-   - Related issue number (if applicable)
-   - Any other relevant context
+    - The purpose of the changes
+    - Related issue number (if applicable)
+    - Any other relevant context
 
 ### Code Style
 
-Please follow the project's code style guidelines. Here are some general
-recommendations for Next.js projects:
+Please follow the project's code style guidelines:
 
-- Use `ESLint` for static code analysis and `Prettier` for code formatting.
-- Run the following commands to ensure your code adheres to the style
-  guidelines:
+- Use `ESLint` for static code analysis
+- Run the following commands to ensure your code adheres to the style guidelines:
 
   ```bash
-  npm run lint  # Runs ESLint to check for issues
-  npm run format  # Runs Prettier to format your code
+  just lint       # Runs ESLint to check for issues
+  just lint-fix   # Runs ESLint with auto-fix
+  just typecheck  # Runs TypeScript type checking
   ```
 
-### Testing
+### Available Commands
 
-Ensure your changes include appropriate tests and that all tests pass.
-Run the following command to execute tests:
+Run `just` to see all available commands:
 
 ```bash
-npm run test
+just            # List all commands
+just setup      # Setup development environment
+just dev        # Run development server
+just build      # Build for production
+just lint       # Run ESLint
+just lint-fix   # Run ESLint with auto-fix
+just typecheck  # Type check the project
+just check      # Run all checks (lint + typecheck)
+just all        # Run all checks and build
+just clean      # Clean build artifacts
 ```
 
 ### Documentation
@@ -98,4 +113,4 @@ will be licensed under the project's [LICENSE](LICENSE).
 
 ---
 
-Thank you for contributing! 🎉
+Thank you for contributing!
