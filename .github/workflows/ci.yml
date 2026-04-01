@@ -25,7 +25,7 @@ jobs:
           node-version: 22
 
       - name: Install just
-        uses: extractions/setup-just@v3
+        uses: taiki-e/install-action@just
 
       - run: just setup
       - run: just all
