@@ -49,47 +49,40 @@ export function CourseSidebar({
   const { course, stages } = useCourseStore();
   const { slug } = useParams<{ slug: string }>();
 
-  const [extensionGroups, setExtensionGroups] = React.useState<
-    ExtensionGroup[]
-  >([]);
-  const [loading, setLoading] = React.useState<boolean>(true);
-
   const { data: extensions = [], isLoading: extensionsLoading } =
     useExtensions(slug);
 
-  React.useEffect(() => {
-    if (!extensionsLoading) {
-      try {
-        const grouped = stages.reduce<ExtensionGroup[]>((groups, stage) => {
-          if (stage.stage.extension_slug) {
-            const extension = extensions.find(
-              (ext) => ext.slug === stage.stage.extension_slug,
-            );
-            const existingGroup = groups.find(
-              (g) => g.slug === stage.stage.extension_slug,
-            );
+  const extensionGroups = React.useMemo(() => {
+    if (extensionsLoading) return [];
+    try {
+      return stages.reduce<ExtensionGroup[]>((groups, stage) => {
+        if (stage.stage.extension_slug) {
+          const extension = extensions.find(
+            (ext) => ext.slug === stage.stage.extension_slug,
+          );
+          const existingGroup = groups.find(
+            (g) => g.slug === stage.stage.extension_slug,
+          );
 
-            if (existingGroup) {
-              existingGroup.stages.push(stage);
-            } else {
-              groups.push({
-                title: extension?.name || "Extension",
-                slug: stage.stage.extension_slug,
-                stages: [stage],
-              });
-            }
+          if (existingGroup) {
+            existingGroup.stages.push(stage);
+          } else {
+            groups.push({
+              title: extension?.name || "Extension",
+              slug: stage.stage.extension_slug,
+              stages: [stage],
+            });
           }
-          return groups;
-        }, []);
-
-        setExtensionGroups(grouped);
-        setLoading(false);
-      } catch (err) {
-        console.error(err);
-        setLoading(false);
-      }
+        }
+        return groups;
+      }, []);
+    } catch (err) {
+      console.error(err);
+      return [];
     }
   }, [extensionsLoading, extensions, stages]);
+
+  const loading = extensionsLoading;
 
   const baseStages = stages.filter((stage) => !stage.stage.extension_slug);
 

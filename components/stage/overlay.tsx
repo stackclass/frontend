@@ -37,7 +37,8 @@ export default function Overlay({
   const { currentIndex, backIndex, backDirection } = useNavigation();
 
   useEffect(() => {
-    setIsVisible(visible);
+    const id = setTimeout(() => setIsVisible(visible), 0);
+    return () => clearTimeout(id);
   }, [visible]);
 
   if (!isVisible || currentIndex === backIndex) {
